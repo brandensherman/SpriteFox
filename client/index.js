@@ -1,7 +1,14 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import {Provider} from 'react-redux'
+import {Router} from 'react-router-dom'
+import Routes from './components/Routes'
+
+// establishes socket connection
+// import './socket'
 
 ReactDOM.render(
-  <div className='hello'>Hello, world!</div>,
-  document.getElementById('app') // make sure this is the same as the id of the div in your index.html
-);
+  <Routes />
+  ,
+  document.getElementById('app')
+)
