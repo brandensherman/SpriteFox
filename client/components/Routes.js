@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import Canvas from './Canvas'
-import CanvasTest from './CanvasTest'
 import Palette from './Palette'
 
 
@@ -26,8 +25,7 @@ class Routes extends Component {
               <Palette />
             </div>
             <div>
-              {/* <Canvas /> */}
-              <CanvasTest />
+              <Canvas />
             </div>
           </div>
         </div>
