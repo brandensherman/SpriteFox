@@ -5,20 +5,21 @@ class Palette extends React.Component {
   constructor() {
     super();
     this.state = {
-      background: '#fff'
+      currentColor: '#fff'
     }
   }
 
   handleChangeComplete = color => {
-    this.setState({background: color.hex})
-    console.log('>>>> this.state >>> ', this.state);
+    this.setState({currentColor: color.hex})
+    localStorage.setItem('currentColor', this.state.currentColor)
+    console.log('>>>> this.state >>> ', this.state.currentColor);
   }
 
   render() {
     return (
       <div>
         <SketchPicker
-          color={this.state.background}
+          color={this.state.currentColor}
           onChangeComplete={this.handleChangeComplete}
         />
       </div>

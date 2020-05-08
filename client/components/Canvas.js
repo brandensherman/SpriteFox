@@ -20,7 +20,7 @@ class Canvas extends React.Component {
     this.ctx.clearRect(0, 0, this.width, this.height)
     this.ctx.translate(this.width / 2, this.height / 2)
     this.ctx.rotate(angle * Math.PI / 180)
-    this.ctx.fillStyle = '#4397AC'
+    this.ctx.fillStyle = 'blue'
     this.ctx.fillRect(
       -this.width / 4,
       -this.height / 4,
@@ -31,7 +31,7 @@ class Canvas extends React.Component {
   }
 
   render() {
-
+    console.log('>>> when is this happening in canvas?')
     return (
     <PureCanvas contextRef={this.saveContext} />
     )
