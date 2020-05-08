@@ -5,7 +5,7 @@ class Palette extends React.Component {
   constructor() {
     super();
     this.state = {
-      background: '#fff'
+      currentColor: '#fff'
     }
   }
 
@@ -18,7 +18,7 @@ class Palette extends React.Component {
     return (
       <div>
         <SketchPicker
-          color={this.state.background}
+          color={this.state.currentColor}
           onChangeComplete={this.handleChangeComplete}
         />
       </div>
