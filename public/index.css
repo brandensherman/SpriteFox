@@ -23,8 +23,8 @@ form div {
 .canvas {
   display: flex;
   /* flex-grow: 0; */
-  width: 600px;
-  height: 700px;
+  /* width: 600px;
+  height: 700px; */
   border: 10px;
   border-style: solid;
   border-color: black;
