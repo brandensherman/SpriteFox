@@ -10,7 +10,7 @@ class Palette extends React.Component {
   }
 
   handleChangeComplete = color => {
-    this.setState({ background: color.hex })
+    this.setState({ currentColor: color.hex })
     console.log('>>>> this.state >>> ', this.state);
   }
 
