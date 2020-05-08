@@ -1,5 +1,5 @@
 import React from 'react'
-import {SketchPicker} from 'react-color'
+import { SketchPicker } from 'react-color'
 
 class Palette extends React.Component {
   constructor() {
@@ -10,9 +10,8 @@ class Palette extends React.Component {
   }
 
   handleChangeComplete = color => {
-    this.setState({currentColor: color.hex})
-    localStorage.setItem('currentColor', this.state.currentColor)
-    console.log('>>>> this.state >>> ', this.state.currentColor);
+    this.setState({ background: color.hex })
+    console.log('>>>> this.state >>> ', this.state);
   }
 
   render() {

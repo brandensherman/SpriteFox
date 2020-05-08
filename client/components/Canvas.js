@@ -1,41 +1,44 @@
 import React from 'react'
-import PureCanvas from './PureCanvas'
+
 
 class Canvas extends React.Component {
   constructor(props) {
     super(props)
-    this.saveContext = this.saveContext.bind(this)
+    this.canvas = React.createRef()
+  }
+  componentDidMount() {
+    this.ctx = this.canvas.current.getContext('2d')
+    //console.log("this.ctx is >>>>>>", this.ctx)
+
+    this.createGrid(30, 20)
   }
 
-  saveContext(ctx) {
-    this.ctx = ctx
-    this.width = this.ctx.canvas.width
-    this.height = this.ctx.canvas.height
+  createGrid(rows, pixelSize) {
+    let y = 0;
+    for (let i = 0; i < rows; i++) {
+      let x = 0;
+      for (let j = 0; j < rows; j++) {
+
+        this.ctx.strokeRect(x, y, pixelSize, pixelSize)
+        x += pixelSize;
+        //console.log("x>>>", x, "y>>>>", y)
+      }
+      y += pixelSize;
+    }
   }
 
-  componentDidUpdate() {
-    const {angle} = this.props
-    this.ctx.save()
-    this.ctx.beginPath()
-    this.ctx.clearRect(0, 0, this.width, this.height)
-    this.ctx.translate(this.width / 2, this.height / 2)
-    this.ctx.rotate(angle * Math.PI / 180)
-    this.ctx.fillStyle = 'blue'
-    this.ctx.fillRect(
-      -this.width / 4,
-      -this.height / 4,
-      this.width / 2,
-      this.height / 2
-    )
-    this.ctx.restore()
-  }
 
   render() {
-    console.log('>>> when is this happening in canvas?')
+    // console.log("this.ctx is >>>>>>", this.ctx)
+    console.log("this.canvas is >>>>>>", this.canvas)
     return (
-    <PureCanvas contextRef={this.saveContext} />
+      <div>
+        <h1>hello world canvas test component</h1>
+        <canvas width="500" height="500" ref={this.canvas} />
+      </div>
     )
   }
+
 }
 
-export default Canvas
+export default Canvas;
