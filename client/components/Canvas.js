@@ -8,7 +8,7 @@ class Canvas extends React.Component {
     this.getCanvas = this.getCanvas.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.fillPixel = this.fillPixel.bind(this);
-    this.color = 'black';
+    this.color = 'coral';
     this.state = {
       canvasName: '',
       framesArray: [],
@@ -53,18 +53,23 @@ class Canvas extends React.Component {
   }
 
   fillPixel() {
-    console.log(window.event);
+    const canvas = this.canvas.current.getBoundingClientRect();
 
-    576 / 24 + 1;
-    let x = window.event.clientX - 230;
-    let y = window.event.clientY - 150;
-    this.ctx.fillStyle = this.state.color;
+    console.log(canvas);
+
+    let x = Math.floor((window.event.clientX - canvas.x) / 24);
+
+    let y = Math.floor((window.event.clientY - canvas.y) / 24);
+    console.log(x, y);
+    x *= 24;
+    y *= 24;
+    this.ctx.fillStyle = 'coral';
     this.ctx.fillRect(x, y, 24, 24);
   }
 
   render() {
     return (
-      <div>
+      <div onClick={this.fillPixel}>
         <label htmlFor='canvasName'></label>
         <input
           type='text'
