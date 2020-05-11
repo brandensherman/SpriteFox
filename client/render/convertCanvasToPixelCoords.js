@@ -1,7 +1,6 @@
-
-const CANVAS_WIDTH =  576, // measured in screen pixels
-const CANVAS_HEIGHT = 576, // measured in screen pixels
-const CURSOR_SIZE= 5, // odd numbers only or it'll be off-center
+const CANVAS_WIDTH = 576; // measured in screen pixels
+const CANVAS_HEIGHT = 576; // measured in screen pixels
+const CURSOR_SIZE = 5; // odd numbers only or it'll be off-center
 
 // take screen coordinates and convert them to pixel coordinates
 const convertCanvasToPixelCoords = (canvasMouseCoords, sprite) => {

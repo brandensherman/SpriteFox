@@ -1,6 +1,4 @@
 import React from 'react';
-import convertCanvasToPixelCoords from '../render/convertCanvasToPixelCoords'
-import convertWindowToCanvasCoords from '../render/convertWindowToCanvasCoords'
 
 class Canvas extends React.Component {
   constructor(props) {
@@ -9,6 +7,8 @@ class Canvas extends React.Component {
     this.saveCanvas = this.saveCanvas.bind(this);
     this.getCanvas = this.getCanvas.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.fillPixel = this.fillPixel.bind(this);
+    this.color = 'black';
     this.state = {
       canvasName: '',
       framesArray: [],
@@ -18,8 +18,9 @@ class Canvas extends React.Component {
     this.ctx = this.canvas.current.getContext('2d');
     //console.log("this.ctx is >>>>>>", this.ctx)
 
-    this.createGrid(30, 20);
-    console.log('this.canvas is >>>>>>', this.canvas);
+    this.createGrid(16, 24);
+    // this.ctx.fillStyle = 'rgba(255, 165, 0, 1)';
+    // this.ctx.fillRect(24, 24, 24, 24);
   }
 
   createGrid(rows, pixelSize) {
@@ -42,7 +43,6 @@ class Canvas extends React.Component {
 
   getCanvas(canvasName) {
     let item = localStorage.getItem('canvas');
-    console.log('ITEM', item);
   }
 
   handleChange(event) {
@@ -50,6 +50,16 @@ class Canvas extends React.Component {
     this.setState({
       [event.target.name]: event.target.value,
     });
+  }
+
+  fillPixel() {
+    console.log(window.event);
+
+    576 / 24 + 1;
+    let x = window.event.clientX - 230;
+    let y = window.event.clientY - 150;
+    this.ctx.fillStyle = this.state.color;
+    this.ctx.fillRect(x, y, 24, 24);
   }
 
   render() {
@@ -64,7 +74,12 @@ class Canvas extends React.Component {
           onChange={this.handleChange}
         />
         <h1>hello world canvas test component</h1>
-        <canvas width='500' height='500' ref={this.canvas} />
+        <canvas
+          width='500'
+          height='500'
+          ref={this.canvas}
+          onClick={this.fillPixel}
+        />
         <button onClick={() => this.saveCanvas(this.state.canvasName)}>
           Save Canvas
         </button>
