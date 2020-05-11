@@ -1,4 +1,6 @@
 import React from 'react';
+import convertCanvasToPixelCoords from '../render/convertCanvasToPixelCoords'
+import convertWindowToCanvasCoords from '../render/convertWindowToCanvasCoords'
 
 class Canvas extends React.Component {
   constructor(props) {
