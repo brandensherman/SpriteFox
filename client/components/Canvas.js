@@ -10,8 +10,9 @@ class Canvas extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.fillPixel = this.fillPixel.bind(this);
     this.fillPixelFromSocket = this.fillPixelFromSocket.bind(this)
+    this.resetCanvas = this.resetCanvas.bind(this);
     this.state = {
-      color: 'black',
+      color: 'coral',
       canvasName: '',
       pixelSize: 24,
       gridSize: 16,
@@ -31,7 +32,6 @@ class Canvas extends React.Component {
 
   createGrid(rows, pixelSize) {
     let y = 0;
-
     for (let i = 0; i < rows; i++) {
       let x = 0;
       let array = [];
@@ -40,20 +40,28 @@ class Canvas extends React.Component {
         this.ctx.strokeRect(x, y, pixelSize, pixelSize);
         x += pixelSize;
       }
-
+      // Add each array to the mappedGrid
       this.state.mappedGrid[i] = array;
       y += pixelSize;
     }
-    // console.log('grid', this.state.mappedGrid);
   }
 
+  //saves canvas, adds it to array of canvases
   saveCanvas(canvasName) {
     // let imageURL = this.canvas.current.toDataURL();
-    // localStorage.setItem(`${canvasName}`, imageURL);
+    localStorage.setItem(
+      `${canvasName}`,
+      JSON.stringify(this.state.mappedGrid)
+    );
+
+    this.setState({
+      framesArray: [...this.state.framesArray, canvasName],
+    });
   }
 
   getCanvas(canvasName) {
-    let item = localStorage.getItem('canvas');
+    let item = JSON.parse(localStorage.getItem(canvasName));
+    this.renderSaved(item);
   }
 
   handleChange(event) {
@@ -74,23 +82,50 @@ class Canvas extends React.Component {
       this.state.pixelSize
     );
 
+  // clear canvas, then render a saved canvas based on colors/coords
+  renderSaved(savedGrid) {
+    for (let key in savedGrid) {
+      let pixelRow = savedGrid[key];
 
+      for (let i = 0; i < pixelRow.length; i++) {
+        if (pixelRow[i] !== null) {
+          // These are the actual coordinates to render on the grid
+          let coordinateX = i * this.state.pixelSize;
+          let coordinateY = key * this.state.pixelSize;
+
+          // Render each original pixel from the saved grid
+          this.ctx.fillStyle = pixelRow[i];
+          this.ctx.fillRect(
+            coordinateX,
+            coordinateY,
+            this.state.pixelSize,
+            this.state.pixelSize
+          );
+        }
+      }
+    }
+  }
+
+  resetCanvas() {
+    this.ctx.clearRect(
+      0,
+      0,
+      this.state.gridSize * this.state.pixelSize,
+      this.state.gridSize * this.state.pixelSize
+    );
+    this.createGrid(this.state.gridSize, this.state.pixelSize);
   }
 
   fillPixel() {
     const canvas = this.canvas.current.getBoundingClientRect();
 
+    // These are not the actual coordinates but correspond to the place on the grid
     let x = Math.floor(
       (window.event.clientX - canvas.x) / this.state.pixelSize
     );
     let y = Math.floor(
       (window.event.clientY - canvas.y) / this.state.pixelSize
     );
-
-    // These are not the actual coordinates but correspond to the place on the grid
-    // console.log(x, y);
-
-    // this.mapColorToGrid(x, y, this.state.color);
 
     // MAP color to proper place on mappedGrid
     this.state.mappedGrid[y][x] = this.state.color;
@@ -109,14 +144,11 @@ class Canvas extends React.Component {
       this.state.pixelSize,
       this.state.pixelSize
     );
-
-    console.log('HEY', this.state.mappedGrid[y][x], x, y);
-    console.log(this.state.mappedGrid);
   }
 
   render() {
     return (
-      <div onClick={this.fillPixel}>
+      <div>
         <label htmlFor='canvasName'></label>
         <input
           type='text'
@@ -132,10 +164,19 @@ class Canvas extends React.Component {
           ref={this.canvas}
           onClick={this.fillPixel}
         />
+        <ul>
+          {this.state.framesArray.map((frame, index) => {
+            return (
+              <li onClick={() => this.getCanvas(frame)} key={index}>
+                {frame}
+              </li>
+            );
+          })}
+        </ul>
         <button onClick={() => this.saveCanvas(this.state.canvasName)}>
           Save Canvas
         </button>
-        <button onClick={this.getCanvas}> Get Canvas</button>
+        <button onClick={this.resetCanvas}> RESET</button>
       </div>
     );
   }
