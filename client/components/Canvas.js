@@ -8,6 +8,7 @@ class Canvas extends React.Component {
     this.getCanvas = this.getCanvas.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.fillPixel = this.fillPixel.bind(this);
+    this.resetCanvas = this.resetCanvas.bind(this);
     this.state = {
       color: 'black',
       canvasName: '',
@@ -40,14 +41,18 @@ class Canvas extends React.Component {
     }
     // console.log('grid', this.state.mappedGrid);
   }
-
+  //saves canvas, adds it to array of canvases
   saveCanvas(canvasName) {
     // let imageURL = this.canvas.current.toDataURL();
-    // localStorage.setItem(`${canvasName}`, imageURL);
+    localStorage.setItem(`${canvasName}`, JSON.stringify(this.state.mappedGrid));
+
+    this.setState({
+      framesArray: [...this.state.framesArray, canvasName]
+    });
   }
 
   getCanvas(canvasName) {
-    let item = localStorage.getItem('canvas');
+    let item = JSON.parse(localStorage.getItem(canvasName));
   }
 
   handleChange(event) {
@@ -56,8 +61,19 @@ class Canvas extends React.Component {
       [event.target.name]: event.target.value,
     });
   }
+  // clear canvas, then render a saved canvas based on colors/coords
+  renderSaved() {
+
+  }
+
+  resetCanvas() {
+    this.ctx.clearRect(0, 0, this.state.gridSize * this.state.pixelSize, this.state.gridSize * this.state.pixelSize);
+    this.createGrid(this.state.gridSize, this.state.pixelSize);
+  }
+
 
   fillPixel() {
+
     const canvas = this.canvas.current.getBoundingClientRect();
 
     let x = Math.floor(
@@ -88,13 +104,18 @@ class Canvas extends React.Component {
       this.state.pixelSize
     );
 
-    console.log('HEY', this.state.mappedGrid[y][x], x, y);
-    console.log(this.state.mappedGrid);
+    // console.log('HEY', this.state.mappedGrid[y][x], x, y);
+    // console.log(this.state.mappedGrid);
+
+
+
   }
 
   render() {
+
+
     return (
-      <div onClick={this.fillPixel}>
+      <div >
         <label htmlFor='canvasName'></label>
         <input
           type='text'
@@ -110,10 +131,14 @@ class Canvas extends React.Component {
           ref={this.canvas}
           onClick={this.fillPixel}
         />
+        {this.state.framesArray.map((frame) => {
+          console.log(frame, " is frame!!!")
+          return <a onClick={() => this.getCanvas(frame)}>{frame}</a>
+        })}
         <button onClick={() => this.saveCanvas(this.state.canvasName)}>
           Save Canvas
         </button>
-        <button onClick={this.getCanvas}> Get Canvas</button>
+        <button onClick={this.resetCanvas}> RESET</button>
       </div>
     );
   }
