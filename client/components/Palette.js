@@ -1,29 +1,27 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { SketchPicker } from 'react-color'
 
-class Palette extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      currentColor: '#fff'
-    }
+function Palette() {
+  const initialState = '#fff';
+  const [currentColor, setColor] = useState(initialState)
+
+  function handleChangeComplete(color) {
+    setColor(color.hex)
   }
 
-  handleChangeComplete = color => {
-    this.setState({ currentColor: color.hex })
-    console.log('>>>> this.state >>> ', this.state);
-  }
+  useEffect(() => {
+    document.title = currentColor;
+  })
 
-  render() {
-    return (
-      <div>
-        <SketchPicker
-          color={this.state.currentColor}
-          onChangeComplete={this.handleChangeComplete}
-        />
-      </div>
-    )
-  }
+  return (
+    <div>
+      <SketchPicker
+        color={currentColor}
+        onChangeComplete={handleChangeComplete}
+      />
+    </div>
+  )
+
 }
 
 export default Palette
