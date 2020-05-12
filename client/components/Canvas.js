@@ -8,37 +8,42 @@ class Canvas extends React.Component {
     this.getCanvas = this.getCanvas.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.fillPixel = this.fillPixel.bind(this);
-    this.color = 'coral';
     this.state = {
+      color: 'black',
       canvasName: '',
+      pixelSize: 24,
+      gridSize: 16,
       framesArray: [],
+      mappedGrid: {},
     };
   }
   componentDidMount() {
     this.ctx = this.canvas.current.getContext('2d');
-    //console.log("this.ctx is >>>>>>", this.ctx)
 
-    this.createGrid(16, 24);
-    // this.ctx.fillStyle = 'rgba(255, 165, 0, 1)';
-    // this.ctx.fillRect(24, 24, 24, 24);
+    this.createGrid(this.state.gridSize, this.state.pixelSize);
   }
 
   createGrid(rows, pixelSize) {
     let y = 0;
+
     for (let i = 0; i < rows; i++) {
       let x = 0;
+      let array = [];
       for (let j = 0; j < rows; j++) {
+        array.push(null);
         this.ctx.strokeRect(x, y, pixelSize, pixelSize);
         x += pixelSize;
-        //console.log("x>>>", x, "y>>>>", y)
       }
+
+      this.state.mappedGrid[i] = array;
       y += pixelSize;
     }
+    // console.log('grid', this.state.mappedGrid);
   }
 
   saveCanvas(canvasName) {
-    let imageURL = this.canvas.current.toDataURL();
-    localStorage.setItem(`${canvasName}`, imageURL);
+    // let imageURL = this.canvas.current.toDataURL();
+    // localStorage.setItem(`${canvasName}`, imageURL);
   }
 
   getCanvas(canvasName) {
@@ -55,16 +60,36 @@ class Canvas extends React.Component {
   fillPixel() {
     const canvas = this.canvas.current.getBoundingClientRect();
 
-    console.log(canvas);
+    let x = Math.floor(
+      (window.event.clientX - canvas.x) / this.state.pixelSize
+    );
+    let y = Math.floor(
+      (window.event.clientY - canvas.y) / this.state.pixelSize
+    );
 
-    let x = Math.floor((window.event.clientX - canvas.x) / 24);
+    // These are not the actual coordinates but correspond to the place on the grid
+    // console.log(x, y);
 
-    let y = Math.floor((window.event.clientY - canvas.y) / 24);
-    console.log(x, y);
-    x *= 24;
-    y *= 24;
-    this.ctx.fillStyle = 'coral';
-    this.ctx.fillRect(x, y, 24, 24);
+    // this.mapColorToGrid(x, y, this.state.color);
+
+    // MAP color to proper place on mappedGrid
+    this.state.mappedGrid[y][x] = this.state.color;
+
+    // These are the actual coordinates to properly place the pixel
+
+    let actualCoordinatesX = x * this.state.pixelSize;
+    let actualCoordinatesY = y * this.state.pixelSize;
+
+    this.ctx.fillStyle = this.state.color;
+    this.ctx.fillRect(
+      actualCoordinatesX,
+      actualCoordinatesY,
+      this.state.pixelSize,
+      this.state.pixelSize
+    );
+
+    console.log('HEY', this.state.mappedGrid[y][x], x, y);
+    console.log(this.state.mappedGrid);
   }
 
   render() {
@@ -80,8 +105,8 @@ class Canvas extends React.Component {
         />
         <h1>hello world canvas test component</h1>
         <canvas
-          width='500'
-          height='500'
+          width={this.state.gridSize * this.state.pixelSize}
+          height={this.state.gridSize * this.state.pixelSize}
           ref={this.canvas}
           onClick={this.fillPixel}
         />
