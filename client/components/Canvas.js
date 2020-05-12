@@ -26,7 +26,6 @@ class Canvas extends React.Component {
 
   createGrid(rows, pixelSize) {
     let y = 0;
-
     for (let i = 0; i < rows; i++) {
       let x = 0;
       let array = [];
@@ -35,12 +34,12 @@ class Canvas extends React.Component {
         this.ctx.strokeRect(x, y, pixelSize, pixelSize);
         x += pixelSize;
       }
-
+      // Add each array to the mappedGrid
       this.state.mappedGrid[i] = array;
       y += pixelSize;
     }
-    // console.log('grid', this.state.mappedGrid);
   }
+
   //saves canvas, adds it to array of canvases
   saveCanvas(canvasName) {
     // let imageURL = this.canvas.current.toDataURL();
@@ -65,6 +64,7 @@ class Canvas extends React.Component {
       [event.target.name]: event.target.value,
     });
   }
+
   // clear canvas, then render a saved canvas based on colors/coords
   renderSaved(savedGrid) {
     for (let key in savedGrid) {
@@ -72,11 +72,11 @@ class Canvas extends React.Component {
 
       for (let i = 0; i < pixelRow.length; i++) {
         if (pixelRow[i] !== null) {
-          console.log(key, i);
-
+          // These are the actual coordinates to render on the grid
           let coordinateX = i * this.state.pixelSize;
           let coordinateY = key * this.state.pixelSize;
 
+          // Render each original pixel from the saved grid
           this.ctx.fillStyle = pixelRow[i];
           this.ctx.fillRect(
             coordinateX,
@@ -102,17 +102,13 @@ class Canvas extends React.Component {
   fillPixel() {
     const canvas = this.canvas.current.getBoundingClientRect();
 
+    // These are not the actual coordinates but correspond to the place on the grid
     let x = Math.floor(
       (window.event.clientX - canvas.x) / this.state.pixelSize
     );
     let y = Math.floor(
       (window.event.clientY - canvas.y) / this.state.pixelSize
     );
-
-    // These are not the actual coordinates but correspond to the place on the grid
-    // console.log(x, y);
-
-    // this.mapColorToGrid(x, y, this.state.color);
 
     // MAP color to proper place on mappedGrid
     this.state.mappedGrid[y][x] = this.state.color;
@@ -149,7 +145,6 @@ class Canvas extends React.Component {
           ref={this.canvas}
           onClick={this.fillPixel}
         />
-
         <ul>
           {this.state.framesArray.map((frame, index) => {
             return (
