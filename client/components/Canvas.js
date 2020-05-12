@@ -1,4 +1,5 @@
 import React from 'react';
+import socket from '../socket.js'
 
 class Canvas extends React.Component {
   constructor(props) {
@@ -8,6 +9,7 @@ class Canvas extends React.Component {
     this.getCanvas = this.getCanvas.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.fillPixel = this.fillPixel.bind(this);
+    this.fillPixelFromSocket = this.fillPixelFromSocket.bind(this)
     this.state = {
       color: 'black',
       canvasName: '',
@@ -21,6 +23,10 @@ class Canvas extends React.Component {
     this.ctx = this.canvas.current.getContext('2d');
 
     this.createGrid(this.state.gridSize, this.state.pixelSize);
+
+    socket.on("fill", (x, y, color) => {
+      this.fillPixelFromSocket(x, y, color)
+    })
   }
 
   createGrid(rows, pixelSize) {
@@ -57,6 +63,20 @@ class Canvas extends React.Component {
     });
   }
 
+
+  fillPixelFromSocket(x, y, color){
+    this.state.mappedGrid[y][x] = color;
+    this.ctx.fillStyle = color;
+    this.ctx.fillRect(
+      x,
+      y,
+      this.state.pixelSize,
+      this.state.pixelSize
+    );
+
+
+  }
+
   fillPixel() {
     const canvas = this.canvas.current.getBoundingClientRect();
 
@@ -79,6 +99,8 @@ class Canvas extends React.Component {
 
     let actualCoordinatesX = x * this.state.pixelSize;
     let actualCoordinatesY = y * this.state.pixelSize;
+
+    socket.emit("fill", actualCoordinatesX, actualCoordinatesY, "green")
 
     this.ctx.fillStyle = this.state.color;
     this.ctx.fillRect(
