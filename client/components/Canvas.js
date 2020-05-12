@@ -10,7 +10,7 @@ class Canvas extends React.Component {
     this.fillPixel = this.fillPixel.bind(this);
     this.resetCanvas = this.resetCanvas.bind(this);
     this.state = {
-      color: 'black',
+      color: 'coral',
       canvasName: '',
       pixelSize: 24,
       gridSize: 16,
@@ -44,15 +44,19 @@ class Canvas extends React.Component {
   //saves canvas, adds it to array of canvases
   saveCanvas(canvasName) {
     // let imageURL = this.canvas.current.toDataURL();
-    localStorage.setItem(`${canvasName}`, JSON.stringify(this.state.mappedGrid));
+    localStorage.setItem(
+      `${canvasName}`,
+      JSON.stringify(this.state.mappedGrid)
+    );
 
     this.setState({
-      framesArray: [...this.state.framesArray, canvasName]
+      framesArray: [...this.state.framesArray, canvasName],
     });
   }
 
   getCanvas(canvasName) {
     let item = JSON.parse(localStorage.getItem(canvasName));
+    this.renderSaved(item);
   }
 
   handleChange(event) {
@@ -62,18 +66,40 @@ class Canvas extends React.Component {
     });
   }
   // clear canvas, then render a saved canvas based on colors/coords
-  renderSaved() {
+  renderSaved(savedGrid) {
+    for (let key in savedGrid) {
+      let pixelRow = savedGrid[key];
 
+      for (let i = 0; i < pixelRow.length; i++) {
+        if (pixelRow[i] !== null) {
+          console.log(key, i);
+
+          let coordinateX = i * this.state.pixelSize;
+          let coordinateY = key * this.state.pixelSize;
+
+          this.ctx.fillStyle = pixelRow[i];
+          this.ctx.fillRect(
+            coordinateX,
+            coordinateY,
+            this.state.pixelSize,
+            this.state.pixelSize
+          );
+        }
+      }
+    }
   }
 
   resetCanvas() {
-    this.ctx.clearRect(0, 0, this.state.gridSize * this.state.pixelSize, this.state.gridSize * this.state.pixelSize);
+    this.ctx.clearRect(
+      0,
+      0,
+      this.state.gridSize * this.state.pixelSize,
+      this.state.gridSize * this.state.pixelSize
+    );
     this.createGrid(this.state.gridSize, this.state.pixelSize);
   }
 
-
   fillPixel() {
-
     const canvas = this.canvas.current.getBoundingClientRect();
 
     let x = Math.floor(
@@ -103,19 +129,11 @@ class Canvas extends React.Component {
       this.state.pixelSize,
       this.state.pixelSize
     );
-
-    // console.log('HEY', this.state.mappedGrid[y][x], x, y);
-    // console.log(this.state.mappedGrid);
-
-
-
   }
 
   render() {
-
-
     return (
-      <div >
+      <div>
         <label htmlFor='canvasName'></label>
         <input
           type='text'
@@ -131,10 +149,16 @@ class Canvas extends React.Component {
           ref={this.canvas}
           onClick={this.fillPixel}
         />
-        {this.state.framesArray.map((frame) => {
-          console.log(frame, " is frame!!!")
-          return <a onClick={() => this.getCanvas(frame)}>{frame}</a>
-        })}
+
+        <ul>
+          {this.state.framesArray.map((frame, index) => {
+            return (
+              <li onClick={() => this.getCanvas(frame)} key={index}>
+                {frame}
+              </li>
+            );
+          })}
+        </ul>
         <button onClick={() => this.saveCanvas(this.state.canvasName)}>
           Save Canvas
         </button>
