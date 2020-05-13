@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { SketchPicker } from 'react-color';
-
+import AnimateSprite from './AnimateSprite'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
-
 import Canvas from './Canvas';
 
 function MainPage() {
@@ -23,7 +22,12 @@ function MainPage() {
         color={currentColor}
         onChangeComplete={handleChangeComplete}
       />
-      <Canvas color={currentColor} />
+      <div>
+        <Canvas color={currentColor} />
+        <div>
+          <AnimateSprite />
+        </div>
+      </div>
     </div>
   );
 }

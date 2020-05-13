@@ -109,3 +109,24 @@ form div {
 .options-container input {
   margin-bottom: 1rem;
 }
+
+.animation-container{
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column
+}
+
+.slider-container{
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: row;
+  border: 1px solid;
+  border-color: black;
+}
+
+.frame{
+  width: 300px;
+  height: 225px;
+  border: 1px, solid;
+  border-color: black;
+}
