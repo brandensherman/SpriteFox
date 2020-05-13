@@ -4,10 +4,6 @@ import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import LandingPage from './LandingPage';
 import MainPage from './MainPage';
 
-
-/**
- * COMPONENT
- */
 class Routes extends Component {
   componentDidMount() {}
 
