@@ -9,7 +9,7 @@ class Canvas extends React.Component {
     this.getCanvas = this.getCanvas.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.fillPixel = this.fillPixel.bind(this);
-    this.fillPixelFromSocket = this.fillPixelFromSocket.bind(this)
+    // this.fillPixelFromSocket = this.fillPixelFromSocket.bind(this)
     this.resetCanvas = this.resetCanvas.bind(this);
     this.state = {
       color: 'coral',
@@ -26,7 +26,7 @@ class Canvas extends React.Component {
     this.createGrid(this.state.gridSize, this.state.pixelSize);
 
     socket.on("fill", (x, y, color) => {
-      this.fillPixelFromSocket(x, y, color)
+      this.fillPixel(x, y, color)
     })
   }
 
@@ -71,17 +71,6 @@ class Canvas extends React.Component {
     });
   }
 
-
-  fillPixelFromSocket(x, y, color){
-    this.state.mappedGrid[y][x] = color;
-    this.ctx.fillStyle = color;
-    this.ctx.fillRect(
-      x,
-      y,
-      this.state.pixelSize,
-      this.state.pixelSize
-    );
-
   // clear canvas, then render a saved canvas based on colors/coords
   renderSaved(savedGrid) {
     for (let key in savedGrid) {
@@ -116,16 +105,20 @@ class Canvas extends React.Component {
     this.createGrid(this.state.gridSize, this.state.pixelSize);
   }
 
-  fillPixel() {
+  fillPixel(defaultX, defaultY) { //need to add a color value to the parameters
     const canvas = this.canvas.current.getBoundingClientRect();
 
     // These are not the actual coordinates but correspond to the place on the grid
-    let x = Math.floor(
+    let x = defaultX || Math.floor(
       (window.event.clientX - canvas.x) / this.state.pixelSize
     );
-    let y = Math.floor(
+    let y = defaultY || Math.floor(
       (window.event.clientY - canvas.y) / this.state.pixelSize
     );
+
+    if (defaultX === undefined && defaultY === undefined) {
+      socket.emit("fill", x, y, "green")
+    }
 
     // MAP color to proper place on mappedGrid
     this.state.mappedGrid[y][x] = this.state.color;
@@ -135,7 +128,6 @@ class Canvas extends React.Component {
     let actualCoordinatesX = x * this.state.pixelSize;
     let actualCoordinatesY = y * this.state.pixelSize;
 
-    socket.emit("fill", actualCoordinatesX, actualCoordinatesY, "green")
 
     this.ctx.fillStyle = this.state.color;
     this.ctx.fillRect(
@@ -162,7 +154,7 @@ class Canvas extends React.Component {
           width={this.state.gridSize * this.state.pixelSize}
           height={this.state.gridSize * this.state.pixelSize}
           ref={this.canvas}
-          onClick={this.fillPixel}
+          onClick={() => this.fillPixel()} //made this into an anonomous function so that we can pass in values at a different location
         />
         <ul>
           {this.state.framesArray.map((frame, index) => {
