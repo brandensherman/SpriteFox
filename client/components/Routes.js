@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import Canvas from './Canvas'
 import Palette from './Palette'
+import AnimateSprite from './AnimateSprite'
 
 
 /**
@@ -24,6 +25,10 @@ class Routes extends Component {
             <div>
               <Palette />
             </div>
+            <div>
+              <AnimateSprite />
+            </div>
+
             <div>
               <Canvas />
             </div>

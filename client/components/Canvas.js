@@ -139,6 +139,7 @@ class Canvas extends React.Component {
   }
 
   render() {
+    console.log(this.state.framesArray)
     return (
       <div>
         <label htmlFor='canvasName'></label>
