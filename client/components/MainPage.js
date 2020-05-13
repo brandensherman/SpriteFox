@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { SketchPicker } from 'react-color';
-import AnimateSprite from './AnimateSprite'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import Canvas from './Canvas';
 
@@ -17,16 +16,14 @@ function MainPage() {
   });
 
   return (
-    <div>
+    <div className='container main-container'>
       <SketchPicker
+        className='sketch'
         color={currentColor}
         onChangeComplete={handleChangeComplete}
       />
       <div>
         <Canvas color={currentColor} />
-        <div>
-          <AnimateSprite />
-        </div>
       </div>
     </div>
   );
