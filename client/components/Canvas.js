@@ -138,6 +138,7 @@ class Canvas extends React.Component {
   }
 
   render() {
+    console.log(this.state.framesArray)
     return (
       <div className='canvas-container'>
         <div className=' container canvas-frames'>
