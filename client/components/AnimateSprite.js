@@ -6,12 +6,17 @@ function AnimateSprite(props) {
   const [FPS, setFPS] = useState(10)
 
 
+
   return (
-    <div>
-        <h1>{FPS}</h1>
-      <div>
+    <div className="animation-container ">
+      <div className="frame">
+        <img src="grumpyWizardFox.jpg" />
+      </div>
+
+      <div className='slider-container'>
+        <h3 className="uk-margin-small-right uk-margin-remove-bottom">{FPS} FPS</h3>
         <div>
-          <Slider xmax={20} xmin={0}
+          <Slider xmax={25} xmin={0}
             axis="x"
             x={FPS}
             onChange={({ x }) => setFPS(x)}

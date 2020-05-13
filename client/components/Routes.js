@@ -26,11 +26,10 @@ class Routes extends Component {
               <Palette />
             </div>
             <div>
-              <AnimateSprite />
-            </div>
-
-            <div>
               <Canvas />
+            </div>
+            <div>
+              <AnimateSprite/>
             </div>
           </div>
         </div>
