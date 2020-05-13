@@ -1,13 +1,83 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 body {
-  font-family: sans-serif;
+  font-family: 'Montserrat', sans-serif;
 }
 
 a {
+  color: #000;
   text-decoration: none;
+}
+
+li {
+  list-style: none;
 }
 
 label {
   display: block;
+}
+
+.container {
+  max-width: 1280px;
+  padding: 0 4rem;
+  margin: auto;
+  overflow: hidden;
+}
+
+.landing-container {
+  background: white;
+  margin: 5rem 0;
+  height: 75vh;
+  overflow: hidden;
+  border: 4px solid black;
+  border-radius: 7px;
+}
+
+.center-box {
+  /* display: flex; */
+  /* flex-direction: column; */
+  /* align-items: center; */
+  padding: 5rem;
+  /* border: 4px solid black; */
+  border-radius: 5px;
+  /* margin: 0 3rem; */
+}
+
+.landing-container h1 {
+  text-transform: uppercase;
+  font-size: 3rem;
+  margin-bottom: 0.75rem;
+}
+
+.landing-container p {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+.btn {
+  display: inline-block;
+  cursor: pointer;
+  transition: all 0.5s;
+  padding: 0.8rem 2rem;
+  border: 2.5px solid transparent;
+  background: #000;
+  color: #fff;
+  border-radius: 5px;
+  font-family: 'Montserrat', sans-serif;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+}
+
+.btn:hover {
+  background: #fff;
+  border: 2.5px solid #000;
+  color: #000;
 }
 
 nav a {
@@ -20,26 +90,22 @@ form div {
   display: inline-block;
 }
 
-.canvas {
-  display: flex;
-  /* flex-grow: 0; */
-  /* width: 600px;
-  height: 700px; */
-  border: 10px;
-  border-style: solid;
-  border-color: black;
-}
-
 .main-container {
   display: flex;
-  overflow: hidden;
-  justify-content: space-evenly;
-  width: 75%;
-  background-color: lightgrey;
-  font-family: arial;
-  margin-left: 30px;
+  margin-top: 4rem;
   height: 100vh;
-  /* padding: 5px 10px 10px 10px;
-  border-radius: 10px;
-  display: inline-block; */
+}
+
+.canvas-container {
+  display: flex;
+}
+
+.options-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.options-container .btn,
+.options-container input {
+  margin-bottom: 1rem;
 }
