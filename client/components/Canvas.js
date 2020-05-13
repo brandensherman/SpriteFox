@@ -12,7 +12,6 @@ class Canvas extends React.Component {
     // this.fillPixelFromSocket = this.fillPixelFromSocket.bind(this)
     this.resetCanvas = this.resetCanvas.bind(this);
     this.state = {
-      color: 'coral',
       canvasName: '',
       pixelSize: 24,
       gridSize: 16,
@@ -20,9 +19,9 @@ class Canvas extends React.Component {
       mappedGrid: {},
     };
   }
+
   componentDidMount() {
     this.ctx = this.canvas.current.getContext('2d');
-
     this.createGrid(this.state.gridSize, this.state.pixelSize);
 
     socket.on('fill', (x, y, color) => {
@@ -40,6 +39,7 @@ class Canvas extends React.Component {
         this.ctx.strokeRect(x, y, pixelSize, pixelSize);
         x += pixelSize;
       }
+
       // Add each array to the mappedGrid
       this.state.mappedGrid[i] = array;
       y += pixelSize;
@@ -76,7 +76,6 @@ class Canvas extends React.Component {
   renderSaved(savedGrid) {
     for (let key in savedGrid) {
       let pixelRow = savedGrid[key];
-
       for (let i = 0; i < pixelRow.length; i++) {
         if (pixelRow[i] !== null) {
           // These are the actual coordinates to render on the grid
@@ -123,14 +122,13 @@ class Canvas extends React.Component {
     }
 
     // MAP color to proper place on mappedGrid
-    this.state.mappedGrid[y][x] = this.state.color;
+    this.state.mappedGrid[y][x] = this.props.color;
 
     // These are the actual coordinates to properly place the pixel
-
     let actualCoordinatesX = x * this.state.pixelSize;
     let actualCoordinatesY = y * this.state.pixelSize;
 
-    this.ctx.fillStyle = this.state.color;
+    this.ctx.fillStyle = this.props.color;
     this.ctx.fillRect(
       actualCoordinatesX,
       actualCoordinatesY,
