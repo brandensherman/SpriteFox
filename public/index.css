@@ -69,6 +69,9 @@ label {
   background: #000;
   color: #fff;
   border-radius: 5px;
+  font-family: 'Montserrat', sans-serif;
+  text-transform: uppercase;
+  font-size: 0.8rem;
 }
 
 .btn:hover {
@@ -87,26 +90,22 @@ form div {
   display: inline-block;
 }
 
-.canvas {
-  display: flex;
-  /* flex-grow: 0; */
-  /* width: 600px;
-  height: 700px; */
-  border: 10px;
-  border-style: solid;
-  border-color: black;
-}
-
 .main-container {
   display: flex;
-  overflow: hidden;
-  justify-content: space-evenly;
-  width: 75%;
-  background-color: lightgrey;
-  font-family: arial;
-  margin-left: 30px;
+  margin-top: 4rem;
   height: 100vh;
-  /* padding: 5px 10px 10px 10px;
-  border-radius: 10px;
-  display: inline-block; */
+}
+
+.canvas-container {
+  display: flex;
+}
+
+.options-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.options-container .btn,
+.options-container input {
+  margin-bottom: 1rem;
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import socket from '../socket.js'
+import socket from '../socket.js';
 
 class Canvas extends React.Component {
   constructor(props) {
@@ -25,9 +25,9 @@ class Canvas extends React.Component {
 
     this.createGrid(this.state.gridSize, this.state.pixelSize);
 
-    socket.on("fill", (x, y, color) => {
-      this.fillPixel(x, y, color)
-    })
+    socket.on('fill', (x, y, color) => {
+      this.fillPixel(x, y, color);
+    });
   }
 
   createGrid(rows, pixelSize) {
@@ -56,6 +56,7 @@ class Canvas extends React.Component {
 
     this.setState({
       framesArray: [...this.state.framesArray, canvasName],
+      canvasName: '',
     });
   }
 
@@ -105,19 +106,20 @@ class Canvas extends React.Component {
     this.createGrid(this.state.gridSize, this.state.pixelSize);
   }
 
-  fillPixel(defaultX, defaultY) { //need to add a color value to the parameters
+  fillPixel(defaultX, defaultY) {
+    //need to add a color value to the parameters
     const canvas = this.canvas.current.getBoundingClientRect();
 
     // These are not the actual coordinates but correspond to the place on the grid
-    let x = defaultX || Math.floor(
-      (window.event.clientX - canvas.x) / this.state.pixelSize
-    );
-    let y = defaultY || Math.floor(
-      (window.event.clientY - canvas.y) / this.state.pixelSize
-    );
+    let x =
+      defaultX ||
+      Math.floor((window.event.clientX - canvas.x) / this.state.pixelSize);
+    let y =
+      defaultY ||
+      Math.floor((window.event.clientY - canvas.y) / this.state.pixelSize);
 
     if (defaultX === undefined && defaultY === undefined) {
-      socket.emit("fill", x, y, "green")
+      socket.emit('fill', x, y, 'green');
     }
 
     // MAP color to proper place on mappedGrid
@@ -127,7 +129,6 @@ class Canvas extends React.Component {
 
     let actualCoordinatesX = x * this.state.pixelSize;
     let actualCoordinatesY = y * this.state.pixelSize;
-
 
     this.ctx.fillStyle = this.state.color;
     this.ctx.fillRect(
@@ -140,35 +141,44 @@ class Canvas extends React.Component {
 
   render() {
     return (
-      <div>
-        <label htmlFor='canvasName'></label>
-        <input
-          type='text'
-          name='canvasName'
-          value={this.state.canvasName}
-          placeholder='Enter your name'
-          onChange={this.handleChange}
-        />
-        <h1>hello world canvas test component</h1>
-        <canvas
-          width={this.state.gridSize * this.state.pixelSize}
-          height={this.state.gridSize * this.state.pixelSize}
-          ref={this.canvas}
-          onClick={() => this.fillPixel()} //made this into an anonomous function so that we can pass in values at a different location
-        />
-        <ul>
-          {this.state.framesArray.map((frame, index) => {
-            return (
-              <li onClick={() => this.getCanvas(frame)} key={index}>
-                {frame}
-              </li>
-            );
-          })}
-        </ul>
-        <button onClick={() => this.saveCanvas(this.state.canvasName)}>
-          Save Canvas
-        </button>
-        <button onClick={this.resetCanvas}> RESET</button>
+      <div className='canvas-container'>
+        <div className=' container canvas-frames'>
+          <canvas
+            width={this.state.gridSize * this.state.pixelSize}
+            height={this.state.gridSize * this.state.pixelSize}
+            ref={this.canvas}
+            onClick={() => this.fillPixel()} //made this into an anonomous function so that we can pass in values at a different location
+          />
+          <ul>
+            {this.state.framesArray.map((frame, index) => {
+              return (
+                <li onClick={() => this.getCanvas(frame)} key={index}>
+                  {frame}
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+        <div className='options-container'>
+          <label htmlFor='canvasName'></label>
+          <input
+            type='text'
+            name='canvasName'
+            value={this.state.canvasName}
+            placeholder='Enter your name'
+            onChange={this.handleChange}
+          />
+          <button
+            onClick={() => this.saveCanvas(this.state.canvasName)}
+            className='btn'
+          >
+            Save Canvas
+          </button>
+          <button onClick={this.resetCanvas} className='btn'>
+            {' '}
+            Reset Canvas
+          </button>
+        </div>
       </div>
     );
   }
