@@ -9,7 +9,7 @@ function AnimateSprite(props) {
 
 
   return (
-    <div className="animation-container ">
+    <div className='canvas-container'>
       <div className="frame">
         <img src="grumpyWizardFox.jpg" />
       </div>

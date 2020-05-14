@@ -111,10 +111,10 @@ class Canvas extends React.Component {
 
     // These are not the actual coordinates but correspond to the place on the grid
     let x =
-      defaultX ||
+      defaultX ??
       Math.floor((window.event.clientX - canvas.x) / this.state.pixelSize);
     let y =
-      defaultY ||
+      defaultY ??
       Math.floor((window.event.clientY - canvas.y) / this.state.pixelSize);
 
     if (defaultX === undefined && defaultY === undefined) {
