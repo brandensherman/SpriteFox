@@ -1,7 +1,5 @@
 import React from 'react';
 import socket from '../socket.js';
-import AnimateSprite from './AnimateSprite'
-import ToggleAnimationEditModes from './ToggleAnimationEditModes'
 
 class Canvas extends React.Component {
   constructor(props) {
@@ -107,7 +105,7 @@ class Canvas extends React.Component {
     this.createGrid(this.state.gridSize, this.state.pixelSize);
   }
 
-  fillPixel(defaultX, defaultY) {
+  fillPixel(defaultX, defaultY, color = this.props.color) {
     //need to add a color value to the parameters
     const canvas = this.canvas.current.getBoundingClientRect();
 
@@ -120,17 +118,17 @@ class Canvas extends React.Component {
       Math.floor((window.event.clientY - canvas.y) / this.state.pixelSize);
 
     if (defaultX === undefined && defaultY === undefined) {
-      socket.emit('fill', x, y, 'green');
+      socket.emit('fill', x, y, color);
     }
 
     // MAP color to proper place on mappedGrid
-    this.state.mappedGrid[y][x] = this.props.color;
+    this.state.mappedGrid[y][x] = color;
 
     // These are the actual coordinates to properly place the pixel
     let actualCoordinatesX = x * this.state.pixelSize;
     let actualCoordinatesY = y * this.state.pixelSize;
 
-    this.ctx.fillStyle = this.props.color;
+    this.ctx.fillStyle = color;
     this.ctx.fillRect(
       actualCoordinatesX,
       actualCoordinatesY,
