@@ -1,9 +1,18 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
-import Canvas from './Canvas';
-
 function LandingPage() {
+
+  let chars =
+      '1234567890qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM'
+
+  let hash = '';
+  for (let j = 0; j < 6; j++) {
+    hash += chars[Math.floor(Math.random() * 62)];
+  }
+
+  console.log('>>>> hash >>>> ', hash);
+
   return (
     <div className='container'>
       <div className='landing-container'>
@@ -14,7 +23,7 @@ function LandingPage() {
             <br />
             for creating animated sprites and pixel art
           </p>
-          <Link className='btn' to='/MainPage'>
+          <Link className='btn' to={`/${hash}`}>
             Create Sprite
           </Link>
         </div>

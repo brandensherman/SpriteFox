@@ -6,8 +6,6 @@ function AnimateSprite(props) {
 
   const [FPS, setFPS] = useState(10)
 
-
-
   return (
     <div className='canvas-container'>
       <div className="frame">
@@ -25,11 +23,8 @@ function AnimateSprite(props) {
         </div>
         <PlayFramesButton />
       </div>
-
-
     </div>
-  )
+  );
 }
 
-
-export default AnimateSprite
+export default AnimateSprite;

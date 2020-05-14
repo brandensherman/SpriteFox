@@ -1,5 +1,6 @@
 import React from 'react';
 import socket from '../socket.js';
+import AnimateSprite from './AnimateSprite';
 
 class Canvas extends React.Component {
   constructor(props) {
@@ -140,22 +141,27 @@ class Canvas extends React.Component {
   render() {
     return (
       <div className='canvas-container'>
-        <div className=' container canvas-frames'>
-          <canvas
-            width={this.state.gridSize * this.state.pixelSize}
-            height={this.state.gridSize * this.state.pixelSize}
-            ref={this.canvas}
-            onClick={() => this.fillPixel()} //made this into an anonomous function so that we can pass in values at a different location
-          />
-          <ul>
-            {this.state.framesArray.map((frame, index) => {
-              return (
-                <li onClick={() => this.getCanvas(frame)} key={index}>
-                  {frame}
-                </li>
-              );
-            })}
-          </ul>
+        <div className='container canvas-frames'>
+          <div className='canvas'>
+            <canvas
+              width={this.state.gridSize * this.state.pixelSize}
+              height={this.state.gridSize * this.state.pixelSize}
+              ref={this.canvas}
+              onClick={() => this.fillPixel()} //made this into an anonomous function so that we can pass in values at a different location
+            />
+          </div>
+
+          <div className='frames-container'>
+            <ul>
+              {this.state.framesArray.map((frame, index) => {
+                return (
+                  <li onClick={() => this.getCanvas(frame)} key={index}>
+                    {frame}
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
         </div>
         <div className='options-container'>
           <label htmlFor='canvasName'></label>

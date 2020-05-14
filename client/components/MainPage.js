@@ -1,29 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import { SketchPicker } from 'react-color';
-import PlayFramesButton from './PlayFramesButton'
-import ToggleAnimationEditModes from './ToggleAnimationEditModes'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import Canvas from './Canvas';
 import AnimateSprite from './AnimateSprite'
 
 
 function MainPage() {
-  const initialState = '#fff';
+  const initialState = '#000000';
   const [currentColor, setColor] = useState(initialState);
   const [editMode, setMode] = useState(true)
 
   function handleChangeComplete(color) {
+    // console.log('color >>> ', color) // returns obj
     setColor(color.hex);
+    // can't set alpha with hex - ignore for now
   }
 
 
   useEffect(() => {
-    document.title = currentColor;
+    // document.title = currentColor;
   });
 
   return (
-    <div>
+    <div className='container main-container'>
       <SketchPicker
+        className='sketch'
         color={currentColor}
         onChangeComplete={handleChangeComplete}
       />
