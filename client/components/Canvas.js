@@ -1,5 +1,7 @@
 import React from 'react';
 import socket from '../socket.js';
+import AnimateSprite from './AnimateSprite'
+import ToggleAnimationEditModes from './ToggleAnimationEditModes'
 
 class Canvas extends React.Component {
   constructor(props) {
@@ -48,7 +50,7 @@ class Canvas extends React.Component {
 
   //saves canvas, adds it to array of canvases
   saveCanvas(canvasName) {
-    // let imageURL = this.canvas.current.toDataURL();
+    let imageURI = this.canvas.current.toDataURL();
     localStorage.setItem(
       `${canvasName}`,
       JSON.stringify(this.state.mappedGrid)
@@ -176,6 +178,14 @@ class Canvas extends React.Component {
             {' '}
             Reset Canvas
           </button>
+
+          {/* <div>
+            <AnimateSprite />
+          </div>
+          <div>
+            <ToggleAnimationEditModes />
+          </div> */}
+
         </div>
       </div>
     );

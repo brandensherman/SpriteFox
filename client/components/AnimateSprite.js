@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Slider from 'react-input-slider';
+import PlayFramesButton from './PlayFramesButton';
 
 function AnimateSprite(props) {
 
@@ -22,6 +23,7 @@ function AnimateSprite(props) {
             onChange={({ x }) => setFPS(x)}
           />
         </div>
+        <PlayFramesButton />
       </div>
 
 
