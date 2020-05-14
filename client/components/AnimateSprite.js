@@ -3,22 +3,24 @@ import Slider from 'react-input-slider';
 import PlayFramesButton from './PlayFramesButton';
 
 function AnimateSprite(props) {
-
-  const [FPS, setFPS] = useState(10)
+  const [FPS, setFPS] = useState(10);
 
   return (
-    <div className='canvas-container'>
-      <div className="frame">
-        <img src="grumpyWizardFox.jpg" />
+    <div className='container animate-sprite-container'>
+      <div className='frame'>
+        <img src='grumpyWizardFox.jpg' />
       </div>
 
       <div className='slider-container'>
-        <h3 className="uk-margin-small-right uk-margin-remove-bottom">{FPS} FPS</h3>
+        <h3 className='slider-header'>{FPS} FPS</h3>
         <div>
-          <Slider xmax={25} xmin={0}
-            axis="x"
+          <Slider
+            xmax={25}
+            xmin={0}
+            axis='x'
             x={FPS}
             onChange={({ x }) => setFPS(x)}
+            className='slider-bar'
           />
         </div>
         <PlayFramesButton />

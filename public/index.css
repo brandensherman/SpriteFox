@@ -23,6 +23,56 @@ label {
   display: block;
 }
 
+/* BUTTONS */
+
+.btn {
+  display: inline-block;
+  cursor: pointer;
+  transition: all 0.5s;
+  padding: 0.8rem 2rem;
+  border: 2.5px solid transparent;
+  background: #000;
+  color: #fff;
+  border-radius: 5px;
+  font-family: 'Montserrat', sans-serif;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+}
+
+.btn:hover {
+  background: #fff;
+  border: 2.5px solid #000;
+  color: #000;
+}
+
+.switch-btn {
+  display: inline-block;
+  cursor: pointer;
+  transition: all 0.5s;
+  padding: 0.6rem 1.8rem;
+  border: 2.5px solid transparent;
+  background: #fff;
+  color: #000;
+  border-radius: 5px;
+  border: 2px solid #000;
+  font-family: 'Montserrat', sans-serif;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  margin-top: 0.6rem;
+}
+
+.switch-btn:hover {
+  background: #000;
+  color: #fff;
+}
+
+.switch-btn:focus,
+.btn:focus {
+  outline: none;
+}
+
+/* LANDING PAGE */
+
 .container {
   max-width: 1280px;
   padding: 0 4rem;
@@ -55,26 +105,6 @@ label {
   margin-bottom: 2rem;
 }
 
-.btn {
-  display: inline-block;
-  cursor: pointer;
-  transition: all 0.5s;
-  padding: 0.8rem 2rem;
-  border: 2.5px solid transparent;
-  background: #000;
-  color: #fff;
-  border-radius: 5px;
-  font-family: 'Montserrat', sans-serif;
-  text-transform: uppercase;
-  font-size: 0.8rem;
-}
-
-.btn:hover {
-  background: #fff;
-  border: 2.5px solid #000;
-  color: #000;
-}
-
 nav a {
   display: inline-block;
   margin: 1em;
@@ -89,7 +119,6 @@ form div {
   display: flex;
   margin-top: 4rem;
   height: 80vh;
-
   justify-content: center;
 }
 
@@ -128,12 +157,24 @@ form div {
   flex-direction: column;
 }
 
+.animate-sprite-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 384px;
+  width: 384px;
+}
+
 .slider-container {
   display: flex;
-  justify-content: space-evenly;
-  flex-direction: row;
-  border: 1px solid;
-  border-color: black;
+  flex-direction: column;
+  align-items: center;
+}
+
+.slider-header,
+.slider-bar,
+.frame {
+  margin-bottom: 1rem;
 }
 
 .frame img {
@@ -182,6 +223,7 @@ form div {
   margin-right: 0;
 }
 
+/* CHECKERED BACKGROUND */
 .checkered-background {
   position: absolute;
   z-index: -5;
