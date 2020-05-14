@@ -18,6 +18,7 @@ class Canvas extends React.Component {
       gridSize: 16,
       framesArray: [],
       mappedGrid: {},
+      pngArray: []
     };
   }
 
@@ -50,7 +51,13 @@ class Canvas extends React.Component {
 
   //saves canvas, adds it to array of canvases
   saveCanvas(canvasName) {
+
     let imageURI = this.canvas.current.toDataURL();
+
+    localStorage.setItem(
+      `${canvasName} png`, this.state.pngArray
+    );
+
     localStorage.setItem(
       `${canvasName}`,
       JSON.stringify(this.state.mappedGrid)
@@ -114,10 +121,10 @@ class Canvas extends React.Component {
     // These are not the actual coordinates but correspond to the place on the grid
     let x =
       defaultX ??
-      Math.floor((window.event.clientX - canvas.x) / this.state.pixelSize);
+        Math.floor((window.event.clientX - canvas.x) / this.state.pixelSize);
     let y =
       defaultY ??
-      Math.floor((window.event.clientY - canvas.y) / this.state.pixelSize);
+        Math.floor((window.event.clientY - canvas.y) / this.state.pixelSize);
 
     if (defaultX === undefined && defaultY === undefined) {
       socket.emit('fill', x, y, color);
