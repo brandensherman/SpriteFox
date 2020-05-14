@@ -12,13 +12,15 @@ class Canvas extends React.Component {
     this.fillPixel = this.fillPixel.bind(this);
     // this.fillPixelFromSocket = this.fillPixelFromSocket.bind(this)
     this.resetCanvas = this.resetCanvas.bind(this);
+    this.newFrame = this.newFrame.bind(this);
     this.state = {
       canvasName: '',
       pixelSize: 24,
       gridSize: 16,
       framesArray: [],
       mappedGrid: {},
-      pngArray: []
+      pngArray: [],
+      frameCounter: 1,
     };
   }
 
@@ -48,6 +50,20 @@ class Canvas extends React.Component {
     }
   }
 
+
+  newFrame() {
+    this.setState({
+      framesArray: [this.state.framesArray, `frame ${this.state.frameCounter}`],
+      frameCounter: this.state.frameCounter + 1
+      //`frame ${counter}`: '',
+    });
+    localStorage.setItem(
+      `frame ${this.state.frameCounter}`,
+      JSON.stringify(this.state.mappedGrid)
+    );
+
+  }
+
   //saves canvas, adds it to array of canvases
   saveCanvas(canvasName) {
 
@@ -69,6 +85,7 @@ class Canvas extends React.Component {
   }
 
   getCanvas(canvasName) {
+    this.resetCanvas();
     let item = JSON.parse(localStorage.getItem(canvasName));
     this.renderSaved(item);
   }
@@ -161,6 +178,7 @@ class Canvas extends React.Component {
           <div className='frames-container'>
             <ul>
               {this.state.framesArray.map((frame, index) => {
+                console.log(frame, " is frame")
                 return (
                   <li onClick={() => this.getCanvas(frame)} key={index}>
                     {frame}
@@ -189,6 +207,10 @@ class Canvas extends React.Component {
             {' '}
             Reset Canvas
           </button>
+          <button onClick={this.newFrame} className='btn'>
+            {' '}
+            New Frame
+        </button>
 
           {/* <div>
             <AnimateSprite />
