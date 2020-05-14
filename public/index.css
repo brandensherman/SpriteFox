@@ -140,3 +140,54 @@ form div {
   width: 200px;
   height: 200px;
 }
+
+/* left container */
+.left-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sketch-picker {
+  height: 300px;
+}
+
+.toolbar-container {
+  display: flex;
+  margin-bottom: 2rem;
+}
+
+.tool-btn {
+  display: inline-block;
+  cursor: pointer;
+  transition: all 0.5s;
+  padding: 0.6rem 1.6rem;
+  border: 2.5px solid transparent;
+  background: #fff;
+  color: #000;
+  border-radius: 5px;
+  border: 2px solid #000;
+  font-family: 'Montserrat', sans-serif;
+  text-transform: uppercase;
+  font-size: 0.6rem;
+  margin-right: 0.4rem;
+}
+
+.tool-btn:hover {
+  background: #000;
+  color: #fff;
+}
+
+.tool-btn:last-child {
+  margin-right: 0;
+}
+
+.checkered-background {
+  position: absolute;
+  z-index: -5;
+}
+
+.real-canvas {
+  position: absolute;
+  z-index: 0;
+}

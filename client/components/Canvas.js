@@ -38,7 +38,8 @@ class Canvas extends React.Component {
       let array = [];
       for (let j = 0; j < rows; j++) {
         array.push(null);
-        this.ctx.strokeRect(x, y, pixelSize, pixelSize);
+        this.ctx.fillStyle = 'rgba(0, 0, 0, 0)';
+        this.ctx.fillRect(x, y, pixelSize, pixelSize);
         x += pixelSize;
       }
 
@@ -151,10 +152,21 @@ class Canvas extends React.Component {
         <div className='container canvas-frames'>
           <div className='canvas'>
             <canvas
+              className='real-canvas'
               width={this.state.gridSize * this.state.pixelSize}
               height={this.state.gridSize * this.state.pixelSize}
               ref={this.canvas}
               onClick={() => this.fillPixel()} //made this into an anonomous function so that we can pass in values at a different location
+            />
+            <img
+              className='checkered-background'
+              src='checkeredBackground.png'
+              width={this.state.gridSize * this.state.pixelSize}
+              height={this.state.gridSize * this.state.pixelSize}
+            />
+            <canvas
+              width={this.state.gridSize * this.state.pixelSize}
+              height={this.state.gridSize * this.state.pixelSize}
             />
           </div>
 
@@ -196,7 +208,6 @@ class Canvas extends React.Component {
           <div>
             <ToggleAnimationEditModes />
           </div> */}
-
         </div>
       </div>
     );
