@@ -4,14 +4,16 @@ import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import LandingPage from './LandingPage';
 import MainPage from './MainPage';
 
+
+
 class Routes extends Component {
-  componentDidMount() {}
 
   render() {
+
     return (
       <Router>
         <Route exact path='/' component={LandingPage} />
-        <Route exact path='/MainPage' component={MainPage} />
+        <Route exact path='/:hash' component={MainPage} />
       </Router>
     );
   }
