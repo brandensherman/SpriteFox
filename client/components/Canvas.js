@@ -49,7 +49,7 @@ class Canvas extends React.Component {
 
   //saves canvas, adds it to array of canvases
   saveCanvas(canvasName) {
-    // let imageURL = this.canvas.current.toDataURL();
+    let imageURI = this.canvas.current.toDataURL();
     localStorage.setItem(
       `${canvasName}`,
       JSON.stringify(this.state.mappedGrid)
@@ -112,14 +112,14 @@ class Canvas extends React.Component {
 
     // These are not the actual coordinates but correspond to the place on the grid
     let x =
-      defaultX ||
+      defaultX ??
       Math.floor((window.event.clientX - canvas.x) / this.state.pixelSize);
     let y =
-      defaultY ||
+      defaultY ??
       Math.floor((window.event.clientY - canvas.y) / this.state.pixelSize);
 
     if (defaultX === undefined && defaultY === undefined) {
-      socket.emit('fill', x, y, this.props.color);
+      socket.emit('fill', x, y, color);
     }
 
     // MAP color to proper place on mappedGrid
@@ -139,7 +139,6 @@ class Canvas extends React.Component {
   }
 
   render() {
-    console.log(this.state.framesArray);
     return (
       <div className='canvas-container'>
         <div className='container canvas-frames'>
@@ -163,7 +162,6 @@ class Canvas extends React.Component {
               })}
             </ul>
           </div>
-          <AnimateSprite />
         </div>
         <div className='options-container'>
           <label htmlFor='canvasName'></label>
@@ -184,6 +182,14 @@ class Canvas extends React.Component {
             {' '}
             Reset Canvas
           </button>
+
+          {/* <div>
+            <AnimateSprite />
+          </div>
+          <div>
+            <ToggleAnimationEditModes />
+          </div> */}
+
         </div>
       </div>
     );
