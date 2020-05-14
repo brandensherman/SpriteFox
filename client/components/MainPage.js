@@ -29,13 +29,10 @@ function MainPage() {
         onChangeComplete={handleChangeComplete}
       />
       <div>
-        <div>
-          <button onClick={() => setMode(false)} className='btn'>Animate Frames</button>
-        </div>
-
-        <div>
-          <button onClick={() => setMode(true)} className='btn'>Edit Frames</button>
-        </div>
+        {editMode
+          ? <button onClick={() => setMode(false)} className='btn'>Animate Frames</button>
+          : <button onClick={() => setMode(true)} className='btn'>Edit Frames</button>
+        }
       </div>
 
       <div>
