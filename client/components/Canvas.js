@@ -1,7 +1,9 @@
 import React from 'react';
 import socket from '../socket.js';
 import AnimateSprite from './AnimateSprite';
-// import { runInThisContext } from 'vm';
+
+let frames = [];
+let counter = 0;
 
 class Canvas extends React.Component {
   constructor(props) {
@@ -11,6 +13,10 @@ class Canvas extends React.Component {
     this.getCanvas = this.getCanvas.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.fillPixel = this.fillPixel.bind(this);
+    //just inserted
+    this.getFrames = this.getFrames.bind(this);
+    this.animate = this.animate.bind(this);
+    this.renderSaved = this.renderSaved.bind(this);
     // this.fillPixelFromSocket = this.fillPixelFromSocket.bind(this)
     this.resetCanvas = this.resetCanvas.bind(this);
     this.newFrame = this.newFrame.bind(this);
@@ -53,6 +59,18 @@ class Canvas extends React.Component {
     }
   }
 
+  getFrames() {
+    for (let key in localStorage) {
+      if (key !== 'currentColor' &&
+        typeof localStorage[key] === 'string'
+      ) {
+        frames.push(key)
+      }
+    }
+    this.setState({
+      framesArray: [...this.state.framesArray]
+    });
+  }
 
   newFrame() {
     localStorage.setItem(
@@ -108,6 +126,7 @@ class Canvas extends React.Component {
 
   // clear canvas, then render a saved canvas based on colors/coords
   renderSaved(savedGrid) {
+    this.resetCanvas()
     for (let key in savedGrid) {
       let pixelRow = savedGrid[key];
       for (let i = 0; i < pixelRow.length; i++) {
@@ -126,6 +145,19 @@ class Canvas extends React.Component {
           );
         }
       }
+    }
+  }
+
+  animate(arrayOfFrames) {
+    console.log('animate!!!', arrayOfFrames)
+    let len = arrayOfFrames.length;
+    let interval = 0;
+    for (let i = 0; i < len; i++) {
+      setTimeout(() => {
+        this.getCanvas(frames[i])
+      }, interval)
+      counter++
+      interval += 500;
     }
   }
 
@@ -210,6 +242,18 @@ class Canvas extends React.Component {
           <div className='frames-container'>
 
             <ul>CHOOSE FRAME
+            <div>
+                {
+                  Array.isArray(frames) ?
+                    frames.map((frame, index) => {
+                      return (
+                        <li onClick={() => this.getCanvas(frame)} key={index}>
+                          Frame {index + 1}: {frame}
+                        </li>
+                      );
+                    }) : "Placeholder for frames on localStorage"
+                }
+              </div>
               {this.state.framesArray.map((frame, index) => {
 
 
@@ -219,7 +263,8 @@ class Canvas extends React.Component {
                   <li onClick={() =>
                     this.getCanvas(frame)
                   } key={index}>
-                    {frame}
+
+                    Frame {index + 1 + frames.length}: {frame}
                   </li>
 
                 );
@@ -250,6 +295,22 @@ class Canvas extends React.Component {
             {' '}
             New Frame
         </button>
+          <div>
+            <button
+              onClick={() => this.getFrames()}
+              className='btn'
+            >
+              Load Frames
+        </button>
+          </div>
+
+          <button
+            onClick={() => this.animate(frames)}
+            className='btn'
+          >
+            Animate!
+        </button>
+
 
           {/* <div>
             <AnimateSprite />
