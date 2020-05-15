@@ -21,19 +21,24 @@ function MainPage() {
 
   return (
     <div className='container main-container'>
-      <SketchPicker
-        className='sketch'
-        color={currentColor}
-        onChangeComplete={handleChangeComplete}
-      />
-      <div>
-        {editMode
-          ? <button onClick={() => setMode(false)} className='btn'>Animate Frames</button>
-          : <button onClick={() => setMode(true)} className='btn'>Edit Frames</button>
-        }
+      <div className='left-container'>
+        <SketchPicker
+          className='sketch'
+          color={currentColor}
+          onChangeComplete={handleChangeComplete}
+        />
+        <div>
+          {editMode ? (
+            <button onClick={() => setMode(false)} className='switch-btn'>
+              Animate Frames
+            </button>
+          ) : (
+            <button onClick={() => setMode(true)} className='switch-btn'>
+              Edit Frames
+            </button>
+          )}
+        </div>
       </div>
-
-
       <div>
         {editMode ? <Canvas color={currentColor} /> : <AnimateSprite />}
       </div>
