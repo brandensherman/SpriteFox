@@ -1,6 +1,7 @@
 import React from 'react';
 import socket from '../socket.js';
 import AnimateSprite from './AnimateSprite';
+// import { runInThisContext } from 'vm';
 
 class Canvas extends React.Component {
   constructor(props) {
@@ -12,20 +13,23 @@ class Canvas extends React.Component {
     this.fillPixel = this.fillPixel.bind(this);
     // this.fillPixelFromSocket = this.fillPixelFromSocket.bind(this)
     this.resetCanvas = this.resetCanvas.bind(this);
+    this.newFrame = this.newFrame.bind(this);
+    //this.changeFramesHandler = this.changeFramesHandler.bind(this)
     this.state = {
       canvasName: '',
       pixelSize: 24,
       gridSize: 16,
-      framesArray: [],
+      framesArray: ['frame 1'],
       mappedGrid: {},
-      pngArray: []
+      pngArray: [],
+      frameCounter: 2,
+      currentFrame: 'frame 1',
     };
   }
 
   componentDidMount() {
     this.ctx = this.canvas.current.getContext('2d');
     this.createGrid(this.state.gridSize, this.state.pixelSize);
-
     socket.on('fill', (x, y, color) => {
       this.fillPixel(x, y, color);
     });
@@ -49,14 +53,29 @@ class Canvas extends React.Component {
     }
   }
 
+
+  newFrame() {
+    localStorage.setItem(
+      `frame ${this.state.frameCounter}`,
+      JSON.stringify(this.state.mappedGrid)
+    );
+
+    this.setState({
+      framesArray: [...this.state.framesArray, `frame ${this.state.frameCounter}`],
+      frameCounter: this.state.frameCounter + 1
+      //`frame ${counter}`: '',
+    });
+
+  }
+
   //saves canvas, adds it to array of canvases
   saveCanvas(canvasName) {
 
-    let imageURI = this.canvas.current.toDataURL();
+    // let imageURI = this.canvas.current.toDataURL();
 
-    localStorage.setItem(
-      `${canvasName} png`, this.state.pngArray
-    );
+    // localStorage.setItem(
+    //   `${canvasName} png`, this.state.pngArray
+    // );
 
     localStorage.setItem(
       `${canvasName}`,
@@ -70,8 +89,14 @@ class Canvas extends React.Component {
   }
 
   getCanvas(canvasName) {
+
+    this.resetCanvas();
     let item = JSON.parse(localStorage.getItem(canvasName));
     this.renderSaved(item);
+    this.setState({
+      currentFrame: canvasName
+    });
+
   }
 
   handleChange(event) {
@@ -145,11 +170,23 @@ class Canvas extends React.Component {
       this.state.pixelSize
     );
   }
+  /*
+    async changeFramesHandler(e) {
+      let frame = e.target.value;
+      await this.setState({
+        currentFrame: frame
+      });
+      this.getCanvas(this.state.currentFrame);
+    }
+  */
 
   render() {
     return (
       <div className='canvas-container'>
         <div className='container canvas-frames'>
+          <div>
+            <h3>CURRENT CANVAS {this.state.currentFrame}</h3>
+          </div>
           <div className='canvas'>
             <canvas
               className='real-canvas'
@@ -171,12 +208,20 @@ class Canvas extends React.Component {
           </div>
 
           <div className='frames-container'>
-            <ul>
+
+            <ul>CHOOSE FRAME
               {this.state.framesArray.map((frame, index) => {
+
+
                 return (
-                  <li onClick={() => this.getCanvas(frame)} key={index}>
+
+
+                  <li onClick={() =>
+                    this.getCanvas(frame)
+                  } key={index}>
                     {frame}
                   </li>
+
                 );
               })}
             </ul>
@@ -192,7 +237,7 @@ class Canvas extends React.Component {
             onChange={this.handleChange}
           />
           <button
-            onClick={() => this.saveCanvas(this.state.canvasName)}
+            onClick={() => this.saveCanvas(this.state.currentFrame)}
             className='btn'
           >
             Save Canvas
@@ -201,6 +246,10 @@ class Canvas extends React.Component {
             {' '}
             Reset Canvas
           </button>
+          <button onClick={this.newFrame} className='btn'>
+            {' '}
+            New Frame
+        </button>
 
           {/* <div>
             <AnimateSprite />
