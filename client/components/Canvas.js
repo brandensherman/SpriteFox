@@ -54,22 +54,24 @@ class Canvas extends React.Component {
     });
   }
 
-  createGrid(rows, pixelSize) {
+  createGrid(rows) {
     let y = 0;
+    let numOfBoxes = rows
     for (let i = 0; i < rows; i++) {
       let x = 0;
       let array = [];
       for (let j = 0; j < rows; j++) {
         array.push(null);
         this.ctx.fillStyle = 'rgba(0, 0, 0, 0)';
-        this.ctx.fillRect(x, y, pixelSize, pixelSize);
-        x += pixelSize;
+        this.ctx.fillRect(x, y, this.state.pixelSize, this.state.pixelSize);
+        x += this.state.pixelSize;
       }
 
       // Add each array to the mappedGrid
       this.state.mappedGrid[i] = array;
-      y += pixelSize;
+      y += this.state.pixelSize;
     }
+
   }
 
   getFrames() {
@@ -114,15 +116,15 @@ class Canvas extends React.Component {
       `${canvasName}`,
       JSON.stringify(this.state.mappedGrid)
     );
-
+      this.resetCanvas();
     this.setState({
       framesArray: [...this.state.framesArray, canvasName],
       canvasName: '',
+      currentFrame: '',
     });
   }
 
   getCanvas(canvasName) {
-
     this.resetCanvas();
     let item = JSON.parse(localStorage.getItem(canvasName));
     this.renderSaved(item);
@@ -130,6 +132,19 @@ class Canvas extends React.Component {
       currentFrame: canvasName
     });
 
+  }
+
+  setPixelSize(pixels) {
+    let rows = 0;
+    if (pixels === 24) rows = 16;
+    else if(pixels === 16) rows = 24;
+    else if(pixels === 8) rows = 48;
+
+    this.setState({
+      pixelSize: pixels,
+      gridSize: rows
+    })
+    this.createGrid(rows, pixels);
   }
 
   handleChange(event) {
@@ -142,22 +157,27 @@ class Canvas extends React.Component {
 
   // clear canvas, then render a saved canvas based on colors/coords
   renderSaved(savedGrid) {
+    // console.log('renderSaved -> savedGrid = ', savedGrid[0])
+    let pixelSize = 0;
+    if (savedGrid[0].length === 16) pixelSize = 24;
+    else if (savedGrid[0].length === 24) pixelSize = 16;
+    else if (savedGrid[0].length === 48) pixelSize = 8;
     this.resetCanvas()
     for (let key in savedGrid) {
       let pixelRow = savedGrid[key];
       for (let i = 0; i < pixelRow.length; i++) {
         if (pixelRow[i] !== null) {
           // These are the actual coordinates to render on the grid
-          let coordinateX = i * this.state.pixelSize;
-          let coordinateY = key * this.state.pixelSize;
+          let coordinateX = i * pixelSize;
+          let coordinateY = key * pixelSize;
 
           // Render each original pixel from the saved grid
           this.ctx.fillStyle = pixelRow[i];
           this.ctx.fillRect(
             coordinateX,
             coordinateY,
-            this.state.pixelSize,
-            this.state.pixelSize
+            pixelSize,
+            pixelSize
           );
         }
       }
@@ -181,10 +201,10 @@ class Canvas extends React.Component {
     this.ctx.clearRect(
       0,
       0,
-      this.state.gridSize * this.state.pixelSize,
-      this.state.gridSize * this.state.pixelSize
+      16 * 24,
+      16 * 24
     );
-    this.createGrid(this.state.gridSize, this.state.pixelSize);
+    this.createGrid(this.state.gridSize);
   }
 
   fillPixel(defaultX, defaultY, color = this.props.color) {
@@ -202,6 +222,10 @@ class Canvas extends React.Component {
     if (defaultX === undefined && defaultY === undefined) {
       socket.emit('fill', x, y, color);
     }
+    // console.log('>>> x = ', x)
+    // console.log('>>> y = ', y)
+    // console.log('>>> client.x = ', window.event.clientX)
+    // console.log('>>> client.y = ', window.event.clientY)
 
     // MAP color to proper place on mappedGrid
     this.state.mappedGrid[y][x] = color;
@@ -239,20 +263,20 @@ class Canvas extends React.Component {
           <div className='canvas'>
             <canvas
               className='real-canvas'
-              width={this.state.gridSize * this.state.pixelSize}
-              height={this.state.gridSize * this.state.pixelSize}
+              width={16 * 24}
+              height={16 * 24}
               ref={this.canvas}
               onClick={() => this.fillPixel()} //made this into an anonomous function so that we can pass in values at a different location
             />
             <img
               className='checkered-background'
               src='checkeredBackground.png'
-              width={this.state.gridSize * this.state.pixelSize}
-              height={this.state.gridSize * this.state.pixelSize}
+              width={16 * 24}
+              height={16 * 24}
             />
             <canvas
-              width={this.state.gridSize * this.state.pixelSize}
-              height={this.state.gridSize * this.state.pixelSize}
+              width={16 * 24}
+              height={16 * 24}
             />
           </div>
           <hr/>
@@ -326,6 +350,7 @@ class Canvas extends React.Component {
             Animate!
         </button>
 
+
         <div className='slider-container'>
         <h3 className='slider-header'>{this.state.fps} FPS</h3>
         <div>
@@ -341,6 +366,20 @@ class Canvas extends React.Component {
           />
         </div>
       </div>
+
+        <div style={{padding: '10px'}}>
+        <h3>Pixel Size {this.state.pixelSize}</h3>
+        <Slider
+            xmax={24}
+            xmin={8}
+            axis='x'
+            xstep={8}
+            x={this.state.pixelSize}
+            onChange={({ x }) => this.setPixelSize(x)}
+          />
+        </div>
+
+
 
           {/* <div>
             <AnimateSprite />
