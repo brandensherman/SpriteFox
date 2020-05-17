@@ -22,6 +22,7 @@ class Canvas extends React.Component {
     // this.fillPixelFromSocket = this.fillPixelFromSocket.bind(this)
     this.resetCanvas = this.resetCanvas.bind(this);
     this.newFrame = this.newFrame.bind(this);
+    this.newSession = this.newSession.bind(this)
     //this.changeFramesHandler = this.changeFramesHandler.bind(this)
     this.state = {
       canvasName: '',
@@ -30,7 +31,7 @@ class Canvas extends React.Component {
       framesArray: frames,
       mappedGrid: {},
       pngArray: [],
-      frameCounter: 2,
+      frameCounter: 1,
       currentFrame: '',
       fps: 1
     };
@@ -105,6 +106,7 @@ class Canvas extends React.Component {
 
   deleteFrame(canvasName) {
     const filteredArray = this.state.framesArray.filter(frame => (frame !== canvasName))
+
     this.setState({
       framesArray: filteredArray
     })
@@ -122,6 +124,19 @@ class Canvas extends React.Component {
       canvasName: '',
       currentFrame: '',
     });
+  }
+
+  // Clears Storage, clears display of frames underneath grid, resets canvas
+  newSession() {
+    localStorage.clear();
+    // or to remove only frames from loacal storage
+    //this.state.framesArray.forEach(frame => (localStorage.removeItem(frame)))
+    this.setState({
+      frameCounter: 1,
+      framesArray: [],
+      currentFrame: ''
+    });
+    this.resetCanvas();
   }
 
   getCanvas(canvasName) {
@@ -279,15 +294,15 @@ class Canvas extends React.Component {
               height={16 * 24}
             />
           </div>
-          <hr/>
+          <hr />
           <h3>CHOOSE FRAME</h3>
-          <hr/>
+          <hr />
           <div className='frames-container'>
             <ul>
-            <div>
+              <div>
                 {/* { */}
 
-                  {/* frames.length >= this.state.framesArray ?
+                {/* frames.length >= this.state.framesArray ?
                     frames.map((frame, index) => {
                       return (
                         <li onClick={() => this.getCanvas(frame)} key={index}>
@@ -298,16 +313,16 @@ class Canvas extends React.Component {
                 :  */}
 
                 {this.state.framesArray.map((frame, index) => {
-                return (
-                  <li key={index}>
-                    <button onClick={() => this.getCanvas(frame)} style={{color: 'blue'}} >
-                    Frame {index + 1}: {frame}
-                    </button>
-                    <button onClick={() => this.deleteFrame(frame)} style={{float: 'right', color: 'red'}} > DELETE </button>
-                  </li>
-                );
-              })}
-            </div>
+                  return (
+                    <li key={index}>
+                      <button onClick={() => this.getCanvas(frame)} style={{ color: 'blue' }} >
+                        Frame {index + 1}: {frame}
+                      </button>
+                      <button onClick={() => this.deleteFrame(frame)} style={{ float: 'right', color: 'red' }} > DELETE </button>
+                    </li>
+                  );
+                })}
+              </div>
             </ul>
           </div>
         </div>
@@ -330,6 +345,10 @@ class Canvas extends React.Component {
             {' '}
             Reset Canvas
           </button>
+          <button onClick={this.newSession} className='btn' style={{ backgroundColor: 'red' }}>
+            {' '}
+            New Session
+        </button>
           <button onClick={this.newFrame} className='btn'>
             {' '}
             New Frame
