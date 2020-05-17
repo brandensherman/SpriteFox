@@ -23,6 +23,7 @@ function MainPage() {
     <div className='container main-container'>
       <div className='left-container'>
         <SketchPicker
+          disableAlpha={true}
           className='sketch'
           color={currentColor}
           onChangeComplete={handleChangeComplete}
@@ -33,10 +34,10 @@ function MainPage() {
               Animate Frames
             </button>
           ) : (
-            <button onClick={() => setMode(true)} className='switch-btn'>
-              Edit Frames
+              <button onClick={() => setMode(true)} className='switch-btn'>
+                Edit Frames
             </button>
-          )}
+            )}
         </div>
       </div>
       <div>
