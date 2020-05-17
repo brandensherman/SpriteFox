@@ -32,6 +32,7 @@ class Canvas extends React.Component {
       pngArray: [],
       frameCounter: 2,
       currentFrame: '',
+      fps: 1
     };
   }
 
@@ -192,7 +193,7 @@ class Canvas extends React.Component {
         this.getCanvas(this.state.framesArray[i])
       }, interval)
       counter++
-      interval += 500;
+      interval = interval + (1000 / this.state.fps);
     }
   }
 
@@ -343,11 +344,28 @@ class Canvas extends React.Component {
           </div>
 
           <button
-            onClick={() => this.animate(frames)}
+            onClick={() => this.animate()}
             className='btn'
           >
             Animate!
         </button>
+
+
+        <div className='slider-container'>
+        <h3 className='slider-header'>{this.state.fps} FPS</h3>
+        <div>
+          <Slider
+            xmax={25}
+            xmin={1}
+            axis='x'
+            x={this.state.fps}
+            onChange={({ x }) => this.setState({
+              fps: x
+              })}
+            className='slider-bar'
+          />
+        </div>
+      </div>
 
         <div style={{padding: '10px'}}>
         <h3>Pixel Size {this.state.pixelSize}</h3>
@@ -360,6 +378,7 @@ class Canvas extends React.Component {
             onChange={({ x }) => this.setPixelSize(x)}
           />
         </div>
+
 
 
           {/* <div>
