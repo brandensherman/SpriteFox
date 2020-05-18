@@ -28,21 +28,12 @@ function MainPage() {
           color={currentColor}
           onChangeComplete={handleChangeComplete}
         />
+
+
+      </div>
         <div>
-          {editMode ? (
-            <button onClick={() => setMode(false)} className='switch-btn'>
-              Animate Frames
-            </button>
-          ) : (
-              <button onClick={() => setMode(true)} className='switch-btn'>
-                Edit Frames
-            </button>
-            )}
+          <Canvas color={currentColor} />
         </div>
-      </div>
-      <div>
-        {editMode ? <Canvas color={currentColor} /> : <AnimateSprite />}
-      </div>
     </div>
   );
 }
