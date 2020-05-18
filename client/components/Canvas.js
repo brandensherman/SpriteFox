@@ -4,14 +4,11 @@ import AnimateSprite from './AnimateSprite';
 import Slider from 'react-input-slider';
 import ColorPicker from './ColorPicker';
 
-let frames = [];
-let counter = 0;
-
 class Canvas extends React.Component {
   constructor(props) {
     super(props);
     this.canvas = React.createRef();
-    this.saveCanvas = this.saveCanvas.bind(this);
+    this.addFrame = this.addFrame.bind(this);
     this.getCanvas = this.getCanvas.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.fillPixel = this.fillPixel.bind(this);
@@ -25,14 +22,13 @@ class Canvas extends React.Component {
     this.setColor = this.setColor.bind(this);
     //this.changeFramesHandler = this.changeFramesHandler.bind(this)
     this.state = {
-      canvasName: '',
       pixelSize: 24,
       factor: 3,
-      framesArray: frames,
+      framesArray: [],
       mappedGrid: {},
       pngArray: [],
       frameCounter: 1,
-      currentFrame: '',
+      currentFrame: "",
       fps: 1,
       color: '',
     };
@@ -44,8 +40,13 @@ class Canvas extends React.Component {
     this.createGrid();
     socket.on('fill', (x, y, color) => {
       this.fillPixel(x * this.state.factor, y * this.state.factor, color);
-      console.log('SOCKET ON COLOR', x, y, color);
     });
+
+
+    this.addFrame()
+    this.setState({
+      currentFrame: "1"
+    })
   }
 
   setColor(currentColor) {
@@ -76,12 +77,12 @@ class Canvas extends React.Component {
   getFrames() {
     for (let key in localStorage) {
       if (key !== 'currentColor' && typeof localStorage[key] === 'string') {
-        frames.push(key);
+        this.setState({
+          framesArray: [...this.state.framesArray, key],
+        });
       }
     }
-    this.setState({
-      framesArray: [...this.state.framesArray],
-    });
+
   }
 
   deleteFrame(canvasName) {
@@ -95,25 +96,34 @@ class Canvas extends React.Component {
   }
 
   //saves canvas, adds it to array of canvases
-  saveCanvas(canvasName) {
-    let chars =
-      '1234567890qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM';
-    let hash = '';
-    for (let j = 0; j < 6; j++) {
-      hash += chars[Math.floor(Math.random() * 62)];
+  addFrame() {
+    // let chars =
+    //   '1234567890qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM';
+    // let hash = '';
+    // for (let j = 0; j < 6; j++) {
+    //   hash += chars[Math.floor(Math.random() * 62)];
+    // }
+    // if (!canvasName) canvasName = hash;
+    if (this.state.framesArray) {
+      localStorage.setItem(
+        `${this.state.frameCounter}`,
+        JSON.stringify(this.state.mappedGrid)
+      );
     }
-    if (!canvasName) canvasName = hash;
-    localStorage.setItem(
-      `${canvasName}`,
-      JSON.stringify(this.state.mappedGrid)
-    );
+    this.setState({
+      frameCounter: this.state.frameCounter + 1
+    })
+
     this.resetCanvas();
     this.setState({
-      framesArray: [...this.state.framesArray, canvasName],
-      canvasName: '',
-      currentFrame: '',
+      framesArray: [...this.state.framesArray, this.state.frameCounter],
     });
   }
+
+  autoSave() {
+
+  }
+
 
   // Clears Storage, clears display of frames underneath grid, resets canvas
   newSession() {
@@ -123,17 +133,17 @@ class Canvas extends React.Component {
     this.setState({
       frameCounter: 1,
       framesArray: [],
-      currentFrame: '',
     });
+
     this.resetCanvas();
   }
 
-  getCanvas(canvasName) {
+  getCanvas(frameNumber) {
     this.resetCanvas();
-    let item = JSON.parse(localStorage.getItem(canvasName));
+    let item = JSON.parse(localStorage.getItem(frameNumber));
     this.renderSaved(item); // item = obj of arrays
     this.setState({
-      currentFrame: canvasName,
+      currentFrame: frameNumber,
     });
   }
 
@@ -185,7 +195,6 @@ class Canvas extends React.Component {
   }
 
   animate() {
-    console.log('animate!!!', this.state.framesArray);
     let len = this.state.framesArray.length;
     let interval = 0;
     for (let i = 0; i < len; i++) {
@@ -247,7 +256,6 @@ class Canvas extends React.Component {
 
     if (defaultX === undefined && defaultY === undefined) {
       socket.emit('fill', x, y, color);
-      console.log('COLOR', x, y, color);
     }
 
     // MAP color to proper place on mappedGrid
@@ -271,6 +279,11 @@ class Canvas extends React.Component {
       this.state.pixelSize,
       this.state.pixelSize
     );
+
+
+
+
+
   }
 
   render() {
@@ -279,7 +292,7 @@ class Canvas extends React.Component {
         <div className='main-container container'>
           <ColorPicker currentColor={this.setColor} />
           <div className='canvas-container'>
-            <h3>CURRENT CANVAS : {this.state.currentFrame}</h3>
+            <h3>CURRENT FRAME : {this.state.currentFrame}</h3>
 
             <div className='canvas'>
               <canvas
@@ -311,7 +324,7 @@ class Canvas extends React.Component {
                           className='frame-btn'
                           onClick={() => this.getCanvas(frame)}
                         >
-                          Frame {index + 1}: {frame}
+                          Frame {frame}
                         </button>
                         <button
                           className='frame-btn frame-btn-delete'
@@ -327,19 +340,11 @@ class Canvas extends React.Component {
             </div>
           </div>
           <div className='options-container'>
-            <label htmlFor='canvasName'></label>
-            <input
-              type='text'
-              name='canvasName'
-              value={this.state.canvasName}
-              placeholder='Enter Frame name'
-              onChange={this.handleChange}
-            />
             <button
-              onClick={() => this.saveCanvas(this.state.currentFrame)}
+              onClick={() => this.addFrame(this.state.currentFrame)}
               className='btn'
             >
-              Save Frame
+              Add Frame
             </button>
             <button onClick={this.resetCanvas} className='btn'>
               Reset Canvas
