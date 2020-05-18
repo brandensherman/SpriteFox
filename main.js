@@ -24,7 +24,6 @@ io.on('connection', function (socket) {
   console.log("hiiiiiiiiiiii")
 
   socket.on('fill', function (x, y, color) {
-    console.log(x, y, color)
     socket.broadcast.emit('fill', x, y, color);
   }); //this is currenlty sending this to
 
