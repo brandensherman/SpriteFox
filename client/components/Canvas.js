@@ -22,7 +22,7 @@ class Canvas extends React.Component {
     this.resetCanvas = this.resetCanvas.bind(this);
     this.newSession = this.newSession.bind(this);
     this.setPixelSize = this.setPixelSize.bind(this);
-    // this.setColor = this.setColor.bind(this);
+    this.setColor = this.setColor.bind(this);
     //this.changeFramesHandler = this.changeFramesHandler.bind(this)
     this.state = {
       canvasName: '',
@@ -44,6 +44,7 @@ class Canvas extends React.Component {
     this.createGrid();
     socket.on('fill', (x, y, color) => {
       this.fillPixel(x * this.state.factor, y * this.state.factor, color);
+      console.log('SOCKET ON COLOR', x, y, color);
     });
   }
 
@@ -232,7 +233,7 @@ class Canvas extends React.Component {
     );
   }
 
-  fillPixel(defaultX, defaultY, color = this.props.color) {
+  fillPixel(defaultX, defaultY, color = this.state.color) {
     //need to add a color value to the parameters
     const canvas = this.canvas.current.getBoundingClientRect();
 
@@ -246,6 +247,7 @@ class Canvas extends React.Component {
 
     if (defaultX === undefined && defaultY === undefined) {
       socket.emit('fill', x, y, color);
+      console.log('COLOR', x, y, color);
     }
 
     // MAP color to proper place on mappedGrid
@@ -261,7 +263,7 @@ class Canvas extends React.Component {
     let actualCoordinatesX = x * this.state.pixelSize;
     let actualCoordinatesY = y * this.state.pixelSize;
 
-    this.ctx.fillStyle = color;
+    this.ctx.fillStyle = this.state.color;
 
     this.ctx.fillRect(
       actualCoordinatesX,

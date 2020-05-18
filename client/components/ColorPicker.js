@@ -15,10 +15,10 @@ const ColorPicker = (props) => {
     props.currentColor(currentColor);
   }, [currentColor]);
 
-  console.log(props);
+  console.log(props.currentColor);
 
   return (
-    <div className='main-container'>
+    <div className='container'>
       <div>
         <SketchPicker
           className='sketch'
