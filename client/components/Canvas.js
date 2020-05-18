@@ -283,6 +283,8 @@ class Canvas extends React.Component {
   */
 
   render() {
+    console.log('hey');
+
     return (
       <div>
         <ColorPicker currentColor={this.setColor} />
