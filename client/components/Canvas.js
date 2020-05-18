@@ -272,27 +272,15 @@ class Canvas extends React.Component {
       this.state.pixelSize
     );
   }
-  /*
-    async changeFramesHandler(e) {
-      let frame = e.target.value;
-      await this.setState({
-        currentFrame: frame
-      });
-      this.getCanvas(this.state.currentFrame);
-    }
-  */
 
   render() {
-    console.log('hey');
-
     return (
       <div>
-        <ColorPicker currentColor={this.setColor} />
-        <div className='canvas-container'>
-          <div className='container canvas-frames'>
-            <div>
-              <h3>CURRENT CANVAS : {this.state.currentFrame}</h3>
-            </div>
+        <div className='main-container container'>
+          <ColorPicker currentColor={this.setColor} />
+          <div className='canvas-container'>
+            <h3>CURRENT CANVAS : {this.state.currentFrame}</h3>
+
             <div className='canvas'>
               <canvas
                 className='real-canvas'
@@ -310,7 +298,7 @@ class Canvas extends React.Component {
               />
               <canvas width={16 * 24} height={16 * 24} />
             </div>
-            <hr />
+
             <h3>CHOOSE FRAME</h3>
             <hr />
             <div className='frames-container'>
