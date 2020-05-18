@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node main.js",
-    "start-dev": "webpack -w & nodemon main.js"
+    "start-dev": "webpack -w & nodemon main.js",
+    "deploy": "script/deploy"
   },
   "keywords": [],
   "author": "",
