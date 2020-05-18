@@ -67,8 +67,52 @@ label {
 }
 
 .switch-btn:focus,
-.btn:focus {
+.btn:focus,
+.frame-btn:focus {
   outline: none;
+}
+
+.frame-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.frame-btn {
+  cursor: pointer;
+  transition: all 0.5s;
+  border: 2.5px solid transparent;
+  font-family: 'Montserrat', sans-serif;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  margin-bottom: 0.6rem;
+}
+
+.frame-btn-delete {
+  padding: 0.3rem 1rem;
+  border: 2.5px solid crimson;
+  background: crimson;
+  color: #fff;
+  border-radius: 5px;
+
+  transition: all 0.2s;
+}
+
+.frame-btn-delete:hover {
+  background: #fff;
+  color: crimson;
+  border: 2px solid crimson;
+}
+
+.session-btn {
+  background: #fff;
+  color: crimson;
+  border: 2.5px solid crimson;
+}
+
+.session-btn:hover {
+  background: crimson;
+  color: #fff;
+  border: 2.5px solid crimson;
 }
 
 /* LANDING PAGE */
@@ -118,7 +162,7 @@ form div {
 .main-container {
   display: flex;
   margin: 4rem 0;
-  /* height: 80vh; */
+  flex-wrap: wrap;
   justify-content: space-evenly;
 }
 
@@ -142,8 +186,8 @@ form div {
 .frames-container {
   /* height: 100%; */
   /* background-color: blue; */
-  overflow: hidden;
-  overflow-y: scroll;
+  /* overflow: hidden;
+  overflow-y: scroll; */
 }
 
 .options-container {

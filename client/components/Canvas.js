@@ -306,19 +306,18 @@ class Canvas extends React.Component {
                 <div>
                   {this.state.framesArray.map((frame, index) => {
                     return (
-                      <li key={index}>
+                      <li key={index} className='frame-item'>
                         <button
+                          className='frame-btn'
                           onClick={() => this.getCanvas(frame)}
-                          style={{ color: 'blue' }}
                         >
                           Frame {index + 1}: {frame}
                         </button>
                         <button
+                          className='frame-btn frame-btn-delete'
                           onClick={() => this.deleteFrame(frame)}
-                          style={{ float: 'right', color: 'red' }}
                         >
-                          {' '}
-                          DELETE{' '}
+                          DELETE
                         </button>
                       </li>
                     );
@@ -345,15 +344,13 @@ class Canvas extends React.Component {
             <button onClick={this.resetCanvas} className='btn'>
               Reset Canvas
             </button>
-            <button
-              onClick={this.newSession}
-              className='btn'
-              style={{ backgroundColor: 'red' }}
-            >
-              New Session
-            </button>
+
             <button onClick={() => this.animate()} className='btn'>
               Animate!
+            </button>
+
+            <button onClick={this.newSession} className='btn session-btn'>
+              New Session
             </button>
 
             <div className='slider-container'>
