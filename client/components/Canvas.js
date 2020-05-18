@@ -88,6 +88,13 @@ class Canvas extends React.Component {
 
   //saves canvas, adds it to array of canvases
   saveCanvas(canvasName) {
+    let chars =
+      '1234567890qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM'
+    let hash = '';
+    for (let j = 0; j < 6; j++) {
+      hash += chars[Math.floor(Math.random() * 62)];
+    }
+    if (!canvasName) canvasName = hash
     localStorage.setItem(
       `${canvasName}`,
       JSON.stringify(this.state.mappedGrid)
