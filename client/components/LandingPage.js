@@ -11,8 +11,6 @@ function LandingPage() {
     hash += chars[Math.floor(Math.random() * 62)];
   }
 
-  console.log('>>>> hash >>>> ', hash);
-
   return (
     <div className='container'>
       <div className='landing-container'>

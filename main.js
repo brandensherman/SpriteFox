@@ -21,7 +21,7 @@ let inMemoryDrawHistory = []; //doesnt do anything yet
 io.on('connection', function (socket) {
   console.log(socket.id, 'A new client has connected!');
 
-  console.log("hiiiiiiiiiiii")
+  console.log("hiiiiiiiiiiiiii")
 
   socket.on('fill', function (x, y, color, pixelSize, factor) {
     socket.broadcast.emit('fill', x, y, color, pixelSize, factor);
