@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "seed": "node script/seed.js",
     "start": "node main.js",
     "start-dev": "webpack -w & nodemon main.js",
     "deploy": "script/deploy"

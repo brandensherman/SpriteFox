@@ -1,6 +1,5 @@
 import React from 'react';
 import socket from '../socket.js';
-import AnimateSprite from './AnimateSprite';
 import Slider from 'react-input-slider';
 import ColorPicker from './ColorPicker';
 
@@ -93,15 +92,9 @@ class Canvas extends React.Component {
     });
   }
 
-  //saves canvas, adds it to array of canvases
+  //adds a new frame to the array of canvases
   addFrame() {
-    // let chars =
-    //   '1234567890qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM';
-    // let hash = '';
-    // for (let j = 0; j < 6; j++) {
-    //   hash += chars[Math.floor(Math.random() * 62)];
-    // }
-    // if (!canvasName) canvasName = hash;
+
     if (this.state.framesArray) {
       localStorage.setItem(
         `${this.state.frameCounter}`,
@@ -294,6 +287,7 @@ class Canvas extends React.Component {
   }
 
   render() {
+    console.log("grid", this.state.mappedGrid)
     return (
       <div>
         <div className='main-container container'>
