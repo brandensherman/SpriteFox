@@ -95,13 +95,6 @@ class Canvas extends React.Component {
 
   //saves canvas, adds it to array of canvases
   addFrame() {
-    // let chars =
-    //   '1234567890qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM';
-    // let hash = '';
-    // for (let j = 0; j < 6; j++) {
-    //   hash += chars[Math.floor(Math.random() * 62)];
-    // }
-    // if (!canvasName) canvasName = hash;
     if (this.state.framesArray) {
       localStorage.setItem(
         `${this.state.frameCounter}`,
@@ -112,10 +105,16 @@ class Canvas extends React.Component {
       frameCounter: this.state.frameCounter + 1,
     });
 
-    this.resetCanvas();
+    this.ctx.clearRect(0, 0, 16 * 24, 16 * 24);
+    this.createGrid();
     this.setState({
       framesArray: [...this.state.framesArray, this.state.frameCounter],
+      currentFrame: this.state.frameCounter
     });
+    setTimeout(
+      () =>this.getCanvas(this.state.currentFrame)
+    , 500)
+
   }
 
    // Clears Storage, clears display of frames underneath grid, resets canvas
@@ -145,11 +144,13 @@ class Canvas extends React.Component {
   }
 
   getCanvas(frameNumber) {
-    this.resetCanvas();
+    this.ctx.clearRect(0, 0, 16 * 24, 16 * 24);
+    // this.resetCanvas();
     let item = JSON.parse(localStorage.getItem(frameNumber));
     this.renderSaved(item); // item = obj of arrays
     this.setState({
       currentFrame: frameNumber,
+      mappedGrid: item
     });
   }
 
@@ -180,9 +181,10 @@ class Canvas extends React.Component {
   // clear canvas, then render a saved canvas based on colors/coords
   renderSaved(savedGrid) {
     // savedGrid = item = obj of arrays
-    // console.log('renderSaved -> savedGrid = ', savedGrid)
+
     let pixelSize = 8;
-    this.resetCanvas();
+    // this.resetCanvas();
+    this.ctx.clearRect(0, 0, 16 * 24, 16 * 24);
     for (let key in savedGrid) {
       // key = id = index of row array
       let pixelRow = savedGrid[key];
@@ -198,6 +200,7 @@ class Canvas extends React.Component {
         }
       }
     }
+    // console.log('renderSaved -> savedGrid = ', savedGrid)
   }
 
   animate() {
@@ -215,6 +218,8 @@ class Canvas extends React.Component {
   resetCanvas() {
     this.ctx.clearRect(0, 0, 16 * 24, 16 * 24);
     this.createGrid();
+    localStorage.setItem( `${this.state.currentFrame}`,
+    JSON.stringify(this.state.mappedGrid));
   }
 
   deletePixel(defaultX, defaultY) {
@@ -230,7 +235,15 @@ class Canvas extends React.Component {
       socket.emit('delete', x, y);
     }
     // MAP color to proper place on mappedGrid
-    this.state.mappedGrid[y][x] = null;
+    for (let i = 0; i < this.state.factor; i++) {
+      for (let j = 0; j < this.state.factor; j++) {
+        this.state.mappedGrid[y * this.state.factor + i][
+          x * this.state.factor + j
+        ] = null;
+      }
+    }
+    // this.state.mappedGrid[y][x] = null;
+    console.log('mapped grid after delete', this.state.mappedGrid)
     // These are the actual coordinates to properly place the pixel
     let actualCoordinatesX = x * this.state.pixelSize;
     let actualCoordinatesY = y * this.state.pixelSize;
@@ -251,6 +264,8 @@ class Canvas extends React.Component {
   fillPixel(defaultX, defaultY, color = this.state.color) {
     //need to add a color value to the parameters
     const canvas = this.canvas.current.getBoundingClientRect();
+
+    // console.log(' mappedGrid ', this.state.mappedGrid)
 
     // These are not the actual coordinates but correspond to the place on the grid
     let x =
@@ -285,6 +300,10 @@ class Canvas extends React.Component {
       this.state.pixelSize,
       this.state.pixelSize
     );
+
+
+    // console.log(' storage ', JSON.parse(localStorage))
+    // console.log(' storage ', localStorage)
 
     localStorage.setItem(
       `${this.state.currentFrame}`,
