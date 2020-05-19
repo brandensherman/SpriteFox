@@ -73,14 +73,14 @@ label {
 
 .session-btn {
   background: #fff;
-  color: crimson;
-  border: 2.5px solid crimson;
+  color: #f5a623;
+  border: 2.5px solid #f5a623;
 }
 
 .session-btn:hover {
-  background: crimson;
+  background: #f5a623;
   color: #fff;
-  border: 2.5px solid crimson;
+  border: 2.5px solid #f5a623;
 }
 
 /* FRAME ITEM */
@@ -114,8 +114,8 @@ label {
 }
 
 .frame-btn-delete {
-  border: 2.5px solid crimson;
-  background: crimson;
+  border: 2.5px solid #d0021b;
+  background: #d0021b;
   padding: 0.4rem 1rem;
   color: #fff;
   border-radius: 5px;
@@ -124,8 +124,8 @@ label {
 
 .frame-btn-delete:hover {
   background: #fff;
-  color: crimson;
-  border: 2px solid crimson;
+  color: #d0021b;
+  border: 2px solid #d0021b;
 }
 
 /* LANDING PAGE */

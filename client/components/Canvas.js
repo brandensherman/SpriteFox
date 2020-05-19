@@ -34,6 +34,7 @@ class Canvas extends React.Component {
       currentFrame: '',
       fps: 1,
       color: '',
+      setTool: true,
     };
   }
 
@@ -112,12 +113,9 @@ class Canvas extends React.Component {
     this.createGrid();
     this.setState({
       framesArray: [...this.state.framesArray, this.state.frameCounter],
-      currentFrame: this.state.frameCounter
+      currentFrame: this.state.frameCounter,
     });
-    setTimeout(
-      () =>this.getCanvas(this.state.currentFrame)
-    , 500)
-
+    setTimeout(() => this.getCanvas(this.state.currentFrame), 500);
   }
 
   // Clears Storage, clears display of frames underneath grid, resets canvas
@@ -153,7 +151,7 @@ class Canvas extends React.Component {
     this.renderSaved(item); // item = obj of arrays
     this.setState({
       currentFrame: frameNumber,
-      mappedGrid: item
+      mappedGrid: item,
     });
   }
 
@@ -221,8 +219,10 @@ class Canvas extends React.Component {
   resetCanvas() {
     this.ctx.clearRect(0, 0, 16 * 24, 16 * 24);
     this.createGrid();
-    localStorage.setItem( `${this.state.currentFrame}`,
-    JSON.stringify(this.state.mappedGrid));
+    localStorage.setItem(
+      `${this.state.currentFrame}`,
+      JSON.stringify(this.state.mappedGrid)
+    );
   }
 
   deletePixel(defaultX, defaultY) {
@@ -246,7 +246,7 @@ class Canvas extends React.Component {
       }
     }
     // this.state.mappedGrid[y][x] = null;
-    console.log('mapped grid after delete', this.state.mappedGrid)
+    console.log('mapped grid after delete', this.state.mappedGrid);
     // These are the actual coordinates to properly place the pixel
     let actualCoordinatesX = x * this.state.pixelSize;
     let actualCoordinatesY = y * this.state.pixelSize;
@@ -303,10 +303,6 @@ class Canvas extends React.Component {
       this.state.pixelSize
     );
 
-
-    // console.log(' storage ', JSON.parse(localStorage))
-    // console.log(' storage ', localStorage)
-
     localStorage.setItem(
       `${this.state.currentFrame}`,
       JSON.stringify(this.state.mappedGrid)
@@ -314,7 +310,11 @@ class Canvas extends React.Component {
   }
 
   handleMouseDown() {
-    this.fillPixel();
+    if (this.state.setTool) {
+      this.fillPixel();
+    } else {
+      this.deletePixel();
+    }
   }
 
   dragPixel() {
@@ -332,15 +332,35 @@ class Canvas extends React.Component {
     });
   }
 
+  toggleTool = () => {
+    this.setState((prevState) => ({ setTool: !prevState.setTool }));
+  };
+
   render() {
+    const { setTool } = this.state;
+
     return (
       <div>
         <div className='main-container container'>
           <div className='toolbox-container'>
             <ColorPicker currentColor={this.setColor} />
             <div className='tools'>
-              <button className='btn tool-btn'>Draw</button>
-              <button className='btn tool-btn'>Erase</button>
+              <button
+                onClick={this.toggleTool}
+                className={`btn ${
+                  setTool ? 'tool-btn tool-btn-active' : 'tool-btn'
+                }`}
+              >
+                Draw
+              </button>
+              <button
+                onClick={this.toggleTool}
+                className={`btn ${
+                  setTool ? 'tool-btn' : 'tool-btn tool-btn-active'
+                }`}
+              >
+                Erase
+              </button>
             </div>
           </div>
           <div className='canvas-container'>
@@ -352,10 +372,9 @@ class Canvas extends React.Component {
                 width={16 * 24}
                 height={16 * 24}
                 ref={this.canvas}
-                // onClick={() => this.fillPixel()} //made this into an anonomous function so that we can pass in values at a different location
-                onDoubleClick={() => this.deletePixel()}
+                onClick={() => this.handleMouseDown()} //made this into an anonomous function so that we can pass in values at a different location
+                // onDoubleClick={() => this.deletePixel()}
                 onMouseDown={() => this.dragPixel()}
-                // onMouseMove={() => this.fillPixel()}
               />
               <img
                 className='checkered-background'
