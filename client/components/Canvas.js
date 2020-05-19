@@ -28,7 +28,7 @@ class Canvas extends React.Component {
       mappedGrid: {},
       pngArray: [],
       frameCounter: 1,
-      currentFrame: "",
+      currentFrame: '',
       fps: 1,
       color: '',
     };
@@ -42,11 +42,10 @@ class Canvas extends React.Component {
       this.fillPixel(x * this.state.factor, y * this.state.factor, color);
     });
 
-
-    this.addFrame()
+    this.addFrame();
     this.setState({
-      currentFrame: "1"
-    })
+      currentFrame: '1',
+    });
   }
 
   setColor(currentColor) {
@@ -82,7 +81,6 @@ class Canvas extends React.Component {
         });
       }
     }
-
   }
 
   deleteFrame(canvasName) {
@@ -111,8 +109,8 @@ class Canvas extends React.Component {
       );
     }
     this.setState({
-      frameCounter: this.state.frameCounter + 1
-    })
+      frameCounter: this.state.frameCounter + 1,
+    });
 
     this.resetCanvas();
     this.setState({
@@ -120,10 +118,7 @@ class Canvas extends React.Component {
     });
   }
 
-  autoSave() {
-
-  }
-
+  autoSave() {}
 
   // Clears Storage, clears display of frames underneath grid, resets canvas
   newSession() {
@@ -201,7 +196,7 @@ class Canvas extends React.Component {
       setTimeout(() => {
         this.getCanvas(this.state.framesArray[i]);
       }, interval);
-      counter++;
+
       interval = interval + 1000 / this.state.fps;
     }
     setTimeout(() => {
@@ -279,11 +274,6 @@ class Canvas extends React.Component {
       this.state.pixelSize,
       this.state.pixelSize
     );
-
-
-
-
-
   }
 
   render() {
@@ -292,7 +282,7 @@ class Canvas extends React.Component {
         <div className='main-container container'>
           <ColorPicker currentColor={this.setColor} />
           <div className='canvas-container'>
-            <h3>CURRENT FRAME : {this.state.currentFrame}</h3>
+            <h3>FRAME {this.state.currentFrame}</h3>
 
             <div className='canvas'>
               <canvas
@@ -312,8 +302,10 @@ class Canvas extends React.Component {
               <canvas width={16 * 24} height={16 * 24} />
             </div>
 
-            <h3>CHOOSE FRAME</h3>
-            <hr />
+            <div className='frames-header'>
+              <h3>CHOOSE FRAME</h3>
+              <hr />
+            </div>
             <div className='frames-container'>
               <ul>
                 <div>
@@ -321,7 +313,7 @@ class Canvas extends React.Component {
                     return (
                       <li key={index} className='frame-item'>
                         <button
-                          className='frame-btn'
+                          className='frame-name frame-btn'
                           onClick={() => this.getCanvas(frame)}
                         >
                           Frame {frame}
@@ -339,7 +331,7 @@ class Canvas extends React.Component {
               </ul>
             </div>
           </div>
-          <div className='options-container'>
+          <div className='buttons-container'>
             <button
               onClick={() => this.addFrame(this.state.currentFrame)}
               className='btn'
