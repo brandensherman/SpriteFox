@@ -7,10 +7,6 @@ function AnimateSprite(props) {
 
   return (
     <div className='container animate-sprite-container'>
-      <div className='frame'>
-        <img src='grumpyWizardFox.jpg' />
-      </div>
-
       <div className='slider-container'>
         <h3 className='slider-header'>{FPS} FPS</h3>
         <div>
