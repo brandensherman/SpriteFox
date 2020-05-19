@@ -20,7 +20,7 @@ class Canvas extends React.Component {
     this.newSession = this.newSession.bind(this);
     this.setPixelSize = this.setPixelSize.bind(this);
     this.setColor = this.setColor.bind(this);
-    this.setTimer = this.setTimer.bind(this);
+    this.dragPixel = this.dragPixel.bind(this);
     this.handleMouseDown = this.handleMouseDown.bind(this);
     // this.clearTimer = this.clearTimer.bind(this);
     //this.changeFramesHandler = this.changeFramesHandler.bind(this)
@@ -297,7 +297,8 @@ class Canvas extends React.Component {
   handleMouseDown() {
     this.fillPixel();
   }
-  setTimer(e) {
+
+  dragPixel() {
     this.canvas.current.addEventListener(
       'mousemove',
       this.handleMouseDown,
@@ -332,9 +333,9 @@ class Canvas extends React.Component {
                 width={16 * 24}
                 height={16 * 24}
                 ref={this.canvas}
-                onClick={() => this.fillPixel()} //made this into an anonomous function so that we can pass in values at a different location
+                // onClick={() => this.fillPixel()} //made this into an anonomous function so that we can pass in values at a different location
                 onDoubleClick={() => this.deletePixel()}
-                onMouseDown={(e) => this.setTimer(e)}
+                onMouseDown={() => this.dragPixel()}
                 // onMouseMove={() => this.fillPixel()}
               />
               <img
