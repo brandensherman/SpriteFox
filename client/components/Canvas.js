@@ -201,7 +201,6 @@ class Canvas extends React.Component {
         }
       }
     }
-    // console.log('renderSaved -> savedGrid = ', savedGrid)
   }
 
   animate() {
@@ -246,7 +245,6 @@ class Canvas extends React.Component {
       }
     }
     // this.state.mappedGrid[y][x] = null;
-    console.log('mapped grid after delete', this.state.mappedGrid);
     // These are the actual coordinates to properly place the pixel
     let actualCoordinatesX = x * this.state.pixelSize;
     let actualCoordinatesY = y * this.state.pixelSize;
@@ -266,8 +264,6 @@ class Canvas extends React.Component {
   fillPixel(defaultX, defaultY, color = this.state.color) {
     //need to add a color value to the parameters
     const canvas = this.canvas.current.getBoundingClientRect();
-
-    // console.log(' mappedGrid ', this.state.mappedGrid)
 
     // These are not the actual coordinates but correspond to the place on the grid
     let x =
@@ -419,7 +415,7 @@ class Canvas extends React.Component {
               onClick={() => this.addFrame(this.state.currentFrame)}
               className='btn'
             >
-              Add Frame
+              Duplicate Frame
             </button>
             <button onClick={this.resetCanvas} className='btn'>
               Reset Canvas
