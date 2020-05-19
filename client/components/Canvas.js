@@ -39,7 +39,7 @@ class Canvas extends React.Component {
     this.ctx = this.canvas.current.getContext('2d');
     this.createGrid();
     socket.on('fill', (x, y, color) => {
-      this.fillPixel(x * this.state.factor, y * this.state.factor, color);
+      this.fillPixel(x, y, color);
     });
 
     this.addFrame();
@@ -118,10 +118,9 @@ class Canvas extends React.Component {
     });
   }
 
-  autoSave() {}
-
-  // Clears Storage, clears display of frames underneath grid, resets canvas
-  newSession() {
+   // Clears Storage, clears display of frames underneath grid, resets canvas
+   newSession() {
+    this.resetCanvas();
     localStorage.clear();
     // or to remove only frames from loacal storage
     //this.state.framesArray.forEach(frame => (localStorage.removeItem(frame)))
@@ -130,7 +129,19 @@ class Canvas extends React.Component {
       framesArray: [],
     });
 
-    this.resetCanvas();
+    setTimeout(() => {
+      if (this.state.framesArray) {
+        localStorage.setItem(
+          `${this.state.frameCounter}`,
+          JSON.stringify(this.state.mappedGrid)
+        );
+      }
+      this.setState({
+        framesArray: [...this.state.framesArray, this.state.frameCounter],
+        currentFrame: "1",
+        frameCounter: this.state.frameCounter + 1
+      });
+    }, 1000);
   }
 
   getCanvas(frameNumber) {
@@ -199,12 +210,6 @@ class Canvas extends React.Component {
 
       interval = interval + 1000 / this.state.fps;
     }
-    setTimeout(() => {
-      this.resetCanvas();
-      this.setState({
-        currentFrame: '',
-      });
-    }, interval);
   }
 
   resetCanvas() {
@@ -235,6 +240,12 @@ class Canvas extends React.Component {
       this.state.pixelSize,
       this.state.pixelSize
     );
+
+    localStorage.setItem(
+      `${this.state.currentFrame}`,
+      JSON.stringify(this.state.mappedGrid)
+    );
+
   }
 
   fillPixel(defaultX, defaultY, color = this.state.color) {
@@ -274,6 +285,12 @@ class Canvas extends React.Component {
       this.state.pixelSize,
       this.state.pixelSize
     );
+
+    localStorage.setItem(
+      `${this.state.currentFrame}`,
+      JSON.stringify(this.state.mappedGrid)
+    );
+
   }
 
   render() {
