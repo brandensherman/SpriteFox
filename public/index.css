@@ -182,11 +182,6 @@ form div {
   justify-content: space-evenly;
 }
 
-.sketch-picker {
-  margin-top: 2rem;
-  height: 300px;
-}
-
 .canvas-container h3 {
   margin-bottom: 0.5rem;
 }
@@ -220,10 +215,6 @@ form div {
   height: 200px;
 }
 
-.sketch-picker {
-  height: 300px;
-}
-
 /* CHECKERED BACKGROUND */
 .checkered-background {
   position: absolute;
@@ -233,4 +224,30 @@ form div {
 .real-canvas {
   position: absolute;
   z-index: 0;
+}
+
+/* TOOLBOX CONTAINER */
+
+.sketch-picker {
+  margin: 2rem 0;
+  height: 300px;
+}
+
+.tools {
+  display: flex;
+  justify-content: space-around;
+}
+
+.tool-btn {
+  background: #fff;
+  padding: 0.5rem 1.5rem;
+  border: 2.5px solid #4a90e2;
+  color: #4a90e2;
+}
+.tool-btn:hover,
+.tool-btn-active {
+  padding: 0.5rem 1.5rem;
+  background: #4a90e2;
+  border: 2.5px solid #4a90e2;
+  color: #fff;
 }

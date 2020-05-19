@@ -20,6 +20,9 @@ class Canvas extends React.Component {
     this.newSession = this.newSession.bind(this);
     this.setPixelSize = this.setPixelSize.bind(this);
     this.setColor = this.setColor.bind(this);
+    this.setTimer = this.setTimer.bind(this);
+    this.handleMouseDown = this.handleMouseDown.bind(this);
+    // this.clearTimer = this.clearTimer.bind(this);
     //this.changeFramesHandler = this.changeFramesHandler.bind(this)
     this.state = {
       pixelSize: 24,
@@ -118,8 +121,8 @@ class Canvas extends React.Component {
     });
   }
 
-   // Clears Storage, clears display of frames underneath grid, resets canvas
-   newSession() {
+  // Clears Storage, clears display of frames underneath grid, resets canvas
+  newSession() {
     this.resetCanvas();
     localStorage.clear();
     // or to remove only frames from loacal storage
@@ -138,8 +141,8 @@ class Canvas extends React.Component {
       }
       this.setState({
         framesArray: [...this.state.framesArray, this.state.frameCounter],
-        currentFrame: "1",
-        frameCounter: this.state.frameCounter + 1
+        currentFrame: '1',
+        frameCounter: this.state.frameCounter + 1,
       });
     }, 1000);
   }
@@ -245,7 +248,6 @@ class Canvas extends React.Component {
       `${this.state.currentFrame}`,
       JSON.stringify(this.state.mappedGrid)
     );
-
   }
 
   fillPixel(defaultX, defaultY, color = this.state.color) {
@@ -290,14 +292,37 @@ class Canvas extends React.Component {
       `${this.state.currentFrame}`,
       JSON.stringify(this.state.mappedGrid)
     );
+  }
 
+  handleMouseDown() {
+    this.fillPixel();
+  }
+  setTimer(e) {
+    this.canvas.current.addEventListener(
+      'mousemove',
+      this.handleMouseDown,
+      true
+    );
+    this.canvas.current.addEventListener('mouseup', (secondEvent) => {
+      this.canvas.current.removeEventListener(
+        'mousemove',
+        this.handleMouseDown,
+        true
+      );
+    });
   }
 
   render() {
     return (
       <div>
         <div className='main-container container'>
-          <ColorPicker currentColor={this.setColor} />
+          <div className='toolbox-container'>
+            <ColorPicker currentColor={this.setColor} />
+            <div className='tools'>
+              <button className='btn tool-btn'>Draw</button>
+              <button className='btn tool-btn'>Erase</button>
+            </div>
+          </div>
           <div className='canvas-container'>
             <h3>FRAME {this.state.currentFrame}</h3>
 
@@ -309,6 +334,8 @@ class Canvas extends React.Component {
                 ref={this.canvas}
                 onClick={() => this.fillPixel()} //made this into an anonomous function so that we can pass in values at a different location
                 onDoubleClick={() => this.deletePixel()}
+                onMouseDown={(e) => this.setTimer(e)}
+                // onMouseMove={() => this.fillPixel()}
               />
               <img
                 className='checkered-background'
