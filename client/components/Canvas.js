@@ -42,8 +42,8 @@ class Canvas extends React.Component {
     this.getFrames();
     this.ctx = this.canvas.current.getContext('2d');
     this.createGrid();
-    socket.on('fill', (x, y, color) => {
-      this.fillPixel(x, y, color);
+    socket.on('fill', (x, y, color, pixelSize, factor) => {
+      this.fillPixel(x, y, color, pixelSize, factor);
     });
 
     this.addFrame();
@@ -165,6 +165,7 @@ class Canvas extends React.Component {
     } else if (pixels === 8) {
       factor = 1;
     }
+    socket.emit('setPixelSize', pixels, factor);
     this.setState({
       pixelSize: pixels,
       factor: factor,
@@ -261,42 +262,49 @@ class Canvas extends React.Component {
     );
   }
 
-  fillPixel(defaultX, defaultY, color = this.state.color) {
+  fillPixel(defaultX, defaultY, color = this.state.color, pixelSize = this.state.pixelSize, factor = this.state.factor) {
     //need to add a color value to the parameters
     const canvas = this.canvas.current.getBoundingClientRect();
 
     // These are not the actual coordinates but correspond to the place on the grid
     let x =
       defaultX ??
-      Math.floor((window.event.clientX - canvas.x) / this.state.pixelSize);
+      Math.floor((window.event.clientX - canvas.x) / pixelSize);
     let y =
       defaultY ??
-      Math.floor((window.event.clientY - canvas.y) / this.state.pixelSize);
+      Math.floor((window.event.clientY - canvas.y) / pixelSize);
 
-    if (defaultX === undefined && defaultY === undefined) {
-      socket.emit('fill', x, y, color);
-    }
 
     // MAP color to proper place on mappedGrid
-    for (let i = 0; i < this.state.factor; i++) {
-      for (let j = 0; j < this.state.factor; j++) {
-        this.state.mappedGrid[y * this.state.factor + i][
-          x * this.state.factor + j
-        ] = color;
+    for (let i = 0; i < factor; i++) {
+      for (let j = 0; j < factor; j++) {
+        // if (this.state.mappedGrid[y * factor + i][
+        //   x * factor + j
+        // ])
+        // {
+        // }
+            this.state.mappedGrid[y * factor + i][
+              x * factor + j
+            ] = color;
       }
     }
+    if (defaultX === undefined && defaultY === undefined) {
+      // if (this.state.mappedGrid[y][x]) {}
+      socket.emit('fill', x, y, color, pixelSize, factor);
+    }
+
 
     // These are the actual coordinates to properly place the pixel
-    let actualCoordinatesX = x * this.state.pixelSize;
-    let actualCoordinatesY = y * this.state.pixelSize;
+    let actualCoordinatesX = x * pixelSize;
+    let actualCoordinatesY = y * pixelSize;
 
-    this.ctx.fillStyle = this.state.color;
+    this.ctx.fillStyle = color;
 
     this.ctx.fillRect(
       actualCoordinatesX,
       actualCoordinatesY,
-      this.state.pixelSize,
-      this.state.pixelSize
+      pixelSize,
+      pixelSize
     );
 
     localStorage.setItem(
@@ -368,8 +376,10 @@ class Canvas extends React.Component {
                 width={16 * 24}
                 height={16 * 24}
                 ref={this.canvas}
+
                 onClick={() => this.handleMouseDown()} //made this into an anonomous function so that we can pass in values at a different location
                 // onDoubleClick={() => this.deletePixel()}
+
                 onMouseDown={() => this.dragPixel()}
               />
               <img
@@ -450,9 +460,9 @@ class Canvas extends React.Component {
             <div style={{ padding: '10px' }}>
               <h3>Pixel Size {this.state.pixelSize}</h3>
               <select onChange={this.setPixelSize}>
-                <option value={24}>24 x 24</option>
-                <option value={16}>16 x 16</option>
-                <option value={8}>8 x 8</option>
+                <option value={24}>24</option>
+                <option value={16}>16</option>
+                <option value={8}>8</option>
               </select>
             </div>
           </div>

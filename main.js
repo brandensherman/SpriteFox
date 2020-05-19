@@ -23,9 +23,13 @@ io.on('connection', function (socket) {
 
   console.log("hiiiiiiiiiiiiii")
 
-  socket.on('fill', function (x, y, color) {
-    socket.broadcast.emit('fill', x, y, color);
+  socket.on('fill', function (x, y, color, pixelSize, factor) {
+    socket.broadcast.emit('fill', x, y, color, pixelSize, factor);
   }); //this is currenlty sending this to
+
+  // socket.on('setPixelSize', (pixels, factor) => {
+  //   socket.broadcast.emit('setPixelSize', pixels, factor);
+  // });
 
   socket.on('disconnect', function () {
     console.log('Goodbye, ', socket.id, ' :(');
