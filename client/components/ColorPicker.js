@@ -15,7 +15,7 @@ const ColorPicker = (props) => {
     props.currentColor(currentColor);
   }, [currentColor]);
 
-  console.log(props.currentColor);
+  // console.log(props.currentColor);
 
   return (
     <div className=''>
