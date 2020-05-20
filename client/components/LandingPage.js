@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
 function LandingPage() {
-
-  let chars =
-      '1234567890qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM'
+  let chars = '1234567890qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM';
 
   let hash = '';
   for (let j = 0; j < 6; j++) {
@@ -21,7 +19,7 @@ function LandingPage() {
             <br />
             for creating animated sprites and pixel art
           </p>
-          <Link className='btn' to={`/${hash}`}>
+          <Link className='btn landing-btn' to={`/${hash}`}>
             Create Sprite
           </Link>
         </div>

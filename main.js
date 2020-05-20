@@ -4,8 +4,6 @@ const socketio = require('socket.io');
 const PORT = process.env.PORT || 3000;
 
 
-
-
 const server = app.listen(PORT, function () {
   console.log(`Listening on port ${PORT}!`);
 });
@@ -14,8 +12,9 @@ const io = socketio(server);
 
 let inMemoryDrawHistory = []; //doesnt do anything yet
 
-io.on('connection', function (socket) {
+io.on('connection', (socket) => {
   console.log(socket.id, 'A new client has connected!');
+
 
 
   socket.on('joinroom', function(room) {
@@ -29,6 +28,7 @@ io.on('connection', function (socket) {
   // socket.on('setPixelSize', (pixels, factor) => {
   //   socket.broadcast.emit('setPixelSize', pixels, factor);
   // });
+
 
 
   socket.on('disconnect', function () {
