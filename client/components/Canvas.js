@@ -1,6 +1,5 @@
 import React from 'react';
 import socket from '../socket.js';
-import AnimateSprite from './AnimateSprite';
 import Slider from 'react-input-slider';
 import ColorPicker from './ColorPicker';
 
@@ -163,6 +162,7 @@ class Canvas extends React.Component {
     });
   }
 
+
   // --------- CREATE A NEW FRAME --------- //
   addBlankFrame() {
     this.ctx.clearRect(0, 0, 16 * 24, 16 * 24);
@@ -186,6 +186,7 @@ class Canvas extends React.Component {
   // --------- DUPLICATE CURRENT FRAME --------- //
   //saves canvas, adds it to array of canvases
   addFrame() {
+
     if (this.state.framesArray) {
       localStorage.setItem(
         `${this.state.frameCounter}`,
@@ -389,6 +390,7 @@ class Canvas extends React.Component {
   }
 
   render() {
+
     const {
       setTool,
       currentFrame,
@@ -397,6 +399,11 @@ class Canvas extends React.Component {
       pixelSelect,
       showInstructions,
     } = this.state;
+
+    socket.emit('joinroom', this.props.match.params.hash)
+
+
+
 
     return (
       <div>
