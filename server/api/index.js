@@ -7,4 +7,7 @@ router.use(function (req, res, next) {
   next(err);
 });
 
+router.use('/', require('./'))
+
+
 module.exports = router;

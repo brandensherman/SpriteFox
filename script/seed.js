@@ -1,16 +1,36 @@
 'use strict'
 
-const db = require('../server/db')
+const { db } = require('../server/db')
 const {
   Room,
   Frame,
 } = require('../server/db/models')
 
 async function seed() {
-  await db.sync({force: true})
-  console.log('db synced!')
+
+  const rooms = await Promise.all([
+    Room.create({
+      hash: oPg4hK
+    }),
+    Room.create({
+      hash: Prg48hK
+    })
+
+  ])
+
+  // const frames = await Promise.all([
+  //   Frame.create({
+  //     frameNumber: 20
+
+  //   ])
+})
+
+
+await db.sync({ force: true })
+console.log('db synced!')
 
 }
+
 
 // We've separated the `seed` function from the `runSeed` function.
 // This way we can isolate the error handling and exit trapping.
