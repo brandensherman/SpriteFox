@@ -39,6 +39,9 @@ label {
 }
 
 /* BUTTONS */
+button {
+  cursor: pointer;
+}
 
 .btn {
   display: inline-block;
