@@ -15,22 +15,19 @@ class Canvas extends React.Component {
     this.getFrames = this.getFrames.bind(this);
     this.animate = this.animate.bind(this);
     this.renderSaved = this.renderSaved.bind(this);
-    // this.fillPixelFromSocket = this.fillPixelFromSocket.bind(this)
     this.resetCanvas = this.resetCanvas.bind(this);
     this.newSession = this.newSession.bind(this);
     this.setPixelSize = this.setPixelSize.bind(this);
     this.setColor = this.setColor.bind(this);
     this.dragPixel = this.dragPixel.bind(this);
     this.handleMouseDown = this.handleMouseDown.bind(this);
-    // this.clearTimer = this.clearTimer.bind(this);
-    //this.changeFramesHandler = this.changeFramesHandler.bind(this)
+
     this.state = {
       pixelSize: 24,
       pixelSelect: 3,
       factor: 3,
       framesArray: [],
       mappedGrid: {},
-      pngArray: [],
       frameCounter: 1,
       currentFrame: '',
       fps: 1,
@@ -353,7 +350,7 @@ class Canvas extends React.Component {
       this.handleMouseDown,
       true
     );
-    this.canvas.current.addEventListener('mouseup', (secondEvent) => {
+    window.addEventListener('mouseup', (secondEvent) => {
       this.canvas.current.removeEventListener(
         'mousemove',
         this.handleMouseDown,
@@ -461,7 +458,11 @@ class Canvas extends React.Component {
             </div>
           </div>
           <div className='buttons-container'>
-            <button onClick={() => this.addFrame(currentFrame)} className='btn'>
+            <button
+              title='This will create a duplicate of the current frame'
+              onClick={() => this.addFrame(currentFrame)}
+              className='btn'
+            >
               Duplicate Frame
             </button>
             <button onClick={() => this.addBlankFrame()} className='btn'>
