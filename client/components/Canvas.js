@@ -414,9 +414,7 @@ class Canvas extends React.Component {
                 width={16 * 24}
                 height={16 * 24}
                 ref={this.canvas}
-                onClick={() => this.handleMouseDown()} //made this into an anonomous function so that we can pass in values at a different location
-                // onDoubleClick={() => this.deletePixel()}
-
+                onClick={() => this.handleMouseDown()}
                 onMouseDown={() => this.dragPixel()}
               />
               <img
@@ -429,50 +427,54 @@ class Canvas extends React.Component {
             </div>
 
             <div className='frames-header'>
-              <h3>CHOOSE FRAME</h3>
+              <div className='frames-heading'>
+                <h3>CHOOSE FRAME</h3>
+                <button
+                  onClick={() => this.addBlankFrame()}
+                  className='btn add-btn'
+                >
+                  +
+                </button>
+              </div>
               <hr />
             </div>
             <div className='frames-container'>
               <ul>
-                <div>
-                  {this.state.framesArray.map((frame, index) => {
-                    return (
-                      <li key={index} className='frame-item'>
-                        <button
-                          className='frame-name frame-btn'
-                          onClick={() => this.getCanvas(frame)}
-                        >
-                          Frame {frame}
-                        </button>
-                        <button
-                          className='frame-btn frame-btn-delete'
-                          onClick={() => this.deleteFrame(frame)}
-                        >
-                          DELETE
-                        </button>
-                      </li>
-                    );
-                  })}
-                </div>
+                {this.state.framesArray.map((frame, index) => {
+                  return (
+                    <li key={index} className='frame-item'>
+                      <button
+                        className='frame-name frame-btn'
+                        onClick={() => this.getCanvas(frame)}
+                      >
+                        Frame {frame}
+                      </button>
+                      <button
+                        className='frame-btn frame-btn-delete'
+                        onClick={() => this.deleteFrame(frame)}
+                      >
+                        DELETE
+                      </button>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
           </div>
           <div className='buttons-container'>
-            <button
-              title='This will create a duplicate of the current frame'
-              onClick={() => this.addFrame(currentFrame)}
-              className='btn'
-            >
+            {/* <button onClick={() => this.addBlankFrame()} className='btn'>
+              New Frame
+            </button> */}
+
+            <button onClick={() => this.addFrame(currentFrame)} className='btn'>
               Duplicate Frame
             </button>
-            <button onClick={() => this.addBlankFrame()} className='btn'>
-              New Frame
-            </button>
+
             <button onClick={this.resetCanvas} className='btn'>
               Reset Canvas
             </button>
 
-            <button onClick={() => this.animate()} className='btn'>
+            <button onClick={() => this.animate()} className='btn animate-btn'>
               Animate!
             </button>
 
@@ -501,7 +503,7 @@ class Canvas extends React.Component {
               <button
                 onClick={this.setPixelSize}
                 className={`btn ${
-                  pixelSelect === 1 ? 'tool-btn tool-btn-active' : 'tool-btn'
+                  pixelSelect === 1 ? 'pixel-btn pixel-btn-active' : 'pixel-btn'
                 }`}
                 value={8}
               >
@@ -510,7 +512,7 @@ class Canvas extends React.Component {
               <button
                 onClick={this.setPixelSize}
                 className={`btn ${
-                  pixelSelect === 2 ? 'tool-btn tool-btn-active' : 'tool-btn'
+                  pixelSelect === 2 ? 'pixel-btn pixel-btn-active' : 'pixel-btn'
                 }`}
                 value={16}
               >
@@ -519,7 +521,7 @@ class Canvas extends React.Component {
               <button
                 onClick={this.setPixelSize}
                 className={`btn ${
-                  pixelSelect === 3 ? 'tool-btn tool-btn-active' : 'tool-btn'
+                  pixelSelect === 3 ? 'pixel-btn pixel-btn-active' : 'pixel-btn'
                 }`}
                 value={24}
               >
