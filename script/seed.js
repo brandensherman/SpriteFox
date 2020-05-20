@@ -18,16 +18,16 @@ async function seed() {
 
   ])
 
-  // const frames = await Promise.all([
-  //   Frame.create({
-  //     frameNumber: 20
+  //   const frames = await Promise.all([
+  //     Frame.create({
+  //       frameNumber: 20
 
-  //   ])
-})
+  //     ])
+  // })
 
 
-await db.sync({ force: true })
-console.log('db synced!')
+  await db.sync({ force: true })
+  console.log('db synced!')
 
 }
 
