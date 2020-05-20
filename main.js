@@ -17,13 +17,19 @@ let inMemoryDrawHistory = []; //doesnt do anything yet
 io.on('connection', function (socket) {
   console.log(socket.id, 'A new client has connected!');
 
-  // socket.join("room goes here")
 
-  console.log("hiiiiiiiiiiii")
+  socket.on('joinroom', function(room) {
+    socket.join(room)
+    // console.log('joined room >', room)
+    socket.on('fill', function (x, y, color, pixels, factor) {
+      socket.broadcast.to(room).emit('fill', x, y, color, pixels, factor);
+    }); //this is currenlty sending this to
+  })
 
-  socket.on('fill', function (x, y, color) {
-    socket.broadcast.emit('fill', x, y, color);
-  }); //this is currenlty sending this to
+  // socket.on('setPixelSize', (pixels, factor) => {
+  //   socket.broadcast.emit('setPixelSize', pixels, factor);
+  // });
+
 
   socket.on('disconnect', function () {
     console.log('Goodbye, ', socket.id, ' :(');

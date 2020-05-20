@@ -39,15 +39,18 @@ label {
 }
 
 /* BUTTONS */
+button {
+  cursor: pointer;
+}
 
 .btn {
   display: inline-block;
   cursor: pointer;
   transition: all 0.5s;
   padding: 0.8rem 2rem;
-  border: 2.5px solid transparent;
-  background: #000;
-  color: #fff;
+  border: 2.5px solid #4a90e2;
+  background: #fff;
+  color: #4a90e2;
   border-radius: 5px;
   font-family: 'Montserrat', sans-serif;
   text-transform: uppercase;
@@ -55,32 +58,42 @@ label {
 }
 
 .btn:hover {
-  background: #fff;
-  border: 2.5px solid #000;
-  color: #000;
-}
-
-.switch-btn:hover {
-  background: #000;
+  background: #4a90e2;
+  border: 2.5px solid #4a90e2;
   color: #fff;
 }
 
 .btn:focus,
 .switch-btn:focus,
-.frame-btn:focus {
+.frame-btn:focus,
+.session-btn,
+.add-btn,
+.animate-btn {
   outline: none;
 }
 
 .session-btn {
   background: #fff;
-  color: crimson;
-  border: 2.5px solid crimson;
+  color: #f5a623;
+  border: 2.5px solid #f5a623;
 }
 
 .session-btn:hover {
-  background: crimson;
+  background: #f5a623;
   color: #fff;
-  border: 2.5px solid crimson;
+  border: 2.5px solid #f5a623;
+}
+
+.animate-btn {
+  background: #fff;
+  color: #4a90e2;
+  border: 2.5px solid #4a90e2;
+}
+
+.animate-btn:hover {
+  background: #4a90e2;
+  color: #fff;
+  border: 2.5px solid #4a90e2;
 }
 
 /* FRAME ITEM */
@@ -92,8 +105,27 @@ label {
 }
 
 .frames-header,
-.frames-header h3 {
+.frames-heading {
   margin-bottom: 0.5rem;
+}
+.frames-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.add-btn {
+  font-size: 1.2rem;
+  padding: 0.3rem 0.8rem;
+  background: none;
+  border: 0;
+  color: #000;
+}
+
+.add-btn:hover {
+  border: 0;
+  background: #000;
+  color: #fff;
 }
 
 .frame-name {
@@ -114,8 +146,8 @@ label {
 }
 
 .frame-btn-delete {
-  border: 2.5px solid crimson;
-  background: crimson;
+  border: 2.5px solid #d0021b;
+  background: #d0021b;
   padding: 0.4rem 1rem;
   color: #fff;
   border-radius: 5px;
@@ -124,8 +156,8 @@ label {
 
 .frame-btn-delete:hover {
   background: #fff;
-  color: crimson;
-  border: 2px solid crimson;
+  color: #d0021b;
+  border: 2px solid #d0021b;
 }
 
 /* LANDING PAGE */
@@ -182,11 +214,6 @@ form div {
   justify-content: space-evenly;
 }
 
-.sketch-picker {
-  margin-top: 2rem;
-  height: 300px;
-}
-
 .canvas-container h3 {
   margin-bottom: 0.5rem;
 }
@@ -220,10 +247,6 @@ form div {
   height: 200px;
 }
 
-.sketch-picker {
-  height: 300px;
-}
-
 /* CHECKERED BACKGROUND */
 .checkered-background {
   position: absolute;
@@ -233,4 +256,57 @@ form div {
 .real-canvas {
   position: absolute;
   z-index: 0;
+}
+
+/* TOOLBOX CONTAINER */
+
+.toolbox-container {
+  margin-top: 2rem;
+}
+
+.sketch-picker {
+  margin-bottom: 1rem;
+  height: 300px;
+}
+
+.tools {
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-around;
+}
+
+.tool-btn {
+  background: #fff;
+  padding: 0.5rem 1.5rem;
+  border: 2.5px solid #4a90e2;
+  color: #4a90e2;
+}
+.tool-btn:hover,
+.tool-btn-active {
+  padding: 0.5rem 1.5rem;
+  background: #4a90e2;
+  border: 2.5px solid #4a90e2;
+  color: #fff;
+}
+
+/* CHANGE PIXEL BUTTONS */
+.pixel-buttons {
+  display: flex;
+  justify-content: space-around;
+}
+
+.pixel-btn {
+  font-size: 0.8rem;
+  background: #fff;
+  padding: 0.3rem 0.8rem;
+  border: 2.5px solid #4a90e2;
+  color: #4a90e2;
+}
+.pixel-btn:hover,
+.pixel-btn-active {
+  font-size: 0.8rem;
+  padding: 0.3rem 0.8rem;
+  background: #4a90e2;
+  border: 2.5px solid #4a90e2;
+  color: #fff;
 }
