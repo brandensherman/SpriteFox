@@ -26,6 +26,7 @@ class Canvas extends React.Component {
     //this.changeFramesHandler = this.changeFramesHandler.bind(this)
     this.state = {
       pixelSize: 24,
+      pixelSelect: 3,
       factor: 3,
       framesArray: [],
       mappedGrid: {},
@@ -52,12 +53,29 @@ class Canvas extends React.Component {
     });
   }
 
+  // --------- HANDLE CHANGE --------- //
+  handleChange(event) {
+    event.preventDefault();
+    this.setState({
+      [event.target.name]: event.target.value,
+      currentFrame: event.target.value,
+    });
+  }
+
+  // --------- SET COLOR--------- //
   setColor(currentColor) {
     this.setState({
       color: currentColor,
     });
   }
 
+  // --------- TOGGLE TOOL--------- //
+  toggleTool = () => {
+    // toggles between draw and erase
+    this.setState((prevState) => ({ setTool: !prevState.setTool }));
+  };
+
+  // --------- CREATE GRID --------- //
   createGrid() {
     let y = 0;
     let rows = 48;
@@ -77,6 +95,33 @@ class Canvas extends React.Component {
     }
   }
 
+  // --------- RENDER SAVED GRID --------- //
+
+  renderSaved(savedGrid) {
+    // savedGrid = item = obj of arrays
+    // clear canvas, then render a saved canvas based on colors/coords
+
+    let pixelSize = 8;
+    // this.resetCanvas();
+    this.ctx.clearRect(0, 0, 16 * 24, 16 * 24);
+    for (let key in savedGrid) {
+      // key = id = index of row array
+      let pixelRow = savedGrid[key];
+      for (let i = 0; i < pixelRow.length; i++) {
+        if (pixelRow[i] !== null) {
+          // These are the actual coordinates to render on the grid
+          let coordinateX = i * pixelSize;
+          let coordinateY = key * pixelSize;
+
+          // Render each original pixel from the saved grid
+          this.ctx.fillStyle = pixelRow[i];
+          this.ctx.fillRect(coordinateX, coordinateY, pixelSize, pixelSize);
+        }
+      }
+    }
+  }
+
+  // --------- GET FRAMES--------- //
   getFrames() {
     for (let key in localStorage) {
       if (key !== 'currentColor' && typeof localStorage[key] === 'string') {
@@ -87,6 +132,20 @@ class Canvas extends React.Component {
     }
   }
 
+  // --------- ANIMATE FRAMES --------- //
+  animate() {
+    let len = this.state.framesArray.length;
+    let interval = 0;
+    for (let i = 0; i < len; i++) {
+      setTimeout(() => {
+        this.getCanvas(this.state.framesArray[i]);
+      }, interval);
+
+      interval = interval + 1000 / this.state.fps;
+    }
+  }
+
+  // --------- DELETE FRAMES --------- //
   deleteFrame(canvasName) {
     const filteredArray = this.state.framesArray.filter(
       (frame) => frame !== canvasName
@@ -97,6 +156,7 @@ class Canvas extends React.Component {
     });
   }
 
+  // --------- CREATE A NEW FRAME --------- //
   addBlankFrame() {
     this.ctx.clearRect(0, 0, 16 * 24, 16 * 24);
     this.createGrid();
@@ -113,10 +173,10 @@ class Canvas extends React.Component {
     this.setState({
       framesArray: [...this.state.framesArray, this.state.frameCounter],
       currentFrame: this.state.frameCounter,
-
     });
   }
 
+  // --------- DUPLICATE CURRENT FRAME --------- //
   //saves canvas, adds it to array of canvases
   addFrame() {
     if (this.state.framesArray) {
@@ -138,8 +198,9 @@ class Canvas extends React.Component {
     setTimeout(() => this.getCanvas(this.state.currentFrame), 500);
   }
 
-  // Clears Storage, clears display of frames underneath grid, resets canvas
+  // --------- NEW SESSION--------- //
   newSession() {
+    // Clears Storage, clears display of frames underneath grid, resets canvas
     this.resetCanvas();
     localStorage.clear();
     // or to remove only frames from loacal storage
@@ -164,6 +225,7 @@ class Canvas extends React.Component {
     }, 1000);
   }
 
+  // --------- GET CANVAS--------- //
   getCanvas(frameNumber) {
     this.ctx.clearRect(0, 0, 16 * 24, 16 * 24);
     // this.resetCanvas();
@@ -175,67 +237,7 @@ class Canvas extends React.Component {
     });
   }
 
-  setPixelSize(event) {
-    let factor;
-    let pixels = parseInt(event.target.value);
-    if (pixels === 24) {
-      factor = 3;
-    } else if (pixels === 16) {
-      factor = 2;
-    } else if (pixels === 8) {
-      factor = 1;
-    }
-    socket.emit('setPixelSize', pixels, factor);
-    this.setState({
-      pixelSize: pixels,
-      factor: factor,
-    });
-  }
-
-  handleChange(event) {
-    event.preventDefault();
-    this.setState({
-      [event.target.name]: event.target.value,
-      currentFrame: event.target.value,
-    });
-  }
-
-  // clear canvas, then render a saved canvas based on colors/coords
-  renderSaved(savedGrid) {
-    // savedGrid = item = obj of arrays
-
-    let pixelSize = 8;
-    // this.resetCanvas();
-    this.ctx.clearRect(0, 0, 16 * 24, 16 * 24);
-    for (let key in savedGrid) {
-      // key = id = index of row array
-      let pixelRow = savedGrid[key];
-      for (let i = 0; i < pixelRow.length; i++) {
-        if (pixelRow[i] !== null) {
-          // These are the actual coordinates to render on the grid
-          let coordinateX = i * pixelSize;
-          let coordinateY = key * pixelSize;
-
-          // Render each original pixel from the saved grid
-          this.ctx.fillStyle = pixelRow[i];
-          this.ctx.fillRect(coordinateX, coordinateY, pixelSize, pixelSize);
-        }
-      }
-    }
-  }
-
-  animate() {
-    let len = this.state.framesArray.length;
-    let interval = 0;
-    for (let i = 0; i < len; i++) {
-      setTimeout(() => {
-        this.getCanvas(this.state.framesArray[i]);
-      }, interval);
-
-      interval = interval + 1000 / this.state.fps;
-    }
-  }
-
+  // --------- RESET CANVAS --------- //
   resetCanvas() {
     this.ctx.clearRect(0, 0, 16 * 24, 16 * 24);
     this.createGrid();
@@ -245,15 +247,16 @@ class Canvas extends React.Component {
     );
   }
 
+  // --------- DELETE PIXEL --------- //
   deletePixel(defaultX, defaultY) {
     const canvas = this.canvas.current.getBoundingClientRect();
     // These are not the actual coordinates but correspond to the place on the grid
     let x =
       defaultX ??
-        Math.floor((window.event.clientX - canvas.x) / this.state.pixelSize);
+      Math.floor((window.event.clientX - canvas.x) / this.state.pixelSize);
     let y =
       defaultY ??
-        Math.floor((window.event.clientY - canvas.y) / this.state.pixelSize);
+      Math.floor((window.event.clientY - canvas.y) / this.state.pixelSize);
     if (defaultX === undefined && defaultY === undefined) {
       socket.emit('delete', x, y);
     }
@@ -282,18 +285,22 @@ class Canvas extends React.Component {
     );
   }
 
-  fillPixel(defaultX, defaultY, color = this.state.color, pixelSize = this.state.pixelSize, factor = this.state.factor) {
+  // --------- FILL PIXEL --------- //
+  fillPixel(
+    defaultX,
+    defaultY,
+    color = this.state.color,
+    pixelSize = this.state.pixelSize,
+    factor = this.state.factor
+  ) {
     //need to add a color value to the parameters
     const canvas = this.canvas.current.getBoundingClientRect();
 
     // These are not the actual coordinates but correspond to the place on the grid
     let x =
-      defaultX ??
-        Math.floor((window.event.clientX - canvas.x) / pixelSize);
+      defaultX ?? Math.floor((window.event.clientX - canvas.x) / pixelSize);
     let y =
-      defaultY ??
-        Math.floor((window.event.clientY - canvas.y) / pixelSize);
-
+      defaultY ?? Math.floor((window.event.clientY - canvas.y) / pixelSize);
 
     // MAP color to proper place on mappedGrid
     for (let i = 0; i < factor; i++) {
@@ -303,16 +310,13 @@ class Canvas extends React.Component {
         // ])
         // {
         // }
-        this.state.mappedGrid[y * factor + i][
-          x * factor + j
-        ] = color;
+        this.state.mappedGrid[y * factor + i][x * factor + j] = color;
       }
     }
     if (defaultX === undefined && defaultY === undefined) {
       // if (this.state.mappedGrid[y][x]) {}
       socket.emit('fill', x, y, color, pixelSize, factor);
     }
-
 
     // These are the actual coordinates to properly place the pixel
     let actualCoordinatesX = x * pixelSize;
@@ -333,6 +337,7 @@ class Canvas extends React.Component {
     );
   }
 
+  // --------- MOUSE DOWN FOR DRAG--------- //
   handleMouseDown() {
     if (this.state.setTool) {
       this.fillPixel();
@@ -341,6 +346,7 @@ class Canvas extends React.Component {
     }
   }
 
+  // --------- CONTINUOUS DRAG PIXEL --------- //
   dragPixel() {
     this.canvas.current.addEventListener(
       'mousemove',
@@ -356,12 +362,27 @@ class Canvas extends React.Component {
     });
   }
 
-  toggleTool = () => {
-    this.setState((prevState) => ({ setTool: !prevState.setTool }));
-  };
+  // --------- SET PIXEL SIZE --------- //
+  setPixelSize(event) {
+    let factor;
+    let pixels = parseInt(event.target.value);
+    if (pixels === 24) {
+      factor = 3;
+    } else if (pixels === 16) {
+      factor = 2;
+    } else if (pixels === 8) {
+      factor = 1;
+    }
+    socket.emit('setPixelSize', pixels, factor);
+    this.setState({
+      pixelSize: pixels,
+      factor: factor,
+      pixelSelect: factor,
+    });
+  }
 
   render() {
-    const { setTool } = this.state;
+    const { setTool, currentFrame, pixelSize, fps, pixelSelect } = this.state;
 
     return (
       <div>
@@ -373,7 +394,7 @@ class Canvas extends React.Component {
                 onClick={this.toggleTool}
                 className={`btn ${
                   setTool ? 'tool-btn tool-btn-active' : 'tool-btn'
-                  }`}
+                }`}
               >
                 Draw
               </button>
@@ -381,14 +402,14 @@ class Canvas extends React.Component {
                 onClick={this.toggleTool}
                 className={`btn ${
                   setTool ? 'tool-btn' : 'tool-btn tool-btn-active'
-                  }`}
+                }`}
               >
                 Erase
               </button>
             </div>
           </div>
           <div className='canvas-container'>
-            <h3>FRAME {this.state.currentFrame}</h3>
+            <h3>FRAME {currentFrame}</h3>
 
             <div className='canvas'>
               <canvas
@@ -396,7 +417,6 @@ class Canvas extends React.Component {
                 width={16 * 24}
                 height={16 * 24}
                 ref={this.canvas}
-
                 onClick={() => this.handleMouseDown()} //made this into an anonomous function so that we can pass in values at a different location
                 // onDoubleClick={() => this.deletePixel()}
 
@@ -441,18 +461,12 @@ class Canvas extends React.Component {
             </div>
           </div>
           <div className='buttons-container'>
-            <button
-              onClick={() => this.addFrame(this.state.currentFrame)}
-              className='btn'
-            >
+            <button onClick={() => this.addFrame(currentFrame)} className='btn'>
               Duplicate Frame
             </button>
-            <button
-              onClick={() => this.addBlankFrame()}
-              className='btn'
-            >
-              Blank Frame
-          </button>
+            <button onClick={() => this.addBlankFrame()} className='btn'>
+              New Frame
+            </button>
             <button onClick={this.resetCanvas} className='btn'>
               Reset Canvas
             </button>
@@ -466,13 +480,13 @@ class Canvas extends React.Component {
             </button>
 
             <div className='slider-container'>
-              <h3 className='slider-header'>{this.state.fps} FPS</h3>
+              <h3 className='slider-header'>{fps} FPS</h3>
               <div>
                 <Slider
-                  xmax={25}
+                  xmax={10}
                   xmin={1}
                   axis='x'
-                  x={this.state.fps}
+                  x={fps}
                   onChange={({ x }) =>
                     this.setState({
                       fps: x,
@@ -482,14 +496,34 @@ class Canvas extends React.Component {
                 />
               </div>
             </div>
-
-            <div style={{ padding: '10px' }}>
-              <h3>Pixel Size {this.state.pixelSize}</h3>
-              <select onChange={this.setPixelSize}>
-                <option value={24}>24</option>
-                <option value={16}>16</option>
-                <option value={8}>8</option>
-              </select>
+            <div className='pixel-buttons tools'>
+              <button
+                onClick={this.setPixelSize}
+                className={`btn ${
+                  pixelSelect === 1 ? 'tool-btn tool-btn-active' : 'tool-btn'
+                }`}
+                value={8}
+              >
+                8px
+              </button>
+              <button
+                onClick={this.setPixelSize}
+                className={`btn ${
+                  pixelSelect === 2 ? 'tool-btn tool-btn-active' : 'tool-btn'
+                }`}
+                value={16}
+              >
+                16px
+              </button>
+              <button
+                onClick={this.setPixelSize}
+                className={`btn ${
+                  pixelSelect === 3 ? 'tool-btn tool-btn-active' : 'tool-btn'
+                }`}
+                value={24}
+              >
+                24px
+              </button>
             </div>
           </div>
         </div>
