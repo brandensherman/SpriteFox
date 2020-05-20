@@ -4,7 +4,6 @@ const socketio = require('socket.io');
 
 const PORT = process.env.PORT || 3000;
 
-
 const server = app.listen(PORT, function () {
   console.log(`Listening on port ${PORT}!`);
 });
@@ -18,26 +17,16 @@ const io = socketio(server);
 
 let inMemoryDrawHistory = []; //doesnt do anything yet
 
-io.on('connection', function (socket) {
+io.on('connection', (socket) => {
   console.log(socket.id, 'A new client has connected!');
-
-  console.log("hiiiiiiiiiiiiii")
 
   socket.on('fill', function (x, y, color, pixelSize, factor) {
     socket.broadcast.emit('fill', x, y, color, pixelSize, factor);
-  }); //this is currenlty sending this to
-
-  // socket.on('setPixelSize', (pixels, factor) => {
-  //   socket.broadcast.emit('setPixelSize', pixels, factor);
-  // });
+  });
 
   socket.on('disconnect', function () {
     console.log('Goodbye, ', socket.id, ' :(');
   });
 });
-
-
-
-
 
 // init();

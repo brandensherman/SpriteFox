@@ -33,6 +33,7 @@ class Canvas extends React.Component {
       fps: 1,
       color: '',
       setTool: true,
+      showInstructions: false,
     };
   }
 
@@ -70,6 +71,15 @@ class Canvas extends React.Component {
   toggleTool = () => {
     // toggles between draw and erase
     this.setState((prevState) => ({ setTool: !prevState.setTool }));
+  };
+
+  // --------- TOGGLE INSTRUCTIONS--------- //
+  toggleInstructions = () => {
+    // toggles between draw and erase
+    this.setState((prevState) => ({
+      showInstructions: !prevState.showInstructions,
+    }));
+    console.log(this.state.showInstructions);
   };
 
   // --------- CREATE GRID --------- //
@@ -379,10 +389,54 @@ class Canvas extends React.Component {
   }
 
   render() {
-    const { setTool, currentFrame, pixelSize, fps, pixelSelect } = this.state;
+    const {
+      setTool,
+      currentFrame,
+      pixelSize,
+      fps,
+      pixelSelect,
+      showInstructions,
+    } = this.state;
 
     return (
       <div>
+        <nav className='nav container'>
+          <button
+            onClick={this.toggleInstructions}
+            className='btn instruct-btn'
+          >
+            Instructions
+          </button>
+          <div
+            className={`${
+              showInstructions ? 'instructions show' : 'instructions'
+            }`}
+          >
+            <h3>Welcome!</h3>
+            <p>
+              - If you'd like to have a friend draw with you, simply send them
+              the url and they'll join your room automatically.
+            </p>
+            <p>- Click or hold down your mouse to draw.</p>
+            <p>
+              - Frames will autosave, so don't worry about losing your work!
+            </p>
+            <p>
+              - The 'Duplicate Frame' button will make a new frame with the same
+              art that is on the current one.
+            </p>
+            <p>
+              - If you'd like a brand new canvas, press the '+' button on the
+              Frames List below the canvas.
+            </p>
+            <button
+              onClick={this.toggleInstructions}
+              className='btn close-instruct-btn'
+            >
+              Close
+            </button>
+          </div>
+        </nav>
         <div className='main-container container'>
           <div className='toolbox-container'>
             <ColorPicker currentColor={this.setColor} />
@@ -466,12 +520,12 @@ class Canvas extends React.Component {
               New Frame
             </button> */}
 
-            <button onClick={() => this.addFrame(currentFrame)} className='btn'>
-              Duplicate Frame
-            </button>
-
             <button onClick={this.resetCanvas} className='btn'>
               Reset Canvas
+            </button>
+
+            <button onClick={() => this.addFrame(currentFrame)} className='btn'>
+              Duplicate Frame
             </button>
 
             <button onClick={() => this.animate()} className='btn animate-btn'>

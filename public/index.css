@@ -23,6 +23,10 @@ label {
   display: block;
 }
 
+.nav {
+  margin-top: 2rem;
+}
+
 .canvas {
   border-radius: 5px;
   padding: 0.8rem;
@@ -165,11 +169,21 @@ button {
 .container {
   max-width: 1280px;
   padding: 0 4rem;
-  margin: auto;
   overflow: hidden;
 }
 
 /* LANDING PAGE */
+
+.landing-btn {
+  color: #000;
+  background: #fff;
+  border: 2.5px solid #000;
+}
+.landing-btn:hover {
+  color: #fff;
+  background: #000;
+  border: 2.5px solid #000;
+}
 
 .landing-container {
   background: white;
@@ -309,4 +323,54 @@ form div {
   background: #4a90e2;
   border: 2.5px solid #4a90e2;
   color: #fff;
+}
+
+/* Instructions */
+
+.instructions {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  min-height: 100vh;
+  width: 420px;
+  padding: 30px;
+  background: #4a90e2;
+  color: #fff;
+  transform: translateX(-420px);
+  transition: transform 0.7s ease-in-out;
+  z-index: 5;
+}
+
+.instructions p {
+  margin-bottom: 1rem;
+}
+
+.instructions h3 {
+  margin-bottom: 0.8rem;
+  font-size: 1.8rem;
+}
+
+.show {
+  transform: translateX(0);
+}
+
+.instruct-btn {
+  position: absolute;
+  top: 30px;
+  left: 135px;
+  background: #4a90e2;
+  color: #fff;
+}
+
+.close-instruct-btn {
+  border: 2.5px solid #fff;
+  padding: 0.6rem 1.2rem;
+}
+
+.close-instruct-btn:hover {
+  background: #fff;
+  color: #4a90e2;
+  border: 2.5px solid #fff;
+  padding: 0.6rem 1.2rem;
 }
