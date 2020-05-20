@@ -379,6 +379,7 @@ class Canvas extends React.Component {
   }
 
   render() {
+    socket.emit('joinroom', this.props.match.params.hash)
     const { setTool, currentFrame, pixelSize, fps, pixelSelect } = this.state;
 
     return (
