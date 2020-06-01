@@ -1,7 +1,6 @@
 const { db } = require('./server/db');
 const app = require('./server');
 const socketio = require('socket.io');
-
 const PORT = process.env.PORT || 3000;
 
 const server = app.listen(PORT, function () {
@@ -10,17 +9,16 @@ const server = app.listen(PORT, function () {
 
 const io = socketio(server);
 
-let inMemoryDrawHistory = []; //doesnt do anything yet
-
-io.on('connection', function (socket) {
+io.on('connection', (socket) => {
   console.log(socket.id, 'A new client has connected!');
+
 
   socket.on('joinroom', function(room) {
     socket.join(room)
     socket.on('fill', function (x, y, color, pixels, factor) {
       socket.broadcast.to(room).emit('fill', x, y, color, pixels, factor);
     }); //this is currenlty sending this to
-  })
+  });
 
   socket.on('disconnect', function () {
     console.log('Goodbye, ', socket.id, ' :(');
