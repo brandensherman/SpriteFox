@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { SketchPicker } from 'react-color';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
 const ColorPicker = (props) => {
   const initialState = '#000000';
@@ -14,8 +13,6 @@ const ColorPicker = (props) => {
   useEffect(() => {
     props.currentColor(currentColor);
   }, [currentColor]);
-
-  // console.log(props.currentColor);
 
   return (
     <div className=''>

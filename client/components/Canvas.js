@@ -29,7 +29,7 @@ class Canvas extends React.Component {
       mappedGrid: {},
       frameCounter: 1,
       currentFrame: '',
-      fps: 1,
+      fps: 5,
       color: '',
       setTool: true,
       showInstructions: false,
@@ -104,11 +104,8 @@ class Canvas extends React.Component {
   // --------- RENDER SAVED GRID --------- //
 
   renderSaved(savedGrid) {
-    // savedGrid = item = obj of arrays
-    // clear canvas, then render a saved canvas based on colors/coords
-
     let pixelSize = 8;
-    // this.resetCanvas();
+
     this.ctx.clearRect(0, 0, 16 * 24, 16 * 24);
     for (let key in savedGrid) {
       // key = id = index of row array
@@ -211,8 +208,6 @@ class Canvas extends React.Component {
     // Clears Storage, clears display of frames underneath grid, resets canvas
     this.resetCanvas();
     localStorage.clear();
-    // or to remove only frames from loacal storage
-    //this.state.framesArray.forEach(frame => (localStorage.removeItem(frame)))
     this.setState({
       frameCounter: 1,
       framesArray: [],
@@ -236,7 +231,6 @@ class Canvas extends React.Component {
   // --------- GET CANVAS--------- //
   getCanvas(frameNumber) {
     this.ctx.clearRect(0, 0, 16 * 24, 16 * 24);
-    // this.resetCanvas();
     let item = JSON.parse(localStorage.getItem(frameNumber));
     this.renderSaved(item); // item = obj of arrays
     this.setState({
@@ -276,7 +270,6 @@ class Canvas extends React.Component {
         ] = null;
       }
     }
-    // this.state.mappedGrid[y][x] = null;
     // These are the actual coordinates to properly place the pixel
     let actualCoordinatesX = x * this.state.pixelSize;
     let actualCoordinatesY = y * this.state.pixelSize;
@@ -313,16 +306,10 @@ class Canvas extends React.Component {
     // MAP color to proper place on mappedGrid
     for (let i = 0; i < factor; i++) {
       for (let j = 0; j < factor; j++) {
-        // if (this.state.mappedGrid[y * factor + i][
-        //   x * factor + j
-        // ])
-        // {
-        // }
         this.state.mappedGrid[y * factor + i][x * factor + j] = color;
       }
     }
     if (defaultX === undefined && defaultY === undefined) {
-      // if (this.state.mappedGrid[y][x]) {}
       socket.emit('fill', x, y, color, pixelSize, factor);
     }
 
@@ -523,9 +510,6 @@ class Canvas extends React.Component {
             </div>
           </div>
           <div className='buttons-container'>
-            {/* <button onClick={() => this.addBlankFrame()} className='btn'>
-              New Frame
-            </button> */}
 
             <button onClick={this.resetCanvas} className='btn'>
               Reset Canvas
