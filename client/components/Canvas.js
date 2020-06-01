@@ -3,7 +3,7 @@ import socket from '../socket.js';
 import AnimateSprite from './AnimateSprite';
 import Slider from 'react-input-slider';
 import ColorPicker from './ColorPicker';
-
+let frames = [];
 class Canvas extends React.Component {
   constructor(props) {
     super(props);
@@ -29,8 +29,8 @@ class Canvas extends React.Component {
       framesArray: [],
       mappedGrid: {},
       frameCounter: 1,
-      currentFrame: '',
-      fps: 1,
+      currentFrame: '1',
+      fps: 5,
       color: '',
       setTool: true,
     };
@@ -38,21 +38,30 @@ class Canvas extends React.Component {
 
   componentDidMount() {
     this.getFrames();
+    console.log( '>>>> frames >>> ', frames)
     this.ctx = this.canvas.current.getContext('2d');
     this.createGrid();
     socket.on('fill', (x, y, color, pixelSize, factor) => {
       this.fillPixel(x, y, color, pixelSize, factor);
     });
+    setTimeout(() => this.addFrame(), 100);
+    // this.addFrame();
+    // this.setState({
+    //   currentFrame: `${this.state.framesArray.length}`,
+    //   frameCounter: this.state.framesArray.length+1
+    // });
+  }
 
-    this.addFrame();
-    this.setState({
-      currentFrame: '1',
-    });
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (this.state.frameCounter < prevState.frameCounter) {
+      console.log('update >> framesArr',this.state.framesArray)
+    }
   }
 
   // --------- HANDLE CHANGE --------- //
   handleChange(event) {
     event.preventDefault();
+    console.log('handle change, currentFrame ', currentFrame)
     this.setState({
       [event.target.name]: event.target.value,
       currentFrame: event.target.value,
@@ -95,11 +104,8 @@ class Canvas extends React.Component {
   // --------- RENDER SAVED GRID --------- //
 
   renderSaved(savedGrid) {
-    // savedGrid = item = obj of arrays
-    // clear canvas, then render a saved canvas based on colors/coords
-
     let pixelSize = 8;
-    // this.resetCanvas();
+
     this.ctx.clearRect(0, 0, 16 * 24, 16 * 24);
     for (let key in savedGrid) {
       // key = id = index of row array
@@ -122,6 +128,8 @@ class Canvas extends React.Component {
   getFrames() {
     for (let key in localStorage) {
       if (key !== 'currentColor' && typeof localStorage[key] === 'string') {
+        frames.push(key)
+        frames.sort((a,b) => a - b)
         this.setState({
           framesArray: [...this.state.framesArray, key],
         });
@@ -144,20 +152,26 @@ class Canvas extends React.Component {
 
   // --------- DELETE FRAMES --------- //
   deleteFrame(canvasName) {
+
     const filteredArray = this.state.framesArray.filter(
       (frame) => frame !== canvasName
-    );
-    localStorage.removeItem(canvasName);
-    this.setState({
-      framesArray: filteredArray,
-    });
+      );
+      localStorage.removeItem(canvasName);
+      this.setState({
+        framesArray: filteredArray,
+      });
+    if (!this.framesArray.length) {
+      this.addFrame();
+    }
   }
 
   // --------- CREATE A NEW FRAME --------- //
   addBlankFrame() {
     this.ctx.clearRect(0, 0, 16 * 24, 16 * 24);
     this.createGrid();
-
+    this.setState({
+      frameCounter: this.state.frameCounter + 1,
+    });
     if (this.state.framesArray) {
       localStorage.setItem(
         `${this.state.frameCounter}`,
@@ -168,31 +182,32 @@ class Canvas extends React.Component {
       frameCounter: this.state.frameCounter + 1,
     });
     this.setState({
-      framesArray: [...this.state.framesArray, this.state.frameCounter],
-      currentFrame: this.state.frameCounter,
+      framesArray: [...this.state.framesArray, `${this.state.frameCounter}`],
+      currentFrame: `${this.state.frameCounter}`,
     });
   }
 
   // --------- DUPLICATE CURRENT FRAME --------- //
   //saves canvas, adds it to array of canvases
   addFrame() {
-    if (this.state.framesArray) {
+    this.state.framesArray.sort()
+    console.log('frameCounter >>', this.state.frameCounter)
+    if (localStorage.getItem(`${this.state.frameCounter}` === null)) {
       localStorage.setItem(
         `${this.state.frameCounter}`,
         JSON.stringify(this.state.mappedGrid)
       );
     }
+
     this.setState({
+      framesArray: [...this.state.framesArray, `${this.state.currentFrame}`],
+      currentFrame: `${this.state.frameCounter}`,
       frameCounter: this.state.frameCounter + 1,
     });
-
+    console.log('current frame >>', this.state.currentFrame)
     this.ctx.clearRect(0, 0, 16 * 24, 16 * 24);
     this.createGrid();
-    this.setState({
-      framesArray: [...this.state.framesArray, this.state.frameCounter],
-      currentFrame: this.state.frameCounter,
-    });
-    setTimeout(() => this.getCanvas(this.state.currentFrame), 500);
+    setTimeout(() => this.getCanvas(this.state.currentFrame), 1);
   }
 
   // --------- NEW SESSION--------- //
@@ -200,8 +215,6 @@ class Canvas extends React.Component {
     // Clears Storage, clears display of frames underneath grid, resets canvas
     this.resetCanvas();
     localStorage.clear();
-    // or to remove only frames from loacal storage
-    //this.state.framesArray.forEach(frame => (localStorage.removeItem(frame)))
     this.setState({
       frameCounter: 1,
       framesArray: [],
@@ -442,6 +455,7 @@ class Canvas extends React.Component {
             <div className='frames-container'>
               <ul>
                 {this.state.framesArray.map((frame, index) => {
+                  {console.log('map over frames >>', frame, 'index ' , index)}
                   return (
                     <li key={index} className='frame-item'>
                       <button
