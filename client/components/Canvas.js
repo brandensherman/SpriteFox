@@ -78,7 +78,6 @@ class Canvas extends React.Component {
     this.setState((prevState) => ({
       showInstructions: !prevState.showInstructions,
     }));
-    console.log(this.state.showInstructions);
   };
 
   // --------- CREATE GRID --------- //
@@ -181,7 +180,7 @@ class Canvas extends React.Component {
   }
 
   // --------- DUPLICATE CURRENT FRAME --------- //
-  //saves canvas, adds it to array of canvases
+  // saves canvas, adds it to array of canvases
   addFrame() {
 
     if (this.state.framesArray) {
@@ -232,7 +231,7 @@ class Canvas extends React.Component {
   getCanvas(frameNumber) {
     this.ctx.clearRect(0, 0, 16 * 24, 16 * 24);
     let item = JSON.parse(localStorage.getItem(frameNumber));
-    this.renderSaved(item); // item = obj of arrays
+    this.renderSaved(item); // item is obj of arrays
     this.setState({
       currentFrame: frameNumber,
       mappedGrid: item,
