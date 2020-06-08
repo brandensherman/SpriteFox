@@ -168,7 +168,6 @@ button {
 /* LANDING PAGE */
 
 .container {
-  max-width: 1280px;
   padding: 0 4rem;
   overflow: hidden;
 }
