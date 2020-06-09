@@ -12,9 +12,8 @@ const io = socketio(server);
 io.on('connection', (socket) => {
   console.log(socket.id, 'A new client has connected!');
 
-
-  socket.on('joinroom', function(room) {
-    socket.join(room)
+  socket.on('joinroom', function (room) {
+    socket.join(room);
     socket.on('fill', function (x, y, color, pixels, factor) {
       socket.broadcast.to(room).emit('fill', x, y, color, pixels, factor);
     }); //this is currenlty sending this to
