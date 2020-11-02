@@ -3,8 +3,8 @@
 A collaborative editor where people can come together to create and animate sprites.
 
 ## To see the deployed version go to:
+https://spritefox.herokuapp.com/
 
-https://spritefox-app.herokuapp.com/
 
 ## Setup
 
