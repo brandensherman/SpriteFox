@@ -4,7 +4,7 @@ A collaborative editor where people can come together to create and animate spri
 
 ## To see the deployed version go to:
 
-https://spritefox-app.herokuapp.com/
+
 
 ## Setup
 
