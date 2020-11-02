@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import socket from '../socket.js';
 import Slider from 'react-input-slider';
 import ColorPicker from './ColorPicker';
+
+import Instructions from './Instructions.js';
 
 class Canvas extends React.Component {
   constructor(props) {
@@ -35,6 +37,8 @@ class Canvas extends React.Component {
       showInstructions: false,
     };
   }
+
+  // hooks
 
   componentDidMount() {
     this.getFrames();
@@ -158,7 +162,6 @@ class Canvas extends React.Component {
     });
   }
 
-
   // --------- CREATE A NEW FRAME --------- //
   addBlankFrame() {
     this.ctx.clearRect(0, 0, 16 * 24, 16 * 24);
@@ -182,7 +185,6 @@ class Canvas extends React.Component {
   // --------- DUPLICATE CURRENT FRAME --------- //
   // saves canvas, adds it to array of canvases
   addFrame() {
-
     if (this.state.framesArray) {
       localStorage.setItem(
         `${this.state.frameCounter}`,
@@ -376,7 +378,6 @@ class Canvas extends React.Component {
   }
 
   render() {
-
     const {
       setTool,
       currentFrame,
@@ -386,10 +387,7 @@ class Canvas extends React.Component {
       showInstructions,
     } = this.state;
 
-    socket.emit('joinroom', this.props.match.params.hash)
-
-
-
+    socket.emit('joinroom', this.props.match.params.hash);
 
     return (
       <div>
@@ -509,7 +507,6 @@ class Canvas extends React.Component {
             </div>
           </div>
           <div className='buttons-container'>
-
             <button onClick={this.resetCanvas} className='btn'>
               Reset Canvas
             </button>
