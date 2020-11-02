@@ -22,6 +22,9 @@ function LandingPage() {
           <Link className='btn landing-btn' to={`/${hash}`}>
             Create Sprite
           </Link>
+          <Link className='btn landing-btn' to={`/${hash}`}>
+            Create Sprite
+          </Link>
         </div>
       </div>
     </div>
