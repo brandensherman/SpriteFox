@@ -233,14 +233,14 @@ form div {
 }
 
 /* BUTTONS CONTAINER */
-.buttons-container {
+.canvas-buttons {
   display: flex;
   flex-direction: column;
   margin-top: 2rem;
 }
 
-.buttons-container .btn,
-.buttons-container input {
+.canvas-buttons .btn,
+.canvas-buttons input {
   margin-bottom: 1rem;
 }
 

@@ -16,7 +16,7 @@ io.on('connection', (socket) => {
     socket.join(room);
     socket.on('fill', function (x, y, color, pixels, factor) {
       socket.broadcast.to(room).emit('fill', x, y, color, pixels, factor);
-    }); //this is currenlty sending this to
+    });
   });
 
   socket.on('disconnect', function () {
