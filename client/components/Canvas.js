@@ -10,7 +10,6 @@ let canvas, ctx;
 
 const Canvas = (props) => {
   const [pixelSize, setPixelSize] = useState(24);
-  const [pixelSelect, setPixelSelect] = useState(3);
   const [factor, setFactor] = useState(3);
   const [framesArray, setFramesArray] = useState([]);
   const [mappedGrid, setMappedGrid] = useState({});
@@ -27,15 +26,25 @@ const Canvas = (props) => {
     getFrames();
     ctx = canvas.getContext('2d');
     createGrid(ctx, pixelSize, mappedGrid);
+  }, []);
 
-    socket.on('fill', (x, y, socketColor, socketPixelSize, socketFactor) => {
+  useEffect(() => {
+    socket.on('fill', (x, y, socketColor) => {
       setColor(socketColor);
+      fillPixel(x, y, color);
+
+      console.log('fillll', color);
+    });
+  }, [fillPixel]);
+
+  useEffect(() => {
+    socket.on('selectPixelSize', (socketPixelSize, socketFactor) => {
       setPixelSize(socketPixelSize);
       setFactor(socketFactor);
-      console.log(color, pixelSize, factor);
-      fillPixel(x, y, color, pixelSize, factor);
+
+      console.log('Select Size', pixelSize, factor);
     });
-  }, [color, pixelSize, factor]);
+  }, [pixelSize]);
 
   // --------- RENDER SAVED GRID --------- //
   function renderSaved(savedGrid) {
@@ -241,10 +250,9 @@ const Canvas = (props) => {
     } else if (pixels === 8) {
       factor = 1;
     }
-    // socket.emit('selectPixelSize', pixels, factor);
+    socket.emit('selectPixelSize', pixels, factor);
 
     setPixelSize(pixels);
-    setPixelSelect(factor);
     setFactor(factor);
   }
 
@@ -370,7 +378,7 @@ const Canvas = (props) => {
             <button
               onClick={selectPixelSize}
               className={`btn ${
-                pixelSelect === 1 ? 'pixel-btn pixel-btn-active' : 'pixel-btn'
+                factor === 1 ? 'pixel-btn pixel-btn-active' : 'pixel-btn'
               }`}
               value={8}
             >
@@ -379,7 +387,7 @@ const Canvas = (props) => {
             <button
               onClick={selectPixelSize}
               className={`btn ${
-                pixelSelect === 2 ? 'pixel-btn pixel-btn-active' : 'pixel-btn'
+                factor === 2 ? 'pixel-btn pixel-btn-active' : 'pixel-btn'
               }`}
               value={16}
             >
@@ -388,7 +396,7 @@ const Canvas = (props) => {
             <button
               onClick={selectPixelSize}
               className={`btn ${
-                pixelSelect === 3 ? 'pixel-btn pixel-btn-active' : 'pixel-btn'
+                factor === 3 ? 'pixel-btn pixel-btn-active' : 'pixel-btn'
               }`}
               value={24}
             >

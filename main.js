@@ -14,8 +14,12 @@ io.on('connection', (socket) => {
 
   socket.on('joinroom', function (room) {
     socket.join(room);
-    socket.on('fill', function (x, y, color, pixels, factor) {
-      socket.broadcast.to(room).emit('fill', x, y, color, pixels, factor);
+    socket.on('fill', function (x, y, color) {
+      socket.broadcast.to(room).emit('fill', x, y, color);
+    });
+
+    socket.on('selectPixelSize', function (pixels, factor) {
+      socket.broadcast.to(room).emit('selectPixelSize', pixels, factor);
     });
   });
 
