@@ -27,6 +27,10 @@ const Canvas = (props) => {
     getFrames();
     ctx = canvas.getContext('2d');
     createGrid(ctx, pixelSize, mappedGrid);
+
+    socket.on('fill', (x, y, color, pixelSize, factor) => {
+      fillPixel(x, y, color, pixelSize, factor);
+    });
   }, []);
 
   // --------- RENDER SAVED GRID --------- //
