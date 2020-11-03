@@ -15,6 +15,7 @@ io.on('connection', (socket) => {
   socket.on('joinroom', function (room) {
     socket.join(room);
     socket.on('fill', function (x, y, color, pixels, factor) {
+      console.log('FILLLLLING');
       socket.broadcast.to(room).emit('fill', x, y, color, pixels, factor);
     });
   });

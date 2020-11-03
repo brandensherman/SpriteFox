@@ -8,7 +8,7 @@ import { createGrid } from '../utils/createGrid';
 
 let canvas, ctx;
 
-const Canvas = () => {
+const Canvas = (props) => {
   const [pixelSize, setPixelSize] = useState(24);
   const [pixelSelect, setPixelSelect] = useState(3);
   const [factor, setFactor] = useState(3);
@@ -239,6 +239,8 @@ const Canvas = () => {
     setPixelSelect(factor);
     setFactor(factor);
   }
+
+  socket.emit('joinroom', props.match.params.hash);
 
   return (
     <div>
