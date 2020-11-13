@@ -13,7 +13,7 @@ function LandingPage() {
     <div className='container'>
       <div className='landing-container'>
         <div className='center-box'>
-          <h1>SpriteFox</h1>
+          <h1>SpriteLab</h1>
           <p>
             A real-time, collaborative editor
             <br />
