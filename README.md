@@ -1,24 +1,24 @@
-# SpriteFox
+# SpriteLab
 
 A collaborative editor where people can come together to create and animate sprites.
 
 ## To see the deployed version go to:
-https://spritefox-app.herokuapp.com/
 
+https://spritelab.herokuapp.com/
 
 ## Setup
 
-To use/edit Spritefox, you'll need to take the following steps:
+To use/edit SpriteLab, you'll need to take the following steps:
 
-* Fork or clone this repo
-* npm install
+- Fork or clone this repo
+- npm install
 
 ## Start
 
 To run the website locally:
 
-* Run `npm run start-dev`
-* Then navigate to:
+- Run `npm run start-dev`
+- Then navigate to:
   http://localhost:3000/
 
 If you want to run the server and/or `webpack` separately, you can also

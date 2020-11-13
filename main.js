@@ -1,4 +1,3 @@
-const { db } = require('./server/db');
 const app = require('./server');
 const socketio = require('socket.io');
 const PORT = process.env.PORT || 3000;
