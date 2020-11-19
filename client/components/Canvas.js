@@ -2,8 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import socket from '../socket.js';
 import Slider from 'react-input-slider';
 import ColorPicker from './ColorPicker';
-import Instructions from './Instructions.js';
-
 import { createGrid } from '../utils/createGrid';
 
 let canvas, ctx;

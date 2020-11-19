@@ -15,12 +15,16 @@ function LandingPage() {
         <div className='center-box'>
           <h1>SpriteLab</h1>
           <p>
-            A real-time, collaborative editor
-            <br />
-            for creating animated sprites and pixel art
+            A real-time, collaborative editor for creating animated sprites and
+            pixel art.
+          </p>
+          <p>
+            To get started, click the button below and join a new room. If you'd
+            like to have a friend draw with you, simply send them the url once
+            you enter the room.
           </p>
           <Link className='btn landing-btn' to={`/${hash}`}>
-            Create Sprite
+            <h3>Create Sprite</h3>
           </Link>
         </div>
       </div>
