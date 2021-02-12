@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node main.js",
-    "start-dev": "webpack -w & nodemon main.js",
+    "start": "node server/index.js",
+    "dev": "webpack -w & nodemon server/index.js",
     "deploy": "script/deploy"
   },
   "keywords": [],
@@ -15,17 +15,12 @@
     "@babel/plugin-proposal-class-properties": "^7.8.3",
     "@babel/plugin-proposal-decorators": "^7.8.3",
     "express": "^4.17.1",
-    "morgan": "^1.10.0",
-    "pg": "^8.0.3",
-    "pg-hstore": "^2.3.3",
+    "nodemon": "^2.0.7",
     "react": "^16.13.1",
     "react-color": "^2.18.1",
     "react-dom": "^16.13.1",
     "react-input-slider": "^5.1.7",
-    "react-router-dom": "^5.1.2",
-    "sequelize": "^5.21.7",
-    "socket.io": "^2.3.0",
-    "uikit": "^3.4.6"
+    "react-router-dom": "^5.1.2"
   },
   "devDependencies": {
     "@babel/core": "^7.9.6",
