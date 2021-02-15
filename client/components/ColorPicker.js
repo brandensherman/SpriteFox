@@ -14,16 +14,12 @@ const ColorPicker = ({ currentColor }) => {
   }, [color]);
 
   return (
-    <div className=''>
-      <div>
-        <SketchPicker
-          className='sketch'
-          color={currentColor}
-          disableAlpha={true}
-          onChangeComplete={handleChangeComplete}
-        />
-      </div>
-    </div>
+    <SketchPicker
+      className='sketch'
+      color={currentColor}
+      disableAlpha={true}
+      onChangeComplete={handleChangeComplete}
+    />
   );
 };
 

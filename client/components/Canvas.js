@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import Slider from 'react-input-slider';
 import ColorPicker from './ColorPicker';
 import { createGrid } from '../utils/createGrid';
 
@@ -132,28 +131,27 @@ const Canvas = (props) => {
 
         <div className='canvas-buttons'>
           {/* Color Picker */}
-          <div>
-            <ColorPicker currentColor={setColor} />
 
-            {/* Draw/Erase Buttons */}
-            <div className='tools'>
-              <button
-                onClick={() => setTool(!tool)}
-                className={`btn ${
-                  tool ? 'tool-btn tool-btn-active' : 'tool-btn'
-                }`}
-              >
-                Draw
-              </button>
-              <button
-                onClick={() => setTool(!tool)}
-                className={`btn ${
-                  tool ? 'tool-btn' : 'tool-btn tool-btn-active'
-                }`}
-              >
-                Erase
-              </button>
-            </div>
+          <ColorPicker currentColor={setColor} />
+
+          {/* Draw/Erase Buttons */}
+          <div className='tools'>
+            <button
+              onClick={() => setTool(!tool)}
+              className={`btn ${
+                tool ? 'tool-btn tool-btn-active' : 'tool-btn'
+              }`}
+            >
+              Draw
+            </button>
+            <button
+              onClick={() => setTool(!tool)}
+              className={`btn ${
+                tool ? 'tool-btn' : 'tool-btn tool-btn-active'
+              }`}
+            >
+              Erase
+            </button>
           </div>
 
           {/* Pixel Buttons */}
