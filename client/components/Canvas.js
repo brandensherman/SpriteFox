@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import axios from 'axios';
 import ColorPicker from './ColorPicker';
 import { createGrid } from '../utils/createGrid';
 
@@ -18,6 +19,15 @@ const Canvas = (props) => {
     ctx = canvas.getContext('2d');
     createGrid(ctx, pixelSize, mappedGrid);
   }, []);
+
+  async function saveCanvas(grid) {
+    const body = {
+      grid,
+    };
+
+    const { data } = await axios.post('/api/user/artboards', body);
+    console.log(data);
+  }
 
   // --------- RESET CANVAS --------- //
   function resetCanvas() {
@@ -188,6 +198,13 @@ const Canvas = (props) => {
           {/* Reset Canvas */}
           <button onClick={resetCanvas} className='btn session-btn'>
             Reset Canvas
+          </button>
+
+          <button
+            onClick={() => saveCanvas(mappedGrid)}
+            className='btn session-btn'
+          >
+            Save Canvas
           </button>
         </div>
       </div>
