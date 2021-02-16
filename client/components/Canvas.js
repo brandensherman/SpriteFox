@@ -11,6 +11,7 @@ const Canvas = (props) => {
   const [mappedGrid, setMappedGrid] = useState({});
   const [color, setColor] = useState('');
   const [tool, setTool] = useState(true);
+  const [frame, setFrame] = useState(2);
 
   const canvasRef = useRef();
 
@@ -18,14 +19,20 @@ const Canvas = (props) => {
     canvas = canvasRef.current;
     ctx = canvas.getContext('2d');
     createGrid(ctx, pixelSize, mappedGrid);
+
+    // fetch session -> fetchArtboard(match.params.id)
+    // load createdGrid based on session name and user
   }, []);
 
-  async function saveCanvas(grid) {
+  async function saveCanvas() {
+    let grid = JSON.parse(localStorage.getItem(frame));
+
     const body = {
+      name: `${frame}`,
       grid,
     };
 
-    const { data } = await axios.post('/api/user/artboards', body);
+    const { data } = await axios.put('/api/user/artboards', body);
     console.log(data);
   }
 
@@ -80,6 +87,8 @@ const Canvas = (props) => {
     ctx.fillStyle = color;
 
     ctx.fillRect(actualCoordinatesX, actualCoordinatesY, pixelSize, pixelSize);
+
+    localStorage.setItem(`${frame}`, JSON.stringify(mappedGrid));
   }
 
   // --------- HANDLE FILL/DELETE--------- //
@@ -140,6 +149,16 @@ const Canvas = (props) => {
         </div>
 
         <div className='canvas-buttons'>
+          {/* Reset Canvas */}
+          <button onClick={resetCanvas} className='btn session-btn'>
+            Reset Canvas
+          </button>
+
+          {/* Save Canvas */}
+          <button onClick={() => saveCanvas()} className='btn session-btn'>
+            Save Canvas
+          </button>
+
           {/* Color Picker */}
 
           <ColorPicker currentColor={setColor} />
@@ -194,18 +213,6 @@ const Canvas = (props) => {
               24px
             </button>
           </div>
-
-          {/* Reset Canvas */}
-          <button onClick={resetCanvas} className='btn session-btn'>
-            Reset Canvas
-          </button>
-
-          <button
-            onClick={() => saveCanvas(mappedGrid)}
-            className='btn session-btn'
-          >
-            Save Canvas
-          </button>
         </div>
       </div>
     </div>

@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 
 const ArtboardSchema = new mongoose.Schema({
-  // name: {
-  //   type: String,
-  //   required: true,
-  // },
+  name: {
+    type: String,
+    required: true,
+  },
   grid: {
     type: Object,
     required: true,
