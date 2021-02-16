@@ -23,6 +23,8 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
+app.use('/api', require('./api'));
+
 app.get('*', function (req, res) {
   res.sendFile(path.join(__dirname, '../public/index.html'));
 });
