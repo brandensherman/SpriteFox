@@ -2,8 +2,10 @@ const express = require('express');
 const path = require('path');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
+const session = require('express-session');
 
-const { connectDB } = require('./db');
+const { connectDB, User } = require('./db');
+
 const app = express();
 
 app.use(express.json());
@@ -22,6 +24,14 @@ connectDB();
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
+
+app.use(
+  session({
+    secret: process.env.SECRET,
+    resave: false,
+    saveUninitialized: false,
+  })
+);
 
 app.use('/api', require('./api'));
 

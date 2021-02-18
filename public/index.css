@@ -85,6 +85,23 @@ button {
   border: 2.5px solid #f5a623;
 }
 
+.login-btn,
+.register-btn {
+  padding: 0.5rem 1.3rem;
+}
+
+.login-btn {
+  margin-right: 1rem;
+}
+
+/* NAVBAR */
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem 3rem;
+}
+
 /* MAIN CONTAINER */
 .main-container {
   display: flex;

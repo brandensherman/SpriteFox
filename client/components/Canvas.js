@@ -33,7 +33,6 @@ const Canvas = (props) => {
     };
 
     const { data } = await axios.put('/api/user/artboards', body);
-    console.log(data);
   }
 
   // --------- RESET CANVAS --------- //
