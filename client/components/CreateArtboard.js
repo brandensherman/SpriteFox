@@ -1,11 +1,29 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import axios from 'axios';
 
-function CreateArtboard() {
+const CreateArtboard = ({ location, history }) => {
   const [name, setName] = useState('');
+  const redirect = location.search
+    ? location.search.split('=')[1]
+    : `/canvas/${name}`;
 
-  const handleSubmit = (e) => {
+  const userInfo = localStorage.getItem('userInfo')
+    ? JSON.parse(localStorage.getItem('userInfo'))
+    : null;
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const { data } = await axios.post(`/api/user/artboards`, {
+      name,
+      user: userInfo._id,
+    });
+
+    if (data.success) {
+      localStorage.setItem(`${name}`, JSON.stringify({}));
+      history.push(redirect);
+    }
   };
 
   return (
@@ -21,13 +39,13 @@ function CreateArtboard() {
               onChange={(e) => setName(e.target.value)}
             />
             <button className='btn btn-submit' type='submit'>
-              Register
+              Create
             </button>
           </form>
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default CreateArtboard;

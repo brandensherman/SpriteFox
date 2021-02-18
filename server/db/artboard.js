@@ -7,13 +7,13 @@ const ArtboardSchema = new mongoose.Schema({
   },
   grid: {
     type: Object,
+    required: false,
+  },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
     required: true,
   },
-  // user: {
-  //   type: mongoose.Schema.Types.ObjectId,
-  //   ref: 'User',
-  //   required: true,
-  // },
 });
 
 module.exports = mongoose.model('Artboard', ArtboardSchema);

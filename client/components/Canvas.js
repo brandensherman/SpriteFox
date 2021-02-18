@@ -11,28 +11,31 @@ const Canvas = (props) => {
   const [mappedGrid, setMappedGrid] = useState({});
   const [color, setColor] = useState('');
   const [tool, setTool] = useState(true);
-  const [frame, setFrame] = useState(2);
+  const [gridName, setGridName] = useState('');
+  const [user, setUser] = useState({});
 
   const canvasRef = useRef();
+
+  const userInfo = localStorage.getItem('userInfo')
+    ? JSON.parse(localStorage.getItem('userInfo'))
+    : null;
 
   useEffect(() => {
     canvas = canvasRef.current;
     ctx = canvas.getContext('2d');
     createGrid(ctx, pixelSize, mappedGrid);
-
-    // fetch session -> fetchArtboard(match.params.id)
-    // load createdGrid based on session name and user
+    console.log(props.match.params.id);
   }, []);
 
   async function saveCanvas() {
-    let grid = JSON.parse(localStorage.getItem(frame));
+    let grid = JSON.parse(localStorage.getItem(props.match.params.id));
 
     const body = {
-      name: `${frame}`,
+      name: `${props.match.params.id}`,
       grid,
     };
 
-    const { data } = await axios.put('/api/user/artboards', body);
+    const { data } = await axios.put(`/api/user/artboards`, body);
   }
 
   // --------- RESET CANVAS --------- //
@@ -87,7 +90,10 @@ const Canvas = (props) => {
 
     ctx.fillRect(actualCoordinatesX, actualCoordinatesY, pixelSize, pixelSize);
 
-    localStorage.setItem(`${frame}`, JSON.stringify(mappedGrid));
+    localStorage.setItem(
+      `${props.match.params.id}`,
+      JSON.stringify(mappedGrid)
+    );
   }
 
   // --------- HANDLE FILL/DELETE--------- //
@@ -148,15 +154,20 @@ const Canvas = (props) => {
         </div>
 
         <div className='canvas-buttons'>
-          {/* Reset Canvas */}
-          <button onClick={resetCanvas} className='btn session-btn'>
-            Reset Canvas
-          </button>
-
-          {/* Save Canvas */}
-          <button onClick={() => saveCanvas()} className='btn session-btn'>
-            Save Canvas
-          </button>
+          {userInfo ? (
+            <div className='canvas-buttons'>
+              <button onClick={resetCanvas} className='btn session-btn'>
+                Reset Canvas
+              </button>
+              <button onClick={() => saveCanvas()} className='btn session-btn'>
+                Save Canvas
+              </button>
+            </div>
+          ) : (
+            <button onClick={resetCanvas} className='btn session-btn'>
+              Reset Canvas
+            </button>
+          )}
 
           {/* Color Picker */}
 

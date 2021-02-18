@@ -14,20 +14,23 @@ const Navbar = () => {
 
   return (
     <div className='nav-container'>
-      <h2>SpriteLab</h2>
+      <Link to='/'>SpriteLab</Link>
 
       {!userInfo ? (
         <div className='nav-links'>
-          <Link to='/login' className='btn login-btn'>
+          <Link to='/login' className='btn nav-btn login-btn'>
             Login
           </Link>
-          <Link to='/register' className='btn register-btn'>
+          <Link to='/register' className='btn nav-btn'>
             Register
           </Link>
         </div>
       ) : (
         <div>
-          <Link to='/' className='btn register-btn' onClick={handleLogout}>
+          <Link to='/profile' className='btn nav-btn login-btn'>
+            Profile
+          </Link>
+          <Link to='/login' className='btn nav-btn' onClick={handleLogout}>
             Logout
           </Link>
         </div>

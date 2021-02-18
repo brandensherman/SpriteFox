@@ -1,4 +1,5 @@
 // --------- CREATE GRID --------- //
+
 export function createGrid(ctx, pixelSize, mappedGrid) {
   let y = 0;
   let rows = 48;

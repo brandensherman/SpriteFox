@@ -1,9 +1,11 @@
 const router = require('express').Router();
 const { Artboard } = require('../db');
 
-router.get('/artboards', async (req, res, next) => {
+router.get('/artboards/:id', async (req, res, next) => {
   try {
-    const artboards = await Artboard.find();
+    const artboards = await Artboard.find({ user: req.params.id });
+
+    console.log(artboards);
 
     res.status(200).json({ success: true, artboards });
   } catch (error) {
@@ -13,8 +15,9 @@ router.get('/artboards', async (req, res, next) => {
 
 router.post('/artboards', async (req, res, next) => {
   try {
+    console.log(req.body);
     const artboard = await Artboard.create(req.body);
-
+    console.log(artboard);
     res.status(201).json({ success: true, data: artboard });
   } catch (error) {
     console.log(error);
