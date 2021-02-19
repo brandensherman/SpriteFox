@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import ColorPicker from './ColorPicker';
+import ArtboardList from './ArtboardList';
 import { createGrid } from '../utils/createGrid';
 
 let canvas, ctx;
 
-const Canvas = (props) => {
+const Canvas = () => {
   const [pixelSize, setPixelSize] = useState(24);
   const [factor, setFactor] = useState(3);
   const [mappedGrid, setMappedGrid] = useState({});
@@ -24,14 +25,13 @@ const Canvas = (props) => {
     canvas = canvasRef.current;
     ctx = canvas.getContext('2d');
     createGrid(ctx, pixelSize, mappedGrid);
-    console.log(props.match.params.id);
   }, []);
 
   async function saveCanvas() {
-    let grid = JSON.parse(localStorage.getItem(props.match.params.id));
+    let grid = JSON.parse(localStorage.getItem(gridName));
 
     const body = {
-      name: `${props.match.params.id}`,
+      name: `${gridName}`,
       grid,
     };
 
@@ -90,10 +90,7 @@ const Canvas = (props) => {
 
     ctx.fillRect(actualCoordinatesX, actualCoordinatesY, pixelSize, pixelSize);
 
-    localStorage.setItem(
-      `${props.match.params.id}`,
-      JSON.stringify(mappedGrid)
-    );
+    localStorage.setItem(`${gridName}`, JSON.stringify(mappedGrid));
   }
 
   // --------- HANDLE FILL/DELETE--------- //
@@ -132,6 +129,8 @@ const Canvas = (props) => {
   return (
     <div>
       <div className='main-container container'>
+        {userInfo ? <ArtboardList /> : <div></div>}
+
         {/* Canvas */}
         <div className='canvas-container'>
           <div className='canvas'>

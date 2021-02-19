@@ -8,7 +8,7 @@ const RegisterScreen = ({ location, history }) => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  const redirect = location.search ? location.search.split('=')[1] : '/profile';
+  const redirect = location.search ? location.search.split('=')[1] : '/';
 
   const userInfo = localStorage.getItem('userInfo')
     ? JSON.parse(localStorage.getItem('userInfo'))

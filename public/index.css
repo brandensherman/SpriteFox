@@ -57,13 +57,39 @@ button {
   color: #4a90e2;
   border-radius: 5px;
   font-family: 'Montserrat', sans-serif;
-  text-transform: uppercase;
   font-size: 0.8rem;
 }
 
 .btn:hover {
   background: #4a90e2;
   border: 2.5px solid #4a90e2;
+  color: #fff;
+}
+
+.artboard-btn {
+  border: none;
+  border-bottom: 2px transparent solid;
+  background: #fff;
+  font-family: 'Montserrat', sans-serif;
+  transition: all 0.5s;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.artboard-btn:hover {
+  border-bottom: 2px solid #000;
+}
+
+.add-btn {
+  border: 2.5px solid #000;
+  padding: 0.1rem 0.4rem;
+  color: #000;
+  font-size: 1rem;
+}
+
+.add-btn:hover {
+  background: #000;
+  border: 2.5px solid #000;
   color: #fff;
 }
 
@@ -94,6 +120,20 @@ button {
   margin-right: 1rem;
 }
 
+/* ARTBOARD LIST */
+.artboard-list h2 {
+  margin-bottom: 0.5rem;
+  display: inline-block;
+  border-bottom: 3px solid #000;
+}
+
+.artboard-input {
+  padding: 4px 10px;
+  margin-right: 5px;
+  margin-bottom: 1rem;
+  width: 65%;
+}
+
 /* NAVBAR */
 .nav-container {
   display: flex;
@@ -112,7 +152,7 @@ button {
 }
 
 .canvas-container {
-  margin-right: 2rem;
+  margin: 0 2rem;
 }
 
 /* BUTTONS CONTAINER */
