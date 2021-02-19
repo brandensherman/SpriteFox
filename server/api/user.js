@@ -1,8 +1,8 @@
 const router = require('express').Router();
 const { Artboard } = require('../db');
-
+const protect = require('../middleware/protect');
 // Get Single Artboard
-router.get('/artboard/:name', async (req, res, next) => {
+router.get('/artboards/:name', protect, async (req, res, next) => {
   try {
     const artboard = await Artboard.findOne({ name: req.params.name });
     res.status(200).json({ success: true, artboard: artboard.grid });
@@ -12,7 +12,7 @@ router.get('/artboard/:name', async (req, res, next) => {
 });
 
 // Get All Artboards
-router.get('/artboards/:id', async (req, res, next) => {
+router.get('/:id', protect, async (req, res, next) => {
   try {
     const artboards = await Artboard.find({ user: req.params.id });
     res.status(200).json({ success: true, artboards });
@@ -21,17 +21,17 @@ router.get('/artboards/:id', async (req, res, next) => {
   }
 });
 
-router.post('/artboards', async (req, res, next) => {
+router.post('/artboards', protect, async (req, res, next) => {
   try {
     const artboard = await Artboard.create(req.body);
-    console.log(artboard);
+
     res.status(201).json({ success: true, data: artboard });
   } catch (error) {
     console.log(error);
   }
 });
 
-router.put('/artboards', async (req, res, next) => {
+router.put('/artboards', protect, async (req, res, next) => {
   try {
     const artboard = await Artboard.findOne({
       name: req.body.name,
@@ -48,4 +48,5 @@ router.put('/artboards', async (req, res, next) => {
     console.log(error);
   }
 });
+
 module.exports = router;

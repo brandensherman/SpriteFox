@@ -2,8 +2,7 @@ const express = require('express');
 const path = require('path');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
-const session = require('express-session');
-
+const cookieParser = require('cookie-parser');
 const { connectDB, User } = require('./db');
 
 const app = express();
@@ -12,6 +11,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static(path.join(__dirname, '../public')));
+
+app.use(cookieParser());
 
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
@@ -24,14 +25,6 @@ connectDB();
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
-
-app.use(
-  session({
-    secret: process.env.SECRET,
-    resave: false,
-    saveUninitialized: false,
-  })
-);
 
 app.use('/api', require('./api'));
 

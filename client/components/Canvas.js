@@ -65,7 +65,7 @@ const Canvas = () => {
       };
     }
 
-    const { data } = await axios.put(`/api/user/artboards`, body);
+    await axios.put(`/api/user/artboards`, body);
   }
 
   // --------- RENDER SAVED GRID --------- //

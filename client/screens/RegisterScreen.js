@@ -37,8 +37,8 @@ const RegisterScreen = ({ location, history }) => {
       );
 
       if (data.success === true) {
-        const cookie = await axios.get('/api/auth/me');
-        localStorage.setItem('userInfo', JSON.stringify(cookie.data));
+        const user = await axios.get('/api/auth/me');
+        localStorage.setItem('userInfo', JSON.stringify(user.data));
 
         history.push(redirect);
       }

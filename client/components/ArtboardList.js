@@ -17,16 +17,15 @@ const ArtboardList = ({ saveCanvas, renderGrid, currentGrid }) => {
 
   async function fetchArtboards() {
     if (userInfo) {
-      const { data } = await axios.get(`api/user/artboards/${userInfo._id}`);
+      const { data } = await axios.get(`api/user/${userInfo.data._id}`);
       setArtboards(data.artboards);
     }
   }
 
   async function selectArtboard(name) {
     currentGrid(name);
-    const { data } = await axios.get(`api/user/artboard/${name}`);
+    const { data } = await axios.get(`api/user/artboards/${name}`);
 
-    console.log(data);
     if (data.artboard) {
       renderGrid(data.artboard);
     }
@@ -37,7 +36,7 @@ const ArtboardList = ({ saveCanvas, renderGrid, currentGrid }) => {
 
     const { data } = await axios.post(`/api/user/artboards`, {
       name,
-      user: userInfo._id,
+      user: userInfo.data._id,
       grid: {},
     });
 
