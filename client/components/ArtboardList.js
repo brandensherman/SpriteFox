@@ -1,15 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Navbar from './Navbar';
 
-const ArtboardList = () => {
+const ArtboardList = ({ saveCanvas, renderGrid, currentGrid }) => {
   const [artboards, setArtboards] = useState([]);
   const [name, setName] = useState('');
 
   const userInfo = localStorage.getItem('userInfo')
     ? JSON.parse(localStorage.getItem('userInfo'))
     : null;
+
+  useEffect(() => {
+    fetchArtboards();
+  }, []);
 
   async function fetchArtboards() {
     if (userInfo) {
@@ -18,22 +22,31 @@ const ArtboardList = () => {
     }
   }
 
-  useEffect(() => {
-    fetchArtboards();
-  }, [artboards, name, userInfo]);
+  async function selectArtboard(name) {
+    currentGrid(name);
+    const { data } = await axios.get(`api/user/artboard/${name}`);
 
-  const handleSubmit = async (e) => {
+    console.log(data);
+    if (data.artboard) {
+      renderGrid(data.artboard);
+    }
+  }
+
+  async function handleSubmit(e) {
     e.preventDefault();
 
     const { data } = await axios.post(`/api/user/artboards`, {
       name,
       user: userInfo._id,
+      grid: {},
     });
 
     if (data.success) {
+      saveCanvas(name);
+      fetchArtboards();
       setName('');
     }
-  };
+  }
 
   return (
     <div className='artboard-container'>
@@ -42,7 +55,7 @@ const ArtboardList = () => {
           <input
             className='artboard-input'
             type='name'
-            placeholder='Name of artboard'
+            placeholder='Enter name of artboard'
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
@@ -56,7 +69,11 @@ const ArtboardList = () => {
         <h2>Artboards</h2>
         {artboards.map((artboard) => (
           <div key={artboard._id}>
-            <button className='artboard-btn'>{`${artboard.name}`}</button>
+            <button
+              className='artboard-btn'
+              name={artboard.name}
+              onClick={(e) => selectArtboard(e.target.name)}
+            >{`${artboard.name}`}</button>
           </div>
         ))}
       </div>

@@ -14,7 +14,9 @@ const Navbar = () => {
 
   return (
     <div className='nav-container'>
-      <Link to='/'>SpriteLab</Link>
+      <Link className='nav-logo' to='/'>
+        SpriteLab
+      </Link>
 
       {!userInfo ? (
         <div className='nav-links'>

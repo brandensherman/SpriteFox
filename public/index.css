@@ -84,7 +84,7 @@ button {
   border: 2.5px solid #000;
   padding: 0.1rem 0.4rem;
   color: #000;
-  font-size: 1rem;
+  font-size: 0.8rem;
 }
 
 .add-btn:hover {
@@ -95,7 +95,9 @@ button {
 
 .btn:focus,
 .switch-btn:focus,
-.session-btn {
+.session-btn,
+.add-btn,
+.artboard-btn {
   outline: none;
 }
 
@@ -131,7 +133,7 @@ button {
   padding: 4px 10px;
   margin-right: 5px;
   margin-bottom: 1rem;
-  width: 65%;
+  width: 70%;
 }
 
 /* NAVBAR */
@@ -142,6 +144,9 @@ button {
   padding: 2rem 3rem;
 }
 
+.nav-logo {
+  font-size: 1.5rem;
+}
 /* MAIN CONTAINER */
 .main-container {
   display: flex;

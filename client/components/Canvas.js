@@ -2,8 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import ColorPicker from './ColorPicker';
 import ArtboardList from './ArtboardList';
-import { createGrid } from '../utils/createGrid';
-
 let canvas, ctx;
 
 const Canvas = () => {
@@ -27,15 +25,71 @@ const Canvas = () => {
     createGrid(ctx, pixelSize, mappedGrid);
   }, []);
 
-  async function saveCanvas() {
-    let grid = JSON.parse(localStorage.getItem(gridName));
+  // --------- CREATE GRID --------- //
 
-    const body = {
-      name: `${gridName}`,
-      grid,
-    };
+  function createGrid(ctx, pixelSize, mappedGrid) {
+    let y = 0;
+    let rows = 48;
+    for (let i = 0; i < rows; i++) {
+      let x = 0;
+      let array = [];
+      for (let j = 0; j < rows; j++) {
+        array.push(null);
+        ctx.fillStyle = 'rgba(0, 0, 0, 0)';
+        ctx.fillRect(x, y, pixelSize, pixelSize);
+        x += pixelSize;
+      }
+
+      // Add each array to the mappedGrid
+      mappedGrid[i] = array;
+      y += pixelSize;
+    }
+  }
+
+  // ---------  SAVE GRID --------- //
+  async function saveCanvas(name) {
+    let body;
+
+    if (name) {
+      body = {
+        name: `${name}`,
+        mappedGrid,
+      };
+      setGridName(name);
+      resetCanvas();
+      createGrid(ctx, pixelSize, mappedGrid);
+    } else {
+      body = {
+        name: `${gridName}`,
+        mappedGrid,
+      };
+    }
 
     const { data } = await axios.put(`/api/user/artboards`, body);
+  }
+
+  // --------- RENDER SAVED GRID --------- //
+  function renderSaved(savedGrid) {
+    let pixelSize = 8;
+
+    ctx.clearRect(0, 0, 16 * 24, 16 * 24);
+    for (let key in savedGrid) {
+      // key = id = index of row array
+      let pixelRow = savedGrid[key];
+      for (let i = 0; i < pixelRow.length; i++) {
+        if (pixelRow[i] !== null) {
+          // These are the actual coordinates to render on the grid
+          let coordinateX = i * pixelSize;
+          let coordinateY = key * pixelSize;
+
+          // Render each original pixel from the saved grid
+          ctx.fillStyle = pixelRow[i];
+          ctx.fillRect(coordinateX, coordinateY, pixelSize, pixelSize);
+        }
+      }
+    }
+
+    setMappedGrid(savedGrid);
   }
 
   // --------- RESET CANVAS --------- //
@@ -129,7 +183,15 @@ const Canvas = () => {
   return (
     <div>
       <div className='main-container container'>
-        {userInfo ? <ArtboardList /> : <div></div>}
+        {userInfo ? (
+          <ArtboardList
+            saveCanvas={saveCanvas}
+            renderGrid={renderSaved}
+            currentGrid={setGridName}
+          />
+        ) : (
+          <div></div>
+        )}
 
         {/* Canvas */}
         <div className='canvas-container'>

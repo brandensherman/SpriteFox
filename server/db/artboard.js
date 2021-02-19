@@ -7,7 +7,7 @@ const ArtboardSchema = new mongoose.Schema({
   },
   grid: {
     type: Object,
-    required: false,
+    required: true,
   },
   user: {
     type: mongoose.Schema.Types.ObjectId,

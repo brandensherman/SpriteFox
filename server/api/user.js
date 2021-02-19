@@ -1,12 +1,20 @@
 const router = require('express').Router();
 const { Artboard } = require('../db');
 
+// Get Single Artboard
+router.get('/artboard/:name', async (req, res, next) => {
+  try {
+    const artboard = await Artboard.findOne({ name: req.params.name });
+    res.status(200).json({ success: true, artboard: artboard.grid });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+// Get All Artboards
 router.get('/artboards/:id', async (req, res, next) => {
   try {
     const artboards = await Artboard.find({ user: req.params.id });
-
-    console.log(artboards);
-
     res.status(200).json({ success: true, artboards });
   } catch (error) {
     console.log(error);
@@ -15,7 +23,6 @@ router.get('/artboards/:id', async (req, res, next) => {
 
 router.post('/artboards', async (req, res, next) => {
   try {
-    console.log(req.body);
     const artboard = await Artboard.create(req.body);
     console.log(artboard);
     res.status(201).json({ success: true, data: artboard });
@@ -32,10 +39,11 @@ router.put('/artboards', async (req, res, next) => {
 
     const updatedArtboard = await Artboard.findOneAndUpdate(
       { name: artboard.name, _id: artboard._id },
-      req.body,
+      { grid: req.body.mappedGrid },
       { new: true }
     );
-    console.log(req.body);
+
+    res.status(200).json({ success: true, updatedArtboard });
   } catch (error) {
     console.log(error);
   }
