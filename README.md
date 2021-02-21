@@ -1,6 +1,6 @@
 # SpriteLab
 
-A collaborative editor where people can come together to create and animate sprites.
+A web application for creating pixel art.
 
 ## To see the deployed version go to:
 
