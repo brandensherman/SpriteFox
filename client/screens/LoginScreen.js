@@ -32,7 +32,6 @@ const LoginScreen = ({ location, history }) => {
 
     if (data.success === true) {
       const user = await axios.get('/api/auth/me');
-      console.log('USER ----', user);
       localStorage.setItem('userInfo', JSON.stringify(user.data));
 
       history.push(redirect);

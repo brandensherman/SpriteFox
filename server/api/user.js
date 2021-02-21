@@ -7,7 +7,7 @@ router.get('/artboards/:name', protect, async (req, res, next) => {
     const artboard = await Artboard.findOne({ name: req.params.name });
     res.status(200).json({ success: true, artboard: artboard.grid });
   } catch (error) {
-    console.log(error);
+    next(error);
   }
 });
 
@@ -17,7 +17,7 @@ router.get('/:id', protect, async (req, res, next) => {
     const artboards = await Artboard.find({ user: req.params.id });
     res.status(200).json({ success: true, artboards });
   } catch (error) {
-    console.log(error);
+    next(error);
   }
 });
 
@@ -27,7 +27,7 @@ router.post('/artboards', protect, async (req, res, next) => {
 
     res.status(201).json({ success: true, data: artboard });
   } catch (error) {
-    console.log(error);
+    next(error);
   }
 });
 
@@ -45,7 +45,7 @@ router.put('/artboards', protect, async (req, res, next) => {
 
     res.status(200).json({ success: true, updatedArtboard });
   } catch (error) {
-    console.log(error);
+    next(error);
   }
 });
 

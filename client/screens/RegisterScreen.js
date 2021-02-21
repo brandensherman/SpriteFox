@@ -23,9 +23,7 @@ const RegisterScreen = ({ location, history }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (password !== confirmPassword) {
-      console.log('passwords do not match');
-    } else {
+    if (password === confirmPassword) {
       const { data } = await axios.post(
         '/api/auth/register',
         {

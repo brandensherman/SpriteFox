@@ -4,25 +4,6 @@ const sendToken = require('../middleware/sendToken');
 const protect = require('../middleware/protect');
 
 router.get('/me', protect, async (req, res, next) => {
-  // try {
-  //   if (!req.session.user) {
-  //     const error = new Error('Not found');
-  //     error.status = 404;
-  //     next(error);
-  //   } else {
-  //     const user = await User.findById(req.session.user);
-  //     if (user) {
-  //       res.json(user);
-  //     } else {
-  //       const error = new Error('Not found');
-  //       error.status = 404;
-  //       next(error);
-  //     }
-  //   }
-  // } catch (error) {
-  //   next(error);
-  // }
-
   try {
     const user = await User.findById(req.user.id);
 
