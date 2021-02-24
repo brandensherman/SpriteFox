@@ -58,7 +58,7 @@ const ArtboardList = ({ saveCanvas, renderGrid, currentGrid }) => {
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
-          <button className='btn add-btn' type='submit'>
+          <button className='btn btn-add' type='submit'>
             Create
           </button>
         </form>
@@ -69,7 +69,7 @@ const ArtboardList = ({ saveCanvas, renderGrid, currentGrid }) => {
         {artboards.map((artboard) => (
           <div key={artboard._id}>
             <button
-              className='artboard-btn'
+              className='btn-artboard'
               name={artboard.name}
               onClick={(e) => selectArtboard(e.target.name)}
             >{`${artboard.name}`}</button>

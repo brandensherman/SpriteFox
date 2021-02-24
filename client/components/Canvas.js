@@ -217,15 +217,15 @@ const Canvas = () => {
         <div className='canvas-buttons'>
           {userInfo ? (
             <div className='canvas-buttons'>
-              <button onClick={resetCanvas} className='btn session-btn'>
+              <button onClick={resetCanvas} className='btn btn-session'>
                 Reset Canvas
               </button>
-              <button onClick={() => saveCanvas()} className='btn session-btn'>
+              <button onClick={() => saveCanvas()} className='btn btn-session'>
                 Save Canvas
               </button>
             </div>
           ) : (
-            <button onClick={resetCanvas} className='btn session-btn'>
+            <button onClick={resetCanvas} className='btn btn-session'>
               Reset Canvas
             </button>
           )}
@@ -239,7 +239,7 @@ const Canvas = () => {
             <button
               onClick={() => setTool(!tool)}
               className={`btn ${
-                tool ? 'tool-btn tool-btn-active' : 'tool-btn'
+                tool ? 'btn-tool btn-tool-active' : 'btn-tool'
               }`}
             >
               Draw
@@ -247,7 +247,7 @@ const Canvas = () => {
             <button
               onClick={() => setTool(!tool)}
               className={`btn ${
-                tool ? 'tool-btn' : 'tool-btn tool-btn-active'
+                tool ? 'btn-tool' : 'btn-tool btn-tool-active'
               }`}
             >
               Erase
@@ -259,7 +259,7 @@ const Canvas = () => {
             <button
               onClick={selectPixelSize}
               className={`btn ${
-                factor === 1 ? 'pixel-btn pixel-btn-active' : 'pixel-btn'
+                factor === 1 ? 'btn-pixel btn-pixel-active' : 'btn-pixel'
               }`}
               value={8}
             >
@@ -268,7 +268,7 @@ const Canvas = () => {
             <button
               onClick={selectPixelSize}
               className={`btn ${
-                factor === 2 ? 'pixel-btn pixel-btn-active' : 'pixel-btn'
+                factor === 2 ? 'btn-pixel btn-pixel-active' : 'btn-pixel'
               }`}
               value={16}
             >
@@ -277,7 +277,7 @@ const Canvas = () => {
             <button
               onClick={selectPixelSize}
               className={`btn ${
-                factor === 3 ? 'pixel-btn pixel-btn-active' : 'pixel-btn'
+                factor === 3 ? 'btn-pixel btn-pixel-active' : 'btn-pixel'
               }`}
               value={24}
             >

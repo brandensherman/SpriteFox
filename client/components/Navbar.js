@@ -20,16 +20,16 @@ const Navbar = () => {
 
       {!userInfo ? (
         <div className='nav-links'>
-          <Link to='/login' className='btn nav-btn login-btn'>
+          <Link to='/login' className='btn btn-nav btn-login'>
             Login
           </Link>
-          <Link to='/register' className='btn nav-btn'>
+          <Link to='/register' className='btn btn-nav'>
             Register
           </Link>
         </div>
       ) : (
         <div>
-          <Link to='/' className='btn nav-btn' onClick={handleLogout}>
+          <Link to='/' className='btn btn-nav' onClick={handleLogout}>
             Logout
           </Link>
         </div>
